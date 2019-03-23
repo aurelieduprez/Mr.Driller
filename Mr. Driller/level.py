@@ -1,3 +1,6 @@
+from random import randint
+
+
 def generateLvl(colors, lines, width):    # This returns a 3D array [[[color, state]
 
     lvl = []

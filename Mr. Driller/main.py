@@ -1,9 +1,9 @@
-from random import randint
 import pygame, sys
 from pygame.locals import *
+import level
 
 def game(x, y):
     pygame.init()
-    maSurface = pygame.display.set_mode((500,300))
+    surface = pygame.display.set_mode((x, y))
 
 
