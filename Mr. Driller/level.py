@@ -1,3 +1,4 @@
+import pygame
 from random import randint
 
 
@@ -16,8 +17,20 @@ def generateLvl(colors, lines, width):    # This returns a 3D array [[[color, st
     return lvl
 
 
+def deleteBlock(lvl, line, col):
+
+    lvl[line][col] = 0
+    return lvl
+
+
 def displayLvLTxt(lvl):
 
     for element in lvl:
         print(element)
+
+
+def pygameRender(surface, lvl):
+
+    color = (randint(0, 255), randint(0, 255), randint(0, 255))
+    surface.fill(color)
 

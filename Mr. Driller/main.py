@@ -17,7 +17,7 @@ def game(x, y):
                 inProgress = False
 
             if event.type == KEYDOWN:
-                keydownHandle(event)
+                keydownHandle(event, surface)
 
         pygame.display.update()
     pygame.quit()
