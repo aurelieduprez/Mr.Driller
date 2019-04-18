@@ -1,20 +1,22 @@
+import os
 import pygame
 from random import randint
+import block
 
 
-def generateLvl(colors, lines, width):    # This returns a 3D array [[[color, state]
+def generateLvl(colors, lines, width):    # This returns a 2D array [[color,color],[color,color],...]
 
     lvl = []
     for i in range(lines):
         line = []
         for j in range(width):
-            block = randint(1, colors)
+            newBlock = block.Classic(j, i, randint(1, colors))
 
-            line.append(block)
-
+            line.append(newBlock)
         lvl.append(line)
 
     return lvl
+
 
 
 def deleteBlock(lvl, line, col):
@@ -29,8 +31,14 @@ def displayLvLTxt(lvl):
         print(element)
 
 
-def pygameRender(surface, lvl):
+def pygRenderNxtLine(surface, currentLine, lvl):
 
-    color = (randint(0, 255), randint(0, 255), randint(0, 255))
-    surface.fill(color)
+
+    for element in lvl[currentLine]:
+        element.display(surface)
+
+
+
+
+
 
