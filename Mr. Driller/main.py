@@ -41,9 +41,9 @@ def game(x, y):
                 inProgress = False
 
             if event.type == KEYDOWN:
-                if event.key in movKeys: # Movement
+                if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
-                elif event.key in arrowKeys: # Block breaking
+                elif event.key in arrowKeys:    # Block breaking
                     breaking(event, surface, player, level)
                 elif event.key == K_r:
                     player.display(surface)

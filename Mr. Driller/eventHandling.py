@@ -26,4 +26,10 @@ def breaking(event, surface, player, level):
 
     if event.key == K_UP:
         player.breakBlock(surface, 1, level)
+    elif event.key == K_RIGHT:
+        player.breakBlock(surface, 2, level)
+    elif event.key == K_DOWN:
+        player.breakBlock(surface, 3, level)
+    elif event.key == K_LEFT:
+        player.breakBlock(surface, 4, level)
 

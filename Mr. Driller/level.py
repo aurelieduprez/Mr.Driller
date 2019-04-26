@@ -4,7 +4,7 @@ from random import randint
 import block
 
 
-def generateLvl(colors, lines, width):    # This returns a 2D array [[color,color],[color,color],...]
+def generateLvl(colors, lines, width):    # This returns a 2D array of blocks []
 
     lvl = []
     for i in range(lines):
