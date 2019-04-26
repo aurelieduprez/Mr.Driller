@@ -19,14 +19,18 @@ def game(x, y):
     pygame.display.set_caption('Mr. Driller')
 
     # Initializing useful variables
-    player = Character(2, 2)
+    player = Character(6, 8)
     currentLine = 0
     level = generateLvl(4, 9, 7)
     print(len(level))
+
+    # Initializing controls
     if 'nt' in os.name:
         movKeys = [K_w, K_d, K_a]
     elif 'ix' in os.name:
         movKeys = [K_z, K_d, K_q]
+
+    arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
 
     # Main loop
     inProgress = True
@@ -37,8 +41,10 @@ def game(x, y):
                 inProgress = False
 
             if event.type == KEYDOWN:
-                if event.key in movKeys:
+                if event.key in movKeys: # Movement
                     movementHandle(event, surface, player, level, movKeys)
+                elif event.key in arrowKeys: # Block breaking
+                    breaking(event, surface, player, level)
                 elif event.key == K_r:
                     player.display(surface)
                 else:

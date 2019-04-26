@@ -8,6 +8,7 @@ class Block:
     def __init__(self, posX, posY):
         self._posX = posX
         self._posY = posY
+        self._bg = path.join("Assets", "Textures", "Background", "bg.png")
 
 
 class Classic(Block):
@@ -19,11 +20,23 @@ class Classic(Block):
         self.__texturePath = path.join("Assets", "Textures", "Blocks", str(colour), "b_s.png")
         self.__hp = 1
 
+    def hpAccess(self):
+        return self.__hp
+
     def display(self, surface):
 
         if self.__hp > 0:
             image = pygame.image.load(self.__texturePath)
             surface.blit(image, (self._posX*64+26, self._posY*64+12))
+
+        else:
+            image = pygame.image.load(self._bg)
+            surface.blit(image, (self._posX * 64 + 26, self._posY * 64 + 12))
+
+    def hit(self, surface):
+
+        self.__hp -= 1
+        self.display(surface)
 
 
 class Unbreakable(Block):

@@ -32,13 +32,16 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__posX -= 1
             self.display(surface)
 
+    def breakBlock(self, surface, direction, level):
 
+        if direction == 1 and self.__posY > 0 and level[self.__posY-1][self. __posX].hpAccess() > 0:      # Up
+            level[self.__posY-1][self. __posX].hit(surface)
 
 
 
 
 def drawBG():
-    redBlock = pygame.image.load(os.path.join("Assets", "Textures", "Blocks", "1", "1_s.png")).convert()
+    redBlock = pygame.image.load(path.join("Assets", "Textures", "Blocks", "1", "1_s.png")).convert()
     cyanBlock = pygame.image.load(os.path.join("Assets", "Textures", "Blocks", "2", "2_s.png")).convert()
     pinkBlock = pygame.image.load(os.path.join("Assets", "Textures", "Blocks", "3", "3_s.png")).convert()
     purpleBlock = pygame.image.load(os.path.join("Assets", "Textures", "Blocks", "4", "4_s.png")).convert()
@@ -51,34 +54,3 @@ def drawBG():
         BG.append(purpleBlock)
 
     return BG
-
-
-def moveLeft(surface, BG, playerPosX, playerPosY):
-
-    if playerPosX > 0:
-        copy = surface.copy()
-        copy.blit(surface, (0, 0))
-
-        plyrImg = pygame.image.load(os.path.join("Assets", "Textures", "Character", "testpink.png")).convert()
-        playerPos = playerPos-1
-        surface.blit(plyrImg, (playerPos*64+26, 0))
-
-        return playerPos
-
-    else:
-        return playerPos
-
-
-def moveRight(surface, BG, playerPos):
-    if playerPos < 11:
-        for i in range(len(BG)):
-            surface.blit(BG[i], (i*64, 0))
-
-        plyrImg = pygame.image.load(os.path.join("Assets", "Textures", "Character", "testpink.png")).convert()
-        playerPos = playerPos + 1
-        surface.blit(plyrImg, (playerPos * 64, 0))
-
-        return playerPos
-
-    else:
-        return playerPos

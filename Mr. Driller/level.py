@@ -18,7 +18,6 @@ def generateLvl(colors, lines, width):    # This returns a 2D array [[color,colo
     return lvl
 
 
-
 def deleteBlock(lvl, line, col):
 
     lvl[line][col] = 0
@@ -32,7 +31,6 @@ def displayLvLTxt(lvl):
 
 
 def pygRenderNxtLine(surface, currentLine, lvl):
-
 
     for element in lvl[currentLine]:
         element.display(surface)
