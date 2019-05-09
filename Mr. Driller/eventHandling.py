@@ -3,13 +3,13 @@ from level import *
 from pygame.locals import *
 
 
-def keydownHandle(event, currentLine, surface, level):
+def keydownHandle(event, currentBotLine, currentOffset, surface, level):
 
     if event.key == K_g:
-        if currentLine < len(level):
-            pygRenderNxtLine(surface, currentLine, level)
-            currentLine += 1
-        return currentLine
+        render(surface, level, currentBotLine, currentOffset)
+
+    else:
+        print(event.key)
 
 
 def movementHandle(event, surface, player, level, movKeys):
@@ -22,14 +22,14 @@ def movementHandle(event, surface, player, level, movKeys):
         player.move(surface, 1, level)
 
 
-def breaking(event, surface, player, level):
+def breaking(event, surface, player, level, currentBotLine):
 
     if event.key == K_UP:
-        player.breakBlock(surface, 1, level)
+        player.breakBlock(surface, 1, level, currentBotLine)
     elif event.key == K_RIGHT:
-        player.breakBlock(surface, 2, level)
+        player.breakBlock(surface, 2, level, currentBotLine)
     elif event.key == K_DOWN:
-        player.breakBlock(surface, 3, level)
+        player.breakBlock(surface, 3, level, currentBotLine)
     elif event.key == K_LEFT:
-        player.breakBlock(surface, 4, level)
+        player.breakBlock(surface, 4, level, currentBotLine)
 
