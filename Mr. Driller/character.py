@@ -53,13 +53,16 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         if direction == 1 \
                 and self.__posY > 0 \
                 and level[self.__posY-self.__blocksFallen-2][self. __posX].hpAccess() > 0:
+
             level[self.__posY-self.__blocksFallen-2][self. __posX].hit(surface)             # Up
             print("Char is in", self.__posX, ", ", self.__posY, "break")
 
         elif direction == 2 \
                 and self.__posX < len(level[0])-1 \
                 and level[self.__posY][self. __posX+1].hpAccess() > 0:
-            level[self.__posY-self.__blocksFallen][self. __posX+1].hit(surface)             # Right
+
+            print("tried to hit", self.__posY-self.blocksFallenAcc(), self.__posX+1)
+            level[self.__posY-self.blocksFallenAcc()][self. __posX+1].hit(surface)             # Right
 
         elif direction == 3 \
                 and self.__posY < currentBotLine \

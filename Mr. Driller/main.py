@@ -33,6 +33,10 @@ def game(x, y):
 
     arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
 
+    # Rendering level and displaying player
+    render(surface, level, currentBotLine, currentOffset)
+    player.display(surface)
+
     # Main loop
     inProgress = True
     while inProgress:
@@ -46,8 +50,6 @@ def game(x, y):
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
                     breaking(event, surface, player, level, currentBotLine)
-                elif event.key == K_r:
-                    player.display(surface)
                 else:
                     keydownHandle(event, currentBotLine, currentOffset, surface, level)
 

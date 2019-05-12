@@ -5,11 +5,7 @@ from pygame.locals import *
 
 def keydownHandle(event, currentBotLine, currentOffset, surface, level):
 
-    if event.key == K_g:
-        render(surface, level, currentBotLine, currentOffset)
-
-    else:
-        print(event.key)
+    print(event.key)
 
 
 def movementHandle(event, surface, player, level, movKeys):

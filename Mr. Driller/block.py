@@ -8,6 +8,7 @@ class Block:
     def __init__(self, posX, posY, forceHP):
         self._posX = posX
         self._posY = posY
+        self._currOffset = 0
 
         if forceHP == 1:
             self._hp = 0
@@ -56,7 +57,7 @@ class Unbreakable(Block):
     """Unbreakable block daughter-class"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY)
+        Block.__init__(self, posX, posY, 0)
         self._texturePath = path.join("Assets ", "Textures", "Blocks", "Unbreakable", "b_s.png")
         self.__hp = 5
 

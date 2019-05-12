@@ -6,7 +6,7 @@ import block
 
 def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y][X]
 
-    lvl = []
+    level = []
 
     for i in range(lines+5):
         line = []
@@ -21,14 +21,14 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
                 newBlock = block.Classic(j, i, randint(1, colors), 0)
                 line.append(newBlock)
 
-        lvl.append(line)
+        level.append(line)
 
-    return lvl
+    return level
 
 
-def pygRenderNxtLine(surface, currentLine, lvl):
+def pygRenderNxtLine(surface, currentLine, level):
 
-    for element in lvl[currentLine]:
+    for element in level[currentLine]:
         element.display(surface)
 
 
