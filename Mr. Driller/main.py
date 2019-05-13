@@ -22,7 +22,7 @@ def game(x, y):
     currentBotLine = 8
     currentOffset = 0
     player = Character(4, 4, currentBotLine)    # Creates the player instance
-    level = generateLvl(4, 9, 7)
+    level = generateLvl(4, 150, 7)
     print(len(level))
 
     # Initializing controls
@@ -41,6 +41,8 @@ def game(x, y):
     inProgress = True
     while inProgress:
         for event in pygame.event.get():
+            render(surface, level, currentBotLine, currentOffset)
+            player.display(surface)
 
             if event.type == QUIT:
                 inProgress = False

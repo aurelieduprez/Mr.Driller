@@ -33,12 +33,14 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             print(self.__posX, self.__posY)
             self.display(surface)
 
-        elif direction == 2 and self.__posX < len(level[0])-1:        # Right
+        elif direction == 2 and self.__posX < len(level[0])-1 and self.__posX < len(level[0])-1 \
+        and level[self.__posY][self. __posX+1].hpAccess() == 0:        # Right
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX += 1
             self.display(surface)
 
-        elif direction == 3 and self.__posX > 0:                      # Left
+        elif direction == 3 and self.__posX > 0 \
+        and level[self.__posY][self. __posX-1].hpAccess() == 0:                     # Left
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX -= 1
             self.display(surface)
@@ -62,7 +64,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 and level[self.__posY][self. __posX+1].hpAccess() > 0:
 
             print("tried to hit", self.__posY-self.blocksFallenAcc(), self.__posX+1)
-            level[self.__posY-self.blocksFallenAcc()][self. __posX+1].hit(surface)             # Right
+            level[self.__posY][self. __posX+1].hit(surface)             # Right
 
         elif direction == 3 \
                 and self.__posY < currentBotLine \
@@ -72,7 +74,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         elif direction == 4 \
                 and self.__posX > 0 \
                 and level[self.__posY][self. __posX-1].hpAccess() > 0:
-            level[self.__posY-self.__blocksFallen][self. __posX-1].hit(surface)             # Left
+            level[self.__posY][self. __posX-1].hit(surface)             # Left
 
     def fall(self, surface, level):
 
