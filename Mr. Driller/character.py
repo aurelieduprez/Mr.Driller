@@ -54,9 +54,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         if direction == 1 \
                 and self.__posY > 0 \
-                and level[self.__posY-self.__blocksFallen-2][self. __posX].hpAccess() > 0:
+                and level[self.__posY-1][self. __posX].hpAccess() > 0:
 
-            level[self.__posY-self.__blocksFallen-2][self. __posX].hit(surface)             # Up
+            level[self.__posY-1][self. __posX].hit(surface)             # Up
             print("Char is in", self.__posX, ", ", self.__posY, "break")
 
         elif direction == 2 \
