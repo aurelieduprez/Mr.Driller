@@ -56,7 +56,7 @@ def game(x, y):
                     keydownHandle(event, currentBotLine, currentOffset, surface, level)
 
         currentOffset = player.blocksFallenAcc()
-        #print(currentOffset)
+        print(currentOffset)
         currentBotLine = currentBotLine + currentOffset
         player.updCurrBotLine(currentBotLine)
 

@@ -13,12 +13,12 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
 
         if i in range(5):   # Override for first 5 lines -> generates empty blocks
             for j in range(width):
-                newBlock = block.Classic(j, i, 1, 1)
+                newBlock = block.Classic(j, i, 1, 0)
                 line.append(newBlock)
 
         else:
             for j in range(width):
-                newBlock = block.Classic(j, i, randint(1, colors), 0)
+                newBlock = block.Classic(j, i,randint(1,4), 1)
                 line.append(newBlock)
 
         level.append(line)

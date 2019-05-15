@@ -10,10 +10,7 @@ class Block:
         self._posY = posY
         self._currOffset = 0
 
-        if forceHP == 1:
-            self._hp = 0
-        else:
-            self._hp = 1
+        self._hp = forceHP
 
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg.png")
@@ -41,6 +38,7 @@ class Block:
     def hit(self, surface):
 
         self._hp -= 1
+        print("-1hp")
         self.display(surface)
 
 
@@ -57,25 +55,22 @@ class Unbreakable(Block):
     """Unbreakable block daughter-class"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY, 0)
-        self._texturePath = path.join("Assets ", "Textures", "Blocks", "Unbreakable", "b_s.png")
-        self.__hp = 5
+        Block.__init__(self, posX, posY, 5)
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Unbreakable", "b_s.png")
 
 
 class Solo(Block):
     """Not connectable block daughter-class"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY)
-        self._texturePath = path.join("Assets ", "Textures", "Blocks", "Solo", "b_s.png")
-        self.__hp = 1
+        Block.__init__(self, posX, posY,1)
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Solo", "b_s.png")
 
 
 class Delayed(Block):
     """Timeout block daughter-class"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY)
-        self.__texturePath = path.join("Assets ", "Textures", "Blocks", "Delayed", "b_s.png")
-        self.__hp = 1
+        Block.__init__(self, posX, posY,1)
+        self.__texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", "b_s.png")
         self.__timeout = 84    # number of image for fadeout
