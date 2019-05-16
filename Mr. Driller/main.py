@@ -19,9 +19,10 @@ def game(x, y):
     pygame.display.set_caption('Mr. Driller')
 
     # Initializing useful variables
-    player = Character(6, 8)
-    currentLine = 0
-    level = generateLvl(4, 9, 7)
+    currentBotLine = 8
+    currentOffset = 0
+    player = Character(4, 4, currentBotLine)    # Creates the player instance
+    level = generateLvl(4, 150, 7)
     print(len(level))
 
     # Initializing controls
@@ -32,10 +33,16 @@ def game(x, y):
 
     arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
 
+    # Rendering level and displaying player
+    render(surface, level, currentBotLine, currentOffset)
+    player.display(surface)
+
     # Main loop
     inProgress = True
     while inProgress:
         for event in pygame.event.get():
+            render(surface, level, currentBotLine, currentOffset)
+            player.display(surface)
 
             if event.type == QUIT:
                 inProgress = False
@@ -44,12 +51,16 @@ def game(x, y):
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
-                    breaking(event, surface, player, level)
-                elif event.key == K_r:
-                    player.display(surface)
+                    breaking(event, surface, player, level, currentBotLine)
                 else:
-                    currentLine = keydownHandle(event, currentLine, surface, level)
+                    keydownHandle(event, currentBotLine, currentOffset, surface, level)
 
+        currentOffset = player.blocksFallenAcc()
+        print(currentOffset)
+        currentBotLine = currentBotLine + currentOffset
+        player.updCurrBotLine(currentBotLine)
+
+        player.fall(surface, level)
         pygame.display.update()
         fpsClock.tick(FPS)
 
