@@ -20,9 +20,7 @@ def movementHandle(event, surface, player, level, movKeys):
 
 def breaking(event, surface, player, level, currentBotLine):
 
-    if event.key == K_UP:
-        player.breakBlock(surface, 1, level, currentBotLine)
-    elif event.key == K_RIGHT:
+    if event.key == K_RIGHT:
         player.breakBlock(surface, 2, level, currentBotLine)
     elif event.key == K_DOWN:
         player.breakBlock(surface, 3, level, currentBotLine)
