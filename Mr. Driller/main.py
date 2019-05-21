@@ -48,8 +48,9 @@ def game(x, y):
                 inProgress = False
 
             if event.type == KEYDOWN:
-                if event.key == K_UP:
-                    player.Revive(surface)
+                # Test key for revive :P
+                #if event.key == K_UP:
+                    #player.Revive(surface)
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
