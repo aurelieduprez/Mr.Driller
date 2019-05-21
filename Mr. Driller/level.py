@@ -3,10 +3,10 @@ import pygame
 from random import randint
 import block
 
-
+level = []
 def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y][X]
 
-    level = []
+    global level
 
     for i in range(lines+5):
         line = []
