@@ -23,16 +23,28 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def move(self, surface, direction, level):
 
-        if direction == 2 and self.__posX < len(level[0])-1 and self.__posX < len(level[0])-1 \
-        and level[self.__posY][self. __posX+1].hpAccess() == 0:        # Right
+        if direction == 2 and self.__posX < len(level[0]) - 1 and self.__posX < len(level[0]) - 1 \
+                and level[self.__posY][self.__posX + 1].hpAccess() == 0:  # Right
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX += 1
             self.display(surface)
+        elif  direction == 2 and self.__posX < len(level[0]) - 1 and self.__posX < len(level[0]) - 1 \
+                and level[self.__posY][self.__posX + 1].hpAccess() != 0 and level[self.__posY - 1][self.__posX + 1].hpAccess() == 0:
+            self.__posX += 1
+            self.__posY -= 1
+            self.__climb = 1
+            self.display(surface)
 
         elif direction == 3 and self.__posX > 0 \
-        and level[self.__posY][self. __posX-1].hpAccess() == 0:                     # Left
+                and level[self.__posY][self.__posX - 1].hpAccess() == 0:  # Left
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX -= 1
+            self.display(surface)
+        elif direction == 3 and self.__posX > 0 \
+                and level[self.__posY][self.__posX - 1].hpAccess() != 0 and level[self.__posY - 1][self.__posX - 1].hpAccess() == 0:
+            self.__posX -= 1
+            self.__posY -= 1
+            self.__climb = 1
             self.display(surface)
 
     def breakBlock(self, surface, direction, level, currentBotLine):
@@ -57,9 +69,12 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def fall(self, surface, level):
 
         if self.__posY < len(level)-2 and level[self.__posY+1][self.__posX].hpAccess() == 0:
-            self.__blocksFallen += 1
-            self.__posY += 1
-
-            return self.__blocksFallen
+            if (self.__climb != 1):
+                self.__blocksFallen += 1
+                self.__posY += 1
+            else:
+                self.__climb -= 1
+                self.__posY += 1
+                return self.__blocksFallen
 
 
