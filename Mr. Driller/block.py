@@ -18,12 +18,8 @@ class Block:
     def hpAccess(self):
         return self._hp
 
-    def scrollUp(self, surface):
-
-        self.display(surface, 1)
-        if self._posY > 0:
-            self._posY -= 1
-        self.display(surface)
+    def updOffset(self, currentOffset):
+        self._currOffset = currentOffset
 
     def display(self, surface, forceBG=0, currentOffset=0):
 
@@ -39,7 +35,7 @@ class Block:
 
         self._hp -= 1
         print("-1hp")
-        self.display(surface)
+        self.display(surface, 0, self._currOffset)
 
 
 class Classic(Block):

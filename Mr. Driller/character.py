@@ -10,11 +10,8 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__posX = posX
         self.__posY = posY
         self.__blocksFallen = 0
-        self.__currentBotLine = currentBotLine
+        self.__climb = 0
         self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
-
-    def updCurrBotLine(self, currentBotLine):
-        self.__currentBotLine = currentBotLine
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
@@ -63,8 +60,6 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__blocksFallen += 1
             self.__posY += 1
 
-            render(surface, level, self.__currentBotLine, self.__blocksFallen)
-
-            self.display(surface)
+            return self.__blocksFallen
 
 
