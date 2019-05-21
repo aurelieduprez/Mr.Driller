@@ -76,4 +76,4 @@ class Pill(Block):
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY,1)
-        self.__texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
