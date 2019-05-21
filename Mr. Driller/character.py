@@ -1,12 +1,13 @@
 from os import path
 import pygame
-from level import render
+from level import render,level
 
 
 class Character:        # Important : directions list : Up = 1; Right = 2; Down = 3; Left = 4
     """Character class"""
 
-    def __init__(self, posX, posY, currentBotLine):
+    def __init__(self, posX, posY, currentBotLine,Lives):
+        self.__Lives = Lives
         self.__posX = posX
         self.__posY = posY
         self.__blocksFallen = 0
@@ -15,6 +16,24 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
+
+    def Revive(self,surface):
+        if self.__Lives == 0:
+            print("dead") #à replacer par un endscreen
+        else:
+            print('being revive')
+            #add 100% oxygen
+            self.__Lives -=1
+            for i in range(-2,1):
+                if (self.__posX + 1)!= 7:
+                    if(level[self.__posY+i][self.__posX + 1].hpAccess() != 0):
+                        level[self.__posY+i][self.__posX + 1].hit(surface)
+                if (self.__posX - 1)!= -1:
+                    if(level[self.__posY+i][self.__posX - 1].hpAccess() != 0):
+                        level[self.__posY+i][self.__posX - 1].hit(surface)
+                if (level[self.__posY + i][self.__posX].hpAccess() != 0):
+                    level[self.__posY + i][self.__posX].hit(surface)
+
 
     def display(self, surface):
 
