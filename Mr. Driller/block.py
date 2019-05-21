@@ -36,11 +36,11 @@ class Block:
             image = pygame.image.load(self._texturePath)
             surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
 
-    def hit(self, surface):
+    def hit(self, surface,nochain = 0):
 
         self._hp -= 1
         print("-1hp")
-        if(self._chain_reaction == 1):
+        if(self._chain_reaction == 1 and nochain == 0):
             from level import level
             if(level[self._posY+1][self._posX].hpAccess() != 0):
                 if(level[self._posY+1][self._posX].ColorAccess() == self._colors):
