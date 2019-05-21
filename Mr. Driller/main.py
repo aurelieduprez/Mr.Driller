@@ -34,15 +34,15 @@ def game(x, y):
     arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
 
     # Rendering level and displaying player
-    render(surface, level, currentBotLine, currentOffset)
+    render(surface, level, currentOffset)
     player.display(surface)
 
     # Main loop
     inProgress = True
     while inProgress:
         for event in pygame.event.get():
-            render(surface, level, currentBotLine, currentOffset)
-            player.display(surface)
+            """render(surface, level, currentBotLine, currentOffset)
+            player.display(surface)"""
 
             if event.type == QUIT:
                 inProgress = False
@@ -55,12 +55,20 @@ def game(x, y):
                 else:
                     keydownHandle(event, currentBotLine, currentOffset, surface, level)
 
-        currentOffset = player.blocksFallenAcc()
         print(currentOffset)
-        currentBotLine = currentBotLine + currentOffset
-        player.updCurrBotLine(currentBotLine)
 
         player.fall(surface, level)
+
+        if player.blocksFallenAcc() != currentOffset:
+            currentOffset += 1
+            currentBotLine += 1
+
+            for i in range(0, len(level), 1):
+                for element in level[i]:
+                    element.updOffset(currentOffset)
+
+            render(surface, level, currentOffset)
+            player.display(surface)
         pygame.display.update()
         fpsClock.tick(FPS)
 
