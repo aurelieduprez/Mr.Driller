@@ -72,7 +72,7 @@ class Delayed(Block):
         self.__timeout = 84    # number of image for fadeout
 
 class Pill(Block):
-
+    """Oxygen Pill"""
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY,1)
