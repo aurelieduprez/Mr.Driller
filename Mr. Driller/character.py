@@ -26,14 +26,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def move(self, surface, direction, level):
 
-        if direction == 1 and self.__posY > 0:                         # Up
-            level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
-            self.__posY -= 1
-            self.__blocksFallen -= 1
-            print(self.__posX, self.__posY)
-            self.display(surface)
-
-        elif direction == 2 and self.__posX < len(level[0])-1 and self.__posX < len(level[0])-1 \
+        if direction == 2 and self.__posX < len(level[0])-1 and self.__posX < len(level[0])-1 \
         and level[self.__posY][self. __posX+1].hpAccess() == 0:        # Right
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX += 1
@@ -45,21 +38,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__posX -= 1
             self.display(surface)
 
-        elif direction == 4:
-            level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
-            self.__posY += 1
-            self.display(surface)
-
     def breakBlock(self, surface, direction, level, currentBotLine):
 
-        if direction == 1 \
-                and self.__posY > 0 \
-                and level[self.__posY-1][self. __posX].hpAccess() > 0:
-
-            level[self.__posY-1][self. __posX].hit(surface)             # Up
-            print("Char is in", self.__posX, ", ", self.__posY, "break")
-
-        elif direction == 2 \
+        if direction == 2 \
                 and self.__posX < len(level[0])-1 \
                 and level[self.__posY][self. __posX+1].hpAccess() > 0:
 
