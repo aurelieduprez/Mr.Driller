@@ -26,12 +26,6 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
     return level
 
 
-def pygRenderNxtLine(surface, currentLine, level):
-
-    for element in level[currentLine]:
-        element.display(surface)
-
-
 def render(surface, level, currBotline, currOffset):
 
     # init
