@@ -22,7 +22,7 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
                 line.append(newBlock)
         else:
             for j in range(width):
-                newBlock = block.Unbreakable(j, i)
+                newBlock = block.End(j, i)
                 line.append(newBlock)
 
 
