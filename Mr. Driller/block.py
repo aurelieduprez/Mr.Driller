@@ -46,7 +46,6 @@ class Block:
             self._hp = 0
         else:
             self._hp -= 1
-        print("-1hp")
 
         # Chain reaction
         if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic":
