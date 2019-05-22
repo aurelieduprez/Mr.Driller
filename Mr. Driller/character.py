@@ -27,12 +27,12 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             for i in range(-2,1):
                 if (self.__posX + 1)!= 7:
                     if(level[self.__posY+i][self.__posX + 1].hpAccess() != 0):
-                        level[self.__posY+i][self.__posX + 1].hit(surface,1)
+                        level[self.__posY+i][self.__posX + 1].hit(surface,1,1)
                 if (self.__posX - 1)!= -1:
                     if(level[self.__posY+i][self.__posX - 1].hpAccess() != 0):
-                        level[self.__posY+i][self.__posX - 1].hit(surface,1)
+                        level[self.__posY+i][self.__posX - 1].hit(surface,1,1)
                 if (level[self.__posY + i][self.__posX].hpAccess() != 0):
-                    level[self.__posY + i][self.__posX].hit(surface,1)
+                    level[self.__posY + i][self.__posX].hit(surface,1,1)
 
 
     def display(self, surface):

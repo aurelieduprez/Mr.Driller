@@ -36,9 +36,11 @@ class Block:
             image = pygame.image.load(self._texturePath)
             surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
 
-    def hit(self, surface,nochain = 0):
-
-        self._hp -= 1
+    def hit(self, surface,nochain = 0,Instakill = 0):
+        if Instakill:
+            self._hp = 0
+        else:
+            self._hp -= 1
         print("-1hp")
         if(self._chain_reaction == 1 and nochain == 0):
             from level import level
@@ -95,5 +97,5 @@ class Pill(Block):
     """Oxygen Pill"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY,1)
+        Block.__init__(self, posX, posY,1,0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
