@@ -12,6 +12,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__posY = posY
         self.__blocksFallen = 0
         self.__climb = 0
+        self.__oxygen = 100
         self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
 
     def blocksFallenAcc(self):
@@ -81,4 +82,10 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
             return self.__blocksFallen
 
-
+    def updateOxygen(self,type): #type 1 : perd 1 oxygen par seconde, 2 : -20 oxygen (bloc unbreakable), 3 : + X oxygen (capsule)
+        if type == 1 :
+            self.__oxygen = self.__oxygen - 1
+        elif type == 2 :
+            self.__oxygen = self.__oxygen - 20
+        elif type == 3:
+            self.__oxygen = self.__oxygen + 50
