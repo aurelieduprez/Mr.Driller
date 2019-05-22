@@ -23,7 +23,7 @@ def game(x, y):
     # Initializing useful variables
     currentBotLine = 8
     currentOffset = 0
-    player = Character(4, 4, currentBotLine)    # Creates the player instance
+    player = Character(4, 4, currentBotLine,Lives = 99)    # Creates the player instance
     level = generateLvl(4, 150, 7)
     print(len(level))
     nbFrame = 1
@@ -51,6 +51,9 @@ def game(x, y):
                 inProgress = False
 
             if event.type == KEYDOWN:
+                # Test key for revive :P
+                #if event.key == K_UP:
+                    #player.Revive(surface)
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
