@@ -14,21 +14,15 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
 
+    # Accessors
+
     def blocksFallenAcc(self):
         return self.__blocksFallen
 
     def climbAcc(self):
         return self.__climb
 
-    def display(self, surface):
-
-        image = pygame.image.load(self.__texturePath)
-        surface.blit(image, (self.__posX * 64 + 26, (self.__posY * 64 + 12) - self.__blocksFallen * 64))
-
-    def backDownCleanup(self, surface):
-        image = pygame.image.load(self.__bg)
-        surface.blit(image, (self.__posX * 64 + 26, (self.__posY * 64 + 12) - self.__blocksFallen * 64 - 64))
-        self.display(surface)
+    # Logical Methods
 
     def move(self, surface, direction, level):
 
@@ -109,4 +103,16 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__climb -= 1
                 self.__posY += 1
             return self.__blocksFallen
+
+    # Graphical Methods
+
+    def display(self, surface):
+
+        image = pygame.image.load(self.__texturePath)
+        surface.blit(image, (self.__posX * 64 + 26, (self.__posY * 64 + 12) - self.__blocksFallen * 64))
+
+    def backDownCleanup(self, surface):
+        image = pygame.image.load(self.__bg)
+        surface.blit(image, (self.__posX * 64 + 26, (self.__posY * 64 + 12) - self.__blocksFallen * 64 - 64))
+        self.display(surface)
 
