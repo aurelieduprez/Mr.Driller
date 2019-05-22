@@ -115,3 +115,12 @@ class Pill(Block):
         Block.__init__(self, posX, posY,1,0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
         self._blockType = "pill"
+
+class End(Block):
+    """Oxygen Pill"""
+
+    def __init__(self, posX, posY):
+        Block.__init__(self, posX, posY,1,0)
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "End", "b_s.png")
+        self._blockType = "end"
+

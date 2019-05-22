@@ -24,7 +24,7 @@ def game(x, y):
     currentBotLine = 8
     currentOffset = 0
     player = Character(4, 4, currentBotLine,Lives = 99)    # Creates the player instance
-    level = generateLvl(4, 150, 7)
+    level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1
 
