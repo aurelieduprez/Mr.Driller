@@ -79,4 +79,3 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__posY += 1
             return self.__blocksFallen
 
-
