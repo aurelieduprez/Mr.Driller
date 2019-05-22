@@ -19,6 +19,8 @@ class Block:
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg.png")
 
+    # Accessors
+
     def hpAccess(self):
         return self._hp
 
@@ -30,6 +32,15 @@ class Block:
 
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
+
+    # Logical Method
+
+    def hit(self, surface):
+
+        self._hp -= 1
+        self.display(surface, 0, self._currOffset)
+
+    # Graphical Method
 
     def display(self, surface, forceBG=0, currentOffset=0):
 

@@ -23,6 +23,8 @@ def game(x, y):
     # Initializing useful variables
     currentBotLine = 8
     currentOffset = 0
+    currentClimb = 0
+    backDown = False
     player = Character(4, 4, currentBotLine,Lives = 99)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))
@@ -44,13 +46,12 @@ def game(x, y):
     inProgress = True
     while inProgress:
         for event in pygame.event.get():
-            """render(surface, level, currentBotLine, currentOffset)
-            player.display(surface)"""
 
-            if event.type == QUIT:
+            if event.type == QUIT:      # Quitting the game
+
                 inProgress = False
 
-            if event.type == KEYDOWN:
+            if event.type == KEYDOWN:       # Event handling
                 # Test key for revive :P
                 #if event.key == K_UP:
                     #player.Revive(surface)
@@ -59,9 +60,21 @@ def game(x, y):
                 elif event.key in arrowKeys:    # Block breaking
                     breaking(event, surface, player, level, currentBotLine)
                 else:
-                    keydownHandle(event, currentBotLine, currentOffset, surface, level)
+                    keydownHandle(event)
 
-        print(currentOffset)
+        # Cleanup after a climb
+
+        if backDown and player.climbAcc() < currentClimb:
+            if currentClimb == 0:
+                backDown = False
+            player.backDownCleanup(surface)
+
+        currentClimb = player.climbAcc()
+
+        if player.climbAcc() > 0:
+            backDown = True
+
+        # Updating blocks when falling
 
         player.fall(surface, level)
 
