@@ -16,10 +16,15 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
                 newBlock = block.Classic(j, i, 1, 0)
                 line.append(newBlock)
 
+        elif i in range(lines):
+            for j in range(width):
+                newBlock = block.Solo(j, i)
+                line.append(newBlock)
         else:
             for j in range(width):
-                newBlock = block.Classic(j, i,randint(1,4), 1)
+                newBlock = block.Unbreakable(j, i)
                 line.append(newBlock)
+
 
         level.append(line)
 
