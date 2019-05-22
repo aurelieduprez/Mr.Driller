@@ -1,18 +1,24 @@
-from os import path
 import pygame
+from os import path
 from level import level
 
 
 class Character:        # Important : directions list : Up = 1; Right = 2; Down = 3; Left = 4
     """Character class"""
 
-    def __init__(self, posX, posY, currentBotLine,Lives):
-        self.__Lives = Lives
+    def __init__(self, posX, posY, currentBotLine, lives):
+
+        # Position
         self.__posX = posX
         self.__posY = posY
         self.__blocksFallen = 0
         self.__climb = 0
+
+        # Stats
         self.__oxygen = 100
+        self.__lives = lives
+
+        # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
 
@@ -107,12 +113,12 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             return self.__blocksFallen
 
     def revive(self, surface):
-        if self.__Lives == 0:
+        if self.__lives == 0:
             print("dead")   # End
         else:
             print("being revived")
             # Sets 100% oxygen
-            self.__Lives -= 1
+            self.__lives -= 1
             for i in range(-2, 1):
                 if (self.__posX + 1) != 7:
                     if level[self.__posY + i][self.__posX + 1].hpAccess() != 0:

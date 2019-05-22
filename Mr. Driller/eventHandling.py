@@ -1,5 +1,3 @@
-from character import *
-from level import *
 from pygame.locals import *
 
 

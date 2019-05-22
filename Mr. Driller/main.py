@@ -1,3 +1,6 @@
+import pygame
+from character import *
+from level import *
 from os import name
 from eventHandling import *
 
@@ -23,7 +26,7 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(4, 4, currentBotLine,Lives = 99)    # Creates the player instance
+    player = Character(4, 4, currentBotLine, lives = 99)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1

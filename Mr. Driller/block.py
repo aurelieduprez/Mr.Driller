@@ -6,15 +6,22 @@ class Block:
     """General block mother-class"""
 
     def __init__(self, posX, posY, forceHP, chain_reaction, colors=0):
+
+        # Position
         self._posX = posX
         self._posY = posY
         self._currOffset = 0
+
+        # Stats
+        self._hp = forceHP
+        self._blockType = "neutral"
+
+        # Chain Reaction
         if(chain_reaction):
             self._colors = colors
-
-        self._hp = forceHP
         self._chain_reaction = chain_reaction
-        self._blockType = "neutral"
+
+        # Textures
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg.png")
 
@@ -29,13 +36,13 @@ class Block:
     def typeAccess(self):
         return self._blockType
 
+    # Logical Method
+
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
 
-    # Logical Method
-
-    def hit(self, surface, level, nochain=0, Instakill=0):
-        if Instakill:
+    def hit(self, surface, level, nochain=0, instakill=0):
+        if instakill:
             self._hp = 0
         else:
             self._hp -= 1
@@ -86,7 +93,7 @@ class Classic(Block):
     """Classic block daughter-class"""
 
     def __init__(self, posX, posY, colour, forceHP):
-        colors=colour
+        colors = colour
         Block.__init__(self, posX, posY, forceHP, 1, colors)
         self.__colour = colour
         self._texturePath = path.join("Assets", "Textures", "Blocks", str(colour), "b_s.png")
@@ -125,7 +132,7 @@ class Pill(Block):
     """Oxygen Pill"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY,1,0)
+        Block.__init__(self, posX, posY, 1, 0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
         self._blockType = "pill"
 
@@ -133,7 +140,7 @@ class End(Block):
     """Oxygen Pill"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY,1,0)
+        Block.__init__(self, posX, posY, 1, 0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "End", "b_s.png")
         self._blockType = "end"
 
