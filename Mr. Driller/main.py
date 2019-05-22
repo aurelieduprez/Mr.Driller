@@ -1,4 +1,4 @@
-import pygame, sys
+from os import name
 from eventHandling import *
 
 # Font and Sound verification
@@ -18,8 +18,6 @@ def game(x, y):
     surface = pygame.display.set_mode((x, y))
     pygame.display.set_caption('Mr. Driller')
 
-
-
     # Initializing useful variables
     currentBotLine = 8
     currentOffset = 0
@@ -31,9 +29,9 @@ def game(x, y):
     nbFrame = 1
 
     # Initializing controls
-    if 'nt' in os.name:
+    if 'nt' in name:
         movKeys = [K_w, K_d, K_a]
-    elif 'ix' in os.name:
+    elif 'ix' in name:
         movKeys = [K_z, K_d, K_q]
 
     arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
@@ -89,11 +87,10 @@ def game(x, y):
             render(surface, level, currentOffset)
             player.display(surface)
 
-        if nbFrame%30 == 1:
+        if nbFrame % 30 == 1:
             player.updateOxygen(1)
 
         nbFrame = nbFrame+1
-
 
         pygame.display.update()
         fpsClock.tick(FPS)

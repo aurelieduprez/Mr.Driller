@@ -1,6 +1,6 @@
 from os import path
 import pygame
-from level import render,level
+from level import level
 
 
 class Character:        # Important : directions list : Up = 1; Right = 2; Down = 3; Left = 4
@@ -20,24 +20,6 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
-
-    def Revive(self,surface):
-        if self.__Lives == 0:
-            print("dead") #à replacer par un endscreen
-        else:
-            print('being revive')
-            #add 100% oxygen
-            self.__Lives -=1
-            for i in range(-2,1):
-                if (self.__posX + 1)!= 7:
-                    if(level[self.__posY+i][self.__posX + 1].hpAccess() != 0):
-                        level[self.__posY+i][self.__posX + 1].hit(surface,1,1)
-                if (self.__posX - 1)!= -1:
-                    if(level[self.__posY+i][self.__posX - 1].hpAccess() != 0):
-                        level[self.__posY+i][self.__posX - 1].hit(surface,1,1)
-                if (level[self.__posY + i][self.__posX].hpAccess() != 0):
-                    level[self.__posY + i][self.__posX].hit(surface,1,1)
-
 
     def climbAcc(self):
         return self.__climb
@@ -97,21 +79,21 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         if direction == 2 \
                 and self.__posX < len(level[0])-1 \
                 and level[self.__posY][self. __posX+1].hpAccess() > 0:
-            level[self.__posY][self. __posX+1].hit(surface)
+            level[self.__posY][self. __posX+1].hit(surface, level)
 
         # Down
 
         elif direction == 3 \
                 and self.__posY < currentBotLine \
                 and level[self.__posY+1][self. __posX].hpAccess() > 0:
-            level[self.__posY+1][self. __posX].hit(surface)
+            level[self.__posY+1][self. __posX].hit(surface, level)
 
         # Left
 
         elif direction == 4 \
                 and self.__posX > 0 \
                 and level[self.__posY][self. __posX-1].hpAccess() > 0:
-            level[self.__posY][self. __posX-1].hit(surface)
+            level[self.__posY][self. __posX-1].hit(surface, level)
 
     def fall(self, surface, level):
 
@@ -124,13 +106,31 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__posY += 1
             return self.__blocksFallen
 
-    def updateOxygen(self,type): #type 1 : perd 1 oxygen par seconde, 2 : -20 oxygen (bloc unbreakable), 3 : + X oxygen (capsule)
-        if type == 1 :
+    def revive(self, surface):
+        if self.__Lives == 0:
+            print("dead")   # End
+        else:
+            print("being revived")
+            # Sets 100% oxygen
+            self.__Lives -= 1
+            for i in range(-2, 1):
+                if (self.__posX + 1) != 7:
+                    if level[self.__posY + i][self.__posX + 1].hpAccess() != 0:
+                        level[self.__posY+i][self.__posX + 1].hit(surface, level, 1, 1)
+                if (self.__posX - 1) != -1:
+                    if level[self.__posY+i][self.__posX - 1].hpAccess() != 0:
+                        level[self.__posY+i][self.__posX - 1].hit(surface, level, 1, 1)
+                if level[self.__posY + i][self.__posX].hpAccess() != 0:
+                    level[self.__posY + i][self.__posX].hit(surface, level, 1, 1)
+
+    def updateOxygen(self, type):    # 1 : -1 oxygen/sec, 2 : -20 oxygen (bloc unbreakable), 3 : + X oxygen (pill)
+        if type == 1:
             self.__oxygen = self.__oxygen - 1
-        elif type == 2 :
+        elif type == 2:
             self.__oxygen = self.__oxygen - 20
         elif type == 3:
             self.__oxygen = self.__oxygen + 50
+
     # Graphical Methods
 
     def display(self, surface):

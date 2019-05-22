@@ -2,7 +2,6 @@ from os import path
 import pygame
 
 
-
 class Block:
     """General block mother-class"""
 
@@ -35,9 +34,39 @@ class Block:
 
     # Logical Method
 
-    def hit(self, surface):
+    def hit(self, surface, level, nochain=0, Instakill=0):
+        if Instakill:
+            self._hp = 0
+        else:
+            self._hp -= 1
+        print("-1hp")
 
-        self._hp -= 1
+        # Chain reaction
+        if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic":
+
+            if level[self._posY + 1][self._posX].hpAccess() != 0 \
+                    and level[self._posY + 1][self._posX].typeAccess() == "classic":
+
+                if level[self._posY + 1][self._posX].ColorAccess() == self._colors:
+                    level[self._posY + 1][self._posX].hit(surface, level)
+
+            if level[self._posY - 1][self._posX].hpAccess() != 0 \
+                    and level[self._posY - 1][self._posX].typeAccess() == "classic":
+
+                if level[self._posY - 1][self._posX].ColorAccess() == self._colors:
+                    level[self._posY - 1][self._posX].hit(surface, level)
+
+            if self._posX < len(level[0]) - 1 and self._posX < len(level[0]) - 1 and level[self._posY][
+                self._posX + 1].hpAccess() != 0 \
+                    and level[self._posY][self._posX + 1].typeAccess() == "classic":
+                if level[self._posY][self._posX + 1].ColorAccess() == self._colors:
+                    level[self._posY][self._posX + 1].hit(surface, level)
+
+            if level[self._posY][self._posX - 1].hpAccess() != 0 and self._posX > 0 \
+                    and level[self._posY][self._posX - 1].typeAccess() == "classic":
+                if level[self._posY][self._posX - 1].ColorAccess() == self._colors:
+                    level[self._posY][self._posX - 1].hit(surface, level)
+
         self.display(surface, 0, self._currOffset)
 
     # Graphical Method
@@ -51,37 +80,6 @@ class Block:
         elif self._hp > 0:
             image = pygame.image.load(self._texturePath)
             surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
-
-    def hit(self, surface,nochain = 0,Instakill = 0):
-        if Instakill:
-            self._hp = 0
-        else:
-            self._hp -= 1
-        print("-1hp")
-        if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic" :
-            from level import level
-
-            if(level[self._posY+1][self._posX].hpAccess() != 0)\
-                    and level[self._posY+1][self._posX].typeAccess() == "classic" :
-                if(level[self._posY+1][self._posX].ColorAccess() == self._colors):
-                    level[self._posY+1][self._posX].hit(surface)
-
-            if (level[self._posY - 1][self._posX].hpAccess() != 0)\
-                    and level[self._posY-1][self._posX].typeAccess() == "classic" :
-                if (level[self._posY - 1][self._posX].ColorAccess() == self._colors):
-                    level[self._posY - 1][self._posX].hit(surface)
-
-            if(self._posX < len(level[0])-1 and self._posX < len(level[0])-1 and level[self._posY][self._posX+1].hpAccess() != 0)\
-                    and level[self._posY][self._posX+1].typeAccess() == "classic" :
-                if (level[self._posY][self._posX+1].ColorAccess() == self._colors):
-                        level[self._posY][self._posX+1].hit(surface)
-
-            if (level[self._posY][self._posX-1].hpAccess() != 0) and self._posX > 0\
-                    and level[self._posY][self._posX-1].typeAccess() == "classic" :
-                if (level[self._posY][self._posX-1].ColorAccess() == self._colors):
-                    level[self._posY][self._posX-1].hit(surface)
-
-        self.display(surface, 0, self._currOffset)
 
 
 class Classic(Block):

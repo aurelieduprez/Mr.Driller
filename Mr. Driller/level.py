@@ -1,12 +1,10 @@
-import os
-import pygame
 from random import randint
 import block
 
 level = []
-def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y][X]
 
-    global level
+
+def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y][X]
 
     for i in range(lines+5):
         line = []
@@ -18,13 +16,12 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
 
         elif i in range(lines):
             for j in range(width):
-                newBlock = block.Classic(j, i, randint(1,4), 1)
+                newBlock = block.Classic(j, i, randint(1, colors), 1)
                 line.append(newBlock)
         else:
             for j in range(width):
                 newBlock = block.End(j, i)
                 line.append(newBlock)
-
 
         level.append(line)
 
