@@ -21,9 +21,12 @@ def game(x, y):
     # Initializing useful variables
     currentBotLine = 8
     currentOffset = 0
+    currentClimb = 0
+    backDown = False
+
     player = Character(4, 4, currentBotLine)    # Creates the player instance
     level = generateLvl(4, 150, 7)
-    print(len(level))
+    # print(len(level))
 
     # Initializing controls
     if 'nt' in os.name:
@@ -41,21 +44,33 @@ def game(x, y):
     inProgress = True
     while inProgress:
         for event in pygame.event.get():
-            """render(surface, level, currentBotLine, currentOffset)
-            player.display(surface)"""
 
-            if event.type == QUIT:
+            if event.type == QUIT:      # Quitting the game
+
                 inProgress = False
 
-            if event.type == KEYDOWN:
+            if event.type == KEYDOWN:       # Event handling
+
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
                     breaking(event, surface, player, level, currentBotLine)
                 else:
-                    keydownHandle(event, currentBotLine, currentOffset, surface, level)
+                    keydownHandle(event)
 
-        print(currentOffset)
+        # Cleanup after a climb
+
+        if backDown and player.climbAcc() < currentClimb:
+            if currentClimb == 0:
+                backDown = False
+            player.backDownCleanup(surface)
+
+        currentClimb = player.climbAcc()
+
+        if player.climbAcc() > 0:
+            backDown = True
+
+        # Updating blocks when falling
 
         player.fall(surface, level)
 
@@ -69,6 +84,7 @@ def game(x, y):
 
             render(surface, level, currentOffset)
             player.display(surface)
+
         pygame.display.update()
         fpsClock.tick(FPS)
 

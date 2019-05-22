@@ -1,7 +1,6 @@
 from os import path
 import pygame
 
-
 class Block:
     """General block mother-class"""
 
@@ -15,11 +14,22 @@ class Block:
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg.png")
 
+    # Accessors
+
     def hpAccess(self):
         return self._hp
 
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
+
+    # Logical Method
+
+    def hit(self, surface):
+
+        self._hp -= 1
+        self.display(surface, 0, self._currOffset)
+
+    # Graphical Method
 
     def display(self, surface, forceBG=0, currentOffset=0):
 
@@ -30,12 +40,6 @@ class Block:
         elif self._hp > 0:
             image = pygame.image.load(self._texturePath)
             surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
-
-    def hit(self, surface):
-
-        self._hp -= 1
-        print("-1hp")
-        self.display(surface, 0, self._currOffset)
 
 
 class Classic(Block):
