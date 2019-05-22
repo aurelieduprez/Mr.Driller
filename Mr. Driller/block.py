@@ -40,20 +40,26 @@ class Block:
 
         self._hp -= 1
         print("-1hp")
+
         if(self._chain_reaction == 1):
             from level import level
+
             if(level[self._posY+1][self._posX].hpAccess() != 0):
                 if(level[self._posY+1][self._posX].ColorAccess() == self._colors):
                     level[self._posY+1][self._posX].hit(surface)
+
             if (level[self._posY - 1][self._posX].hpAccess() != 0):
                 if (level[self._posY - 1][self._posX].ColorAccess() == self._colors):
                     level[self._posY - 1][self._posX].hit(surface)
+
             if(self._posX < len(level[0])-1 and self._posX < len(level[0])-1 and level[self._posY][self._posX+1].hpAccess() != 0):
                 if (level[self._posY][self._posX+1].ColorAccess() == self._colors):
                         level[self._posY][self._posX+1].hit(surface)
-            if (level[self._posY][self._posX-1].hpAccess() != 0):
+
+            if (level[self._posY][self._posX-1].hpAccess() != 0) and self._posX > 0:
                 if (level[self._posY][self._posX-1].ColorAccess() == self._colors):
                     level[self._posY][self._posX-1].hit(surface)
+
         self.display(surface, 0, self._currOffset)
 
 

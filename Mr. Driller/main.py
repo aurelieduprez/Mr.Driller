@@ -18,12 +18,15 @@ def game(x, y):
     surface = pygame.display.set_mode((x, y))
     pygame.display.set_caption('Mr. Driller')
 
+
+
     # Initializing useful variables
     currentBotLine = 8
     currentOffset = 0
     player = Character(4, 4, currentBotLine)    # Creates the player instance
     level = generateLvl(4, 150, 7)
     print(len(level))
+    nbFrame = 1
 
     # Initializing controls
     if 'nt' in os.name:
@@ -69,6 +72,14 @@ def game(x, y):
 
             render(surface, level, currentOffset)
             player.display(surface)
+
+        if nbFrame%30 == 1:
+            player.updateOxygen(1)
+
+        nbFrame = nbFrame+1
+        print ("AAAAAAAAAAAAa compteur frame :",nbFrame, player._Character__oxygen)
+
+
         pygame.display.update()
         fpsClock.tick(FPS)
 
