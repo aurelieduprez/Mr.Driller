@@ -47,22 +47,26 @@ class Block:
         else:
             self._hp -= 1
         print("-1hp")
-        if(self._chain_reaction == 1 and nochain == 0):
+        if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic" :
             from level import level
 
-            if(level[self._posY+1][self._posX].hpAccess() != 0):
+            if(level[self._posY+1][self._posX].hpAccess() != 0)\
+                    and level[self._posY+1][self._posX].typeAccess() == "classic" :
                 if(level[self._posY+1][self._posX].ColorAccess() == self._colors):
                     level[self._posY+1][self._posX].hit(surface)
 
-            if (level[self._posY - 1][self._posX].hpAccess() != 0):
+            if (level[self._posY - 1][self._posX].hpAccess() != 0)\
+                    and level[self._posY-1][self._posX].typeAccess() == "classic" :
                 if (level[self._posY - 1][self._posX].ColorAccess() == self._colors):
                     level[self._posY - 1][self._posX].hit(surface)
 
-            if(self._posX < len(level[0])-1 and self._posX < len(level[0])-1 and level[self._posY][self._posX+1].hpAccess() != 0):
+            if(self._posX < len(level[0])-1 and self._posX < len(level[0])-1 and level[self._posY][self._posX+1].hpAccess() != 0)\
+                    and level[self._posY][self._posX+1].typeAccess() == "classic" :
                 if (level[self._posY][self._posX+1].ColorAccess() == self._colors):
                         level[self._posY][self._posX+1].hit(surface)
 
-            if (level[self._posY][self._posX-1].hpAccess() != 0) and self._posX > 0:
+            if (level[self._posY][self._posX-1].hpAccess() != 0) and self._posX > 0\
+                    and level[self._posY][self._posX-1].typeAccess() == "classic" :
                 if (level[self._posY][self._posX-1].ColorAccess() == self._colors):
                     level[self._posY][self._posX-1].hit(surface)
 
