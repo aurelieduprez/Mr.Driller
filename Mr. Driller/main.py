@@ -26,7 +26,7 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(4, 4, currentBotLine, lives=99)    # Creates the player instance
+    player = Character(4, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1

@@ -6,7 +6,7 @@ from level import level
 class Character:        # Important : directions list : Up = 1; Right = 2; Down = 3; Left = 4
     """Character class"""
 
-    def __init__(self, posX, posY, currentBotLine, lives):
+    def __init__(self, posX, posY, currentBotLine, surface, lives):
 
         # Position
         self.__posX = posX
@@ -22,7 +22,8 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
 
-    # Accessors
+        # Accessors
+        self.__surface = surface
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
@@ -120,7 +121,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             print("dead")   # End
         else:
             print("being revived")
-            # Sets 100% oxygen
+            self.__oxygen = 100
             self.__lives -= 1
             for i in range(-2, 1):
                 if (self.__posX + 1) != 7:
@@ -132,13 +133,19 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 if level[self.__posY + i][self.__posX].hpAccess() != 0:
                     level[self.__posY + i][self.__posX].hit(surface, level, self, 1, 1)
 
-    def updateOxygen(self, type):    # 1 : -1 oxygen/sec, 2 : -20 oxygen (bloc unbreakable), 3 : + X oxygen (pill)
+    def updateOxygen(self, type):    # 1 : -1 oxygen/sec, 2 : -20 oxygen (bloc unbreakable), 3 : + 30 oxygen (pill)
         if type == 1:
             self.__oxygen -= 1
         elif type == 2:
             self.__oxygen -= 20
         elif type == 3:
-            self.__oxygen += 30
+            if self.__oxygen <= 70 :
+                self.__oxygen += 30
+            else :
+                self.__oxygen = 100
+
+        if self.__oxygen <= 0 :
+            self.revive(self.__surface)
 
     # Graphical Methods
 
