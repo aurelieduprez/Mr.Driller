@@ -41,11 +41,17 @@ class Block:
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
 
-    def hit(self, surface, level, nochain=0, instakill=0):
+    def hit(self, surface, level, player, nochain=0, instakill=0):
         if instakill:
             self._hp = 0
         else:
             self._hp -= 1
+
+        if self._blockType == "unbreakable" and self._hp == 0:
+            player.updateOxygen(2)  # Ici il faut changer la fonction pour qu'ona rrive à la déclencher
+
+        elif self._blockType == "pill" and self._hp == 0:
+            player.updateOxygen(3)
 
         # Chain reaction
         if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic":
@@ -54,24 +60,24 @@ class Block:
                     and level[self._posY + 1][self._posX].typeAccess() == "classic":
 
                 if level[self._posY + 1][self._posX].ColorAccess() == self._colors:
-                    level[self._posY + 1][self._posX].hit(surface, level)
+                    level[self._posY + 1][self._posX].hit(surface, level, player)
 
             if level[self._posY - 1][self._posX].hpAccess() != 0 \
                     and level[self._posY - 1][self._posX].typeAccess() == "classic":
 
                 if level[self._posY - 1][self._posX].ColorAccess() == self._colors:
-                    level[self._posY - 1][self._posX].hit(surface, level)
+                    level[self._posY - 1][self._posX].hit(surface, level, player)
 
             if self._posX < len(level[0]) - 1 and self._posX < len(level[0]) - 1 and level[self._posY][
                 self._posX + 1].hpAccess() != 0 \
                     and level[self._posY][self._posX + 1].typeAccess() == "classic":
                 if level[self._posY][self._posX + 1].ColorAccess() == self._colors:
-                    level[self._posY][self._posX + 1].hit(surface, level)
+                    level[self._posY][self._posX + 1].hit(surface, level, player)
 
             if level[self._posY][self._posX - 1].hpAccess() != 0 and self._posX > 0 \
                     and level[self._posY][self._posX - 1].typeAccess() == "classic":
                 if level[self._posY][self._posX - 1].ColorAccess() == self._colors:
-                    level[self._posY][self._posX - 1].hit(surface, level)
+                    level[self._posY][self._posX - 1].hit(surface, level, player)
 
         self.display(surface, 0, self._currOffset)
 
@@ -135,7 +141,7 @@ class Pill(Block):
         self._blockType = "pill"
 
 class End(Block):
-    """Oxygen Pill"""
+    """End block"""
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 1, 0)

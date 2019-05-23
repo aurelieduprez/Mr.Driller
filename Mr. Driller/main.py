@@ -26,7 +26,7 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(4, 4, currentBotLine, lives = 99)    # Creates the player instance
+    player = Character(4, 4, currentBotLine, lives=99)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1
@@ -92,8 +92,9 @@ def game(x, y):
 
         if nbFrame % 30 == 1:
             player.updateOxygen(1)
+            print("oxygen =", player.oxyAcc())
 
-        nbFrame = nbFrame+1
+        nbFrame=nbFrame+1
 
         pygame.display.update()
         fpsClock.tick(FPS)

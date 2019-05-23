@@ -30,6 +30,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def climbAcc(self):
         return self.__climb
 
+    def oxyAcc(self):
+        return self.__oxygen
+
     # Logical Methods
 
     def move(self, surface, direction, level):
@@ -85,21 +88,21 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         if direction == 2 \
                 and self.__posX < len(level[0])-1 \
                 and level[self.__posY][self. __posX+1].hpAccess() > 0:
-            level[self.__posY][self. __posX+1].hit(surface, level)
+            level[self.__posY][self. __posX+1].hit(surface, level, self)
 
         # Down
 
         elif direction == 3 \
                 and self.__posY < currentBotLine \
                 and level[self.__posY+1][self. __posX].hpAccess() > 0:
-            level[self.__posY+1][self. __posX].hit(surface, level)
+            level[self.__posY+1][self. __posX].hit(surface, level, self)
 
         # Left
 
         elif direction == 4 \
                 and self.__posX > 0 \
                 and level[self.__posY][self. __posX-1].hpAccess() > 0:
-            level[self.__posY][self. __posX-1].hit(surface, level)
+            level[self.__posY][self. __posX-1].hit(surface, level, self)
 
     def fall(self, surface, level):
 
@@ -122,20 +125,20 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             for i in range(-2, 1):
                 if (self.__posX + 1) != 7:
                     if level[self.__posY + i][self.__posX + 1].hpAccess() != 0:
-                        level[self.__posY+i][self.__posX + 1].hit(surface, level, 1, 1)
+                        level[self.__posY+i][self.__posX + 1].hit(surface, level, self, 1, 1)
                 if (self.__posX - 1) != -1:
                     if level[self.__posY+i][self.__posX - 1].hpAccess() != 0:
-                        level[self.__posY+i][self.__posX - 1].hit(surface, level, 1, 1)
+                        level[self.__posY+i][self.__posX - 1].hit(surface, level, self, 1, 1)
                 if level[self.__posY + i][self.__posX].hpAccess() != 0:
-                    level[self.__posY + i][self.__posX].hit(surface, level, 1, 1)
+                    level[self.__posY + i][self.__posX].hit(surface, level, self, 1, 1)
 
     def updateOxygen(self, type):    # 1 : -1 oxygen/sec, 2 : -20 oxygen (bloc unbreakable), 3 : + X oxygen (pill)
         if type == 1:
-            self.__oxygen = self.__oxygen - 1
+            self.__oxygen -= 1
         elif type == 2:
-            self.__oxygen = self.__oxygen - 20
+            self.__oxygen -= 20
         elif type == 3:
-            self.__oxygen = self.__oxygen + 50
+            self.__oxygen += 30
 
     # Graphical Methods
 
