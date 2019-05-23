@@ -53,6 +53,10 @@ class Block:
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3)
 
+        elif self._blockType == "end":
+            print("fin de level")
+
+
         # Chain reaction
         if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic":
 
