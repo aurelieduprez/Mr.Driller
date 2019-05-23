@@ -91,11 +91,10 @@ class Block:
 class Classic(Block):
     """Classic block daughter-class"""
 
-    def __init__(self, posX, posY, colour, forceHP):
-        colors = colour
+    def __init__(self, posX, posY, colors, forceHP):
         Block.__init__(self, posX, posY, forceHP, 1, colors)
-        self.__colour = colour
-        self._texturePath = path.join("Assets", "Textures", "Blocks", str(colour), "b_s.png")
+        self.__colors = colors
+        self._texturePath = path.join("Assets", "Textures", "Blocks", str(colors), "b_s.png")
         self._blockType = "classic"
 
 
