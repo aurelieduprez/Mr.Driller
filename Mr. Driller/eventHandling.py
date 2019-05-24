@@ -1,9 +1,7 @@
-from character import *
-from level import *
 from pygame.locals import *
 
 
-def keydownHandle(event, currentBotLine, currentOffset, surface, level):
+def keydownHandle(event):
 
     print(event.key)
 

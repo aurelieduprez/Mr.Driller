@@ -1,12 +1,10 @@
-import os
-import pygame
 from random import randint
 import block
 
+level = []
+
 
 def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y][X]
-
-    level = []
 
     for i in range(lines+5):
         line = []
@@ -16,9 +14,13 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
                 newBlock = block.Classic(j, i, 1, 0)
                 line.append(newBlock)
 
+        elif i in range(lines):
+            for j in range(width):
+                newBlock = block.Classic(j, i, randint(1, colors), 1)
+                line.append(newBlock)
         else:
             for j in range(width):
-                newBlock = block.Classic(j, i,randint(1,4), 1)
+                newBlock = block.End(j, i)
                 line.append(newBlock)
 
         level.append(line)
@@ -26,17 +28,11 @@ def generateLvl(colors, lines, width):    # This returns a 2D array of blocks [Y
     return level
 
 
-def pygRenderNxtLine(surface, currentLine, level):
-
-    for element in level[currentLine]:
-        element.display(surface)
-
-
-def render(surface, level, currBotline, currOffset):
+def render(surface, level, currOffset):
 
     # init
     if currOffset == 0:
-        for i in range(currOffset, currBotline+1, 1):
+        for i in range(currOffset, currOffset + 9, 1):
             for element in level[i]:
                 element.display(surface)
 
