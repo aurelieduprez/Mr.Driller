@@ -1,5 +1,6 @@
 from os import path
 import pygame
+import ui
 
 
 class Block:
@@ -44,14 +45,19 @@ class Block:
     def hit(self, surface, level, player, nochain=0, instakill=0):
         if instakill:
             self._hp = 0
+
         else:
             self._hp -= 1
 
         if self._blockType == "unbreakable" and self._hp == 0:
-            player.updateOxygen(2)  # Ici il faut changer la fonction pour qu'ona rrive à la déclencher
+            player.updateOxygen(2)  # Ici il faut changer la fonction pour qu'on arrive à la déclencher
+            ui._score += 10
+            print("score:",self._score)
 
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3)
+            ui._score += 100
+            print("score:", self._score)
 
         # Chain reaction
         if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic":
