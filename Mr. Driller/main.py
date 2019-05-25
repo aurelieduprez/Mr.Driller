@@ -39,6 +39,12 @@ def game(x, y):
 
     arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
 
+    # Update Connected textures
+
+    for line in level:
+        for element in line:
+            element.updCoText(level)
+
     # Rendering level and displaying player
     render(surface, level, currentOffset)
     player.display(surface)
