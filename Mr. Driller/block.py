@@ -48,7 +48,7 @@ class Block:
             self._hp -= 1
 
         if self._blockType == "unbreakable" and self._hp == 0:
-            player.updateOxygen(2)  # Ici il faut changer la fonction pour qu'ona rrive à la déclencher
+            player.updateOxygen(2)
 
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3)
