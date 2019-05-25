@@ -2,7 +2,6 @@ import pygame
 from character import *
 from level import *
 from os import name
-from ui import Ui
 from eventHandling import *
 
 # Font and Sound verification
@@ -27,7 +26,6 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    UserInterface = Ui()
     player = Character(4, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))

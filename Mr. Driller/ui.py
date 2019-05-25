@@ -1,20 +1,14 @@
 
-import pygame
-from character import *
-from level import *
-from os import name
-from eventHandling import *
 
 class Ui:
+    score = 0
+    def __init__(self):
+        self._score = 0
 
-
-
-    def __init__(self, score=0):
-
-        self._score = score
-
-    def AddScore(self,x):
+    def AddScore(self, x):
         self._score += x
-        print("score"+str(self._score))
+        print("x:", x)
+        print("score: "+ str(self._score))
+        #return(self._score)
 
 
