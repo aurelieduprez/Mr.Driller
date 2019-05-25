@@ -59,7 +59,22 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         elif direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
-                and level[self.__posY - 1][self.__posX + 1].hpAccess() == 0:
+                and level[self.__posY - 1][self.__posX + 1].hpAccess() == 0 :
+
+            level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
+            self.__posX += 1
+            self.__posY -= 1
+            self.__climb += 1
+            self.display(surface)
+
+        #Right Climb Pill
+
+        elif direction == 2 and self.__posX < len(level[0]) - 1 \
+                and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
+                and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
+                and level[self.__posY - 1][self.__posX + 1].typeAccess() == "pill" :
+
+            level[self.__posY - 1][self.__posX + 1].hit(surface, level, self)
 
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX += 1
@@ -99,6 +114,22 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__climb += 1
             self.display(surface)
 
+        #Left Climb Pill
+
+        elif direction == 3 and self.__posX > 0 \
+                and level[self.__posY][self.__posX - 1].hpAccess() != 0 \
+                and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
+                and level[self.__posY - 1][self.__posX - 1].typeAccess() == "pill" :
+
+            level[self.__posY - 1][self.__posX - 1].hit(surface, level, self)
+
+            level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
+            self.__posX -= 1
+            self.__posY -= 1
+            self.__climb += 1
+            self.display(surface)
+
+
     def breakBlock(self, surface, direction, level, currentBotLine):
 
         # Right
@@ -129,15 +160,21 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         if self.__posY < len(level)-2 and level[self.__posY+1][self.__posX].hpAccess() == 0\
                 or level[self.__posY + 1][self.__posX].typeAccess() == "pill":
+
             if self.__climb == 0:
                 if level[self.__posY + 1][self.__posX].typeAccess() == "pill":
                     level[self.__posY + 1][self.__posX].hit(surface, level, self)
 
                 self.__blocksFallen += 1
                 self.__posY += 1
+
             else:
+                if level[self.__posY + 1][self.__posX].typeAccess() == "pill":
+                    level[self.__posY + 1][self.__posX].hit(surface, level, self)
+
                 self.__climb -= 1
                 self.__posY += 1
+
             return self.__blocksFallen
 
     def revive(self, surface):
