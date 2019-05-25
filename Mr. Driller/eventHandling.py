@@ -9,7 +9,7 @@ def keydownHandle(event):
 def movementHandle(event, surface, player, level, movKeys):
 
     if event.key == movKeys[2]:
-        player.move(surface, 3, level)
+        player.move(surface, 4, level)
     elif event.key == movKeys[1]:
         player.move(surface, 2, level)
     elif event.key == movKeys[0]:

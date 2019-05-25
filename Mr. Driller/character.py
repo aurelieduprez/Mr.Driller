@@ -40,7 +40,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Right
 
-        if direction == 2 and self.__posX < len(level[0]) - 1 and self.__posX < len(level[0]) - 1 \
+        if direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() == 0 :
 
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
@@ -56,7 +56,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Right Climb
 
-        elif direction == 2 and self.__posX < len(level[0]) - 1 and self.__posX < len(level[0]) - 1 \
+        elif direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
                 and level[self.__posY - 1][self.__posX + 1].hpAccess() == 0:
@@ -69,7 +69,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Left
 
-        elif direction == 3 and self.__posX > 0 \
+        elif direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() == 0:
 
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
@@ -79,7 +79,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
 
         # Left Pill
-        elif direction == 3 and self.__posX > 0 - 1 and level[self.__posY][self.__posX - 1].typeAccess() == "pill" :
+        elif direction == 4 and self.__posX > 0 - 1 and level[self.__posY][self.__posX - 1].typeAccess() == "pill" :
             level[self.__posY][self.__posX - 1].hit(surface, level, self)
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
             self.__posX -= 1
@@ -88,7 +88,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Left Climb
 
-        elif direction == 3 and self.__posX > 0 \
+        elif direction == 4 and self.__posX > 0 \
             and level[self.__posY][self.__posX - 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
                 and level[self.__posY - 1][self.__posX - 1].hpAccess() == 0:
