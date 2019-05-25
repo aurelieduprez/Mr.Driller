@@ -1,6 +1,7 @@
 import pygame
 from os import path
 from level import level
+from time import sleep
 
 
 class Character:        # Important : directions list : Up = 1; Right = 2; Down = 3; Left = 4
@@ -20,7 +21,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
-        self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
+        self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
 
         # Accessors
         self.__surface = surface
