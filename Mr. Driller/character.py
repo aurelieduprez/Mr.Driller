@@ -40,7 +40,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Right
 
-        if direction == 2 and self.__posX < len(level[0]) - 1 and self.__posX < len(level[0]) - 1 \
+        if direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() == 0 :
 
             level[self.__posY][self.__posX].display(surface, 0, self.__blocksFallen)
@@ -56,7 +56,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Right Climb
 
-        elif direction == 2 and self.__posX < len(level[0]) - 1 and self.__posX < len(level[0]) - 1 \
+        elif direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
                 and level[self.__posY - 1][self.__posX + 1].hpAccess() == 0:
