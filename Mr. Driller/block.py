@@ -1,3 +1,4 @@
+from connectCorrect import *
 from os import path
 import pygame
 
@@ -174,7 +175,33 @@ class Block:
                                 botLeft = True
                                 total += 1
 
-        self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", str(total),".png")
+            # Override for BotTop and Left-Right
+
+            # Left-Right
+
+            if 0 < self._posX < len(level[0]) - 1 :
+                if level[self._posY][self._posX - 1].hpAccess() != 0 \
+                        and level[self._posY][self._posX - 1].typeAccess() == "classic" \
+                        and level[self._posY][self._posX + 1].hpAccess() != 0 \
+                        and level[self._posY][self._posX + 1].typeAccess() == "classic":
+
+                    if level[self._posY][self._posX - 1].ColorAccess() == self._colors \
+                            and level[self._posY][self._posX - 1].ColorAccess() == self._colors:
+                        total = 64 + 16
+
+            # Top-Bottom
+            if level[self._posY - 1][self._posX].hpAccess() != 0 \
+                    and level[self._posY - 1][self._posX].typeAccess() == "classic" \
+                    and level[self._posY + 1][self._posX].hpAccess() != 0 \
+                    and level[self._posY + 1][self._posX].typeAccess() == "classic":
+
+                if level[self._posY - 1][self._posX].ColorAccess() == self._colors \
+                        and level[self._posY + 1][self._posX].ColorAccess() == self._colors:
+                    total = 128 + 32
+
+            total = correct(total)
+
+            self._texturePath = path.join("Assets", "Textures", "Blocks", str(self._colors), (str(total) + ".png"))
 
     def display(self, surface, forceBG=0, currentOffset=0):
 
