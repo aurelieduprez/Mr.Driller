@@ -17,13 +17,13 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         # Stats
         self.__oxygen = 100
         self.__lives = lives
+        self.__score = 0
 
         # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "testpink.png")
 
-        # Accessors
-        self.__surface = surface
+    # Accessors
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
@@ -35,6 +35,10 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         return self.__oxygen
 
     # Logical Methods
+
+    def AddScore(self, x):
+        self.__score += x
+        print("score", str(self.__score))
 
     def move(self, surface, direction, level):
 

@@ -2,7 +2,6 @@ from os import path
 import pygame
 
 
-
 class Block:
     """General block mother-class"""
 
@@ -47,19 +46,16 @@ class Block:
             self._hp = 0
 
         else:
-            from main import UserInterface
-            UserInterface.AddScore(self,x=10)
+            player.AddScore(10)
             self._hp -= 1
 
         if self._blockType == "unbreakable" and self._hp == 0:
             player.updateOxygen(2)  # Ici il faut changer la fonction pour qu'on arrive à la déclencher
-            ui.AddScore(10)
-            print("score:",self._score)
+            player.AddScore(10)
 
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3)
-            ui.AddScore(10)
-            print("score:", self._score)
+            player.AddScore(10)
 
         # Chain reaction
         if self._chain_reaction == 1 and nochain == 0 and self._blockType == "classic":
