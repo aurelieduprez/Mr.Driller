@@ -85,7 +85,7 @@ class Block:
                 if level[self._posY][self._posX - 1].ColorAccess() == self._colors:
                     level[self._posY][self._posX - 1].hit(surface, level, player)
 
-        self.display(surface, 0, self._currOffset)
+        self.display(surface, self._currOffset)
 
     # Graphical Methods
 
@@ -110,13 +110,11 @@ class Block:
                         if level[self._posY + 1][self._posX - 1].typeAccess() == "classic":
                             if level[self._posY + 1][self._posX - 1].ColorAccess() == self._colors:
                                 botLeft = True
-                                total += 1
 
                     if self._posX < len(level[0]) - 1 and not botRight:
                         if level[self._posY + 1][self._posX + 1].typeAccess() == "classic":
                             if level[self._posY + 1][self._posX + 1].ColorAccess() == self._colors:
                                 botRight = True
-                                total += 2
 
             # Top
             if level[self._posY - 1][self._posX].hpAccess() != 0 \
@@ -129,13 +127,11 @@ class Block:
                         if level[self._posY - 1][self._posX - 1].typeAccess() == "classic":
                             if level[self._posY - 1][self._posX - 1].ColorAccess() == self._colors:
                                 topLeft = True
-                                total += 4
 
                     if self._posX < len(level[0]) - 1 and not botRight:
                         if level[self._posY - 1][self._posX + 1].typeAccess() == "classic":
                             if level[self._posY - 1][self._posX + 1].ColorAccess() == self._colors:
                                 topRight = True
-                                total += 8
 
             # Right
             if self._posX < len(level[0]) - 1 and level[self._posY][self._posX + 1].hpAccess() != 0 \
@@ -148,13 +144,11 @@ class Block:
                         if level[self._posY - 1][self._posX + 1].typeAccess() == "classic":
                             if level[self._posY - 1][self._posX + 1].ColorAccess() == self._colors:
                                 topRight = True
-                                total += 8
 
                     if not botRight:
                         if level[self._posY + 1][self._posX + 1].typeAccess() == "classic":
                             if level[self._posY + 1][self._posX + 1].ColorAccess() == self._colors:
                                 botRight = True
-                                total += 2
 
             # Left
             if level[self._posY][self._posX - 1].hpAccess() != 0 and self._posX > 0 \
@@ -167,49 +161,80 @@ class Block:
                         if level[self._posY - 1][self._posX - 1].typeAccess() == "classic":
                             if level[self._posY - 1][self._posX - 1].ColorAccess() == self._colors:
                                 topLeft = True
-                                total += 4
+
 
                     if not botLeft:
                         if level[self._posY + 1][self._posX - 1].typeAccess() == "classic":
                             if level[self._posY + 1][self._posX - 1].ColorAccess() == self._colors:
                                 botLeft = True
-                                total += 1
+
+            if botLeft:
+                total += 1
+            if botRight:
+                total += 2
+            if topLeft:
+                total += 4
+            if topRight:
+                total += 8
 
             # Override for BotTop and Left-Right
 
             # Left-Right
 
-            if 0 < self._posX < len(level[0]) - 1 :
-                if level[self._posY][self._posX - 1].hpAccess() != 0 \
-                        and level[self._posY][self._posX - 1].typeAccess() == "classic" \
-                        and level[self._posY][self._posX + 1].hpAccess() != 0 \
-                        and level[self._posY][self._posX + 1].typeAccess() == "classic":
+            if 0 < self._posX < len(level[0]) - 1:
+                valid = True
+                if hasattr(level[self._posY - 1][self._posX], "_colors"):
+                    if level[self._posY - 1][self._posX].ColorAccess() == self._colors:
+                        valid = False
 
-                    if level[self._posY][self._posX - 1].ColorAccess() == self._colors \
-                            and level[self._posY][self._posX - 1].ColorAccess() == self._colors:
-                        total = 64 + 16
+                if hasattr(level[self._posY + 1][self._posX], "_colors"):
+                    print("niet ! ", self._posX, self._posY)
+                    if level[self._posY + 1][self._posX].ColorAccess() == self._colors:
+                        valid = False
+
+                if valid:
+                    if level[self._posY][self._posX - 1].hpAccess() != 0 \
+                            and level[self._posY][self._posX - 1].typeAccess() == "classic" \
+                            and level[self._posY][self._posX + 1].hpAccess() != 0 \
+                            and level[self._posY][self._posX + 1].typeAccess() == "classic":
+
+                        if level[self._posY][self._posX - 1].ColorAccess() == self._colors \
+                                and level[self._posY][self._posX + 1].ColorAccess() == self._colors:
+                            total = 64 + 16
 
             # Top-Bottom
-            if level[self._posY - 1][self._posX].hpAccess() != 0 \
-                    and level[self._posY - 1][self._posX].typeAccess() == "classic" \
-                    and level[self._posY + 1][self._posX].hpAccess() != 0 \
-                    and level[self._posY + 1][self._posX].typeAccess() == "classic":
+            if 0 < self._posX < len(level[0]) - 1:
 
-                if level[self._posY - 1][self._posX].ColorAccess() == self._colors \
-                        and level[self._posY + 1][self._posX].ColorAccess() == self._colors:
-                    total = 128 + 32
+                validTB = True
+                if hasattr(level[self._posY][self._posX-1], "_colors"):
+                    if level[self._posY][self._posX-1].ColorAccess() == self._colors:
+                        validTB = False
+
+                if hasattr(level[self._posY][self._posX+1], "_colors"):
+                    print("niet ! ", self._posX, self._posY)
+                    if level[self._posY][self._posX+1].ColorAccess() == self._colors:
+                        validTB = False
+
+                if validTB:
+                    if level[self._posY - 1][self._posX].hpAccess() != 0 \
+                            and level[self._posY - 1][self._posX].typeAccess() == "classic" \
+                            and level[self._posY + 1][self._posX].hpAccess() != 0 \
+                            and level[self._posY + 1][self._posX].typeAccess() == "classic":
+
+                        if level[self._posY - 1][self._posX].ColorAccess() == self._colors \
+                                and level[self._posY + 1][self._posX].ColorAccess() == self._colors:
+                            total = 128 + 32
 
             total = correct(total)
 
             self._texturePath = path.join("Assets", "Textures", "Blocks", str(self._colors), (str(total) + ".png"))
 
-    def display(self, surface, forceBG=0, currentOffset=0):
+    def display(self, surface, currentOffset=0):
 
-        if self._hp == 0 or forceBG == 1:
-            image = pygame.image.load(self._bg)
-            surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
+        image = pygame.image.load(self._bg)
+        surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
 
-        elif self._hp > 0:
+        if self._hp > 0:
             image = pygame.image.load(self._texturePath)
             surface.blit(image, (self._posX * 64 + 26, (self._posY * 64 + 12) - currentOffset*64))
 
