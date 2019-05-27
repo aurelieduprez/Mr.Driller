@@ -124,7 +124,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         #Left Climb Pill
 
-        elif direction == 3 and self.__posX > 0 \
+        elif direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
                 and level[self.__posY - 1][self.__posX - 1].typeAccess() == "pill" :
