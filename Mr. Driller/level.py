@@ -73,7 +73,7 @@ def render(surface, level, currOffset):
     else:
         for i in range(currOffset, currOffset+9, 1):
             for element in level[i]:
-                element.display(surface, 0, currOffset)
+                element.display(surface, currOffset)
 
 
 
