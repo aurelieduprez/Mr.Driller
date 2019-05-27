@@ -24,7 +24,7 @@ class Block:
 
         # Textures
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
-        self._bg = path.join("Assets", "Textures", "Background", "bg_2.png")
+        self._bg = path.join("Assets", "Textures", "Background", "bg.png")
 
     # Accessors
 
@@ -280,7 +280,7 @@ class Pill(Block):
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 1, 0)
-        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill_2.png")
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
         self._blockType = "pill"
 
 class End(Block):
