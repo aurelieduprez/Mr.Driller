@@ -188,7 +188,6 @@ class Block:
                         valid = False
 
                 if hasattr(level[self._posY + 1][self._posX], "_colors"):
-                    print("niet ! ", self._posX, self._posY)
                     if level[self._posY + 1][self._posX].ColorAccess() == self._colors:
                         valid = False
 
@@ -211,7 +210,6 @@ class Block:
                         validTB = False
 
                 if hasattr(level[self._posY][self._posX+1], "_colors"):
-                    print("niet ! ", self._posX, self._posY)
                     if level[self._posY][self._posX+1].ColorAccess() == self._colors:
                         validTB = False
 
