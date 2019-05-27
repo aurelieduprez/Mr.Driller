@@ -29,6 +29,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__surface = surface
 
          #Animation
+        self.__IsMovingRight = False
+        self.__IsMovingLeft = False
+        self.__IsFalling = False
         self.__IsDrillingRight = False
         self.__IsDrillingLeft = False
         self.__IsDrillingRight_off = False
@@ -49,8 +52,23 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
 
       #Animation
-    def Anim(self,surface):
+    def Anim(self):
         self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png") #idling
+
+        if (self.__IsFalling):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall.png")
+            self.__IsFalling = True
+
+
+        if (self.__IsMovingLeft):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_mov.png")
+            self.__IsMovingLeft = False
+
+
+        if (self.__IsMovingRight):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_mov.png")
+            self.__IsMovingRight = False
+
 
         if (self.__IsDrillingRight_off):
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_off.png")
@@ -82,6 +100,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def move(self, surface, direction, level):
 
         # Right
+
+        if direction == 2:
+            self.__IsMovingRight = True
 
         if direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() == 0:
@@ -130,8 +151,10 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             level[self.__posY][self.__posX - 1].display(surface, self.__blocksFallen)
 
         # Left
+        if direction == 4:
+            self.__IsMovingLeft = True
 
-        elif direction == 4 and self.__posX > 0 \
+        if direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() == 0:
 
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
@@ -223,6 +246,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
                 self.__blocksFallen += 1
                 self.__posY += 1
+                self.__IsFalling = True
 
             else:
                 if level[self.__posY + 1][self.__posX].typeAccess() == "pill":

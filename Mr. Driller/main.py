@@ -99,8 +99,8 @@ def game(x, y):
             player.updateOxygen(1)
             print("oxygen =", player.oxyAcc())
 
-        if nbFrame % 3 == 1:
-            player.Anim(surface)
+        if nbFrame % 5 == 1:
+            player.Anim()
             render(surface, level, currentOffset)
             player.display(surface)
 
