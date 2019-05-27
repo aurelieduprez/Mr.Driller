@@ -20,7 +20,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__lives = lives
 
         # Textures
-        self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
+        self.__bg = path.join("Assets", "Textures", "Background", "bg_2.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
 
         # Accessors
