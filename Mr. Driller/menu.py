@@ -1,7 +1,6 @@
 
 
 #! MAIN POUR LE MENU
-#!newScore = 52
 
 
 
@@ -26,5 +25,3 @@ def refreshScore(newScore):
         line = "#".join(score)    #! join = coller tous les éléments de la liste, avec des "#" entre les éléments
         print(line)
         fichier.write(line)
-
-listScore = refreshScore(newScore)

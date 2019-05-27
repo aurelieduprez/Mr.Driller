@@ -1,6 +1,5 @@
 from os import path
 import pygame
-from ui import Ui
 
 
 class Block:
