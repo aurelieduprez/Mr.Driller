@@ -6,6 +6,7 @@ import pygame
 class Block:
     """General block mother-class"""
 
+
     def __init__(self, posX, posY, forceHP, chain_reaction, colors=0):
 
         # Position
@@ -51,14 +52,19 @@ class Block:
     def hit(self, surface, level, player, nochain=0, instakill=0):
         if instakill:
             self._hp = 0
+
         else:
+            player.AddScore(10)
             self._hp -= 1
 
         if self._blockType == "unbreakable" and self._hp == 0:
             player.updateOxygen(2)
+            player.AddScore(10)
+
 
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3)
+            player.AddScore(10)
 
         elif self._blockType == "end":
             print("fin de level")

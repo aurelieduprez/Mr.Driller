@@ -19,6 +19,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         # Stats
         self.__oxygen = 100
         self.__lives = lives
+        self.__score = 0
 
         # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
@@ -85,11 +86,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     # Logical Methods
 
-    def changeBG(self, bg):
-        if bg == 1:
-            self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
-        elif bg == 2:
-            self.__bg = path.join("Assets", "Textures", "Background", "bg_2.png")
+    def AddScore(self, x):
+        self.__score += x
+        print("score", str(self.__score))
 
     def move(self, surface, direction, level):
 
