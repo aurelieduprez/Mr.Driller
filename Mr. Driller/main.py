@@ -4,7 +4,7 @@ from level import *
 from os import name
 from eventHandling import *
 from menu import *
-
+from block import *
 # Font and Sound verification
 
 if not pygame.font:
@@ -33,6 +33,7 @@ def game(x, y):
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1
+
 
     # Initializing controls
     if 'nt' in name:
@@ -97,9 +98,10 @@ def game(x, y):
                     element.updOffset(currentOffset)
 
 
-        if nbFrame % 30== 1:
+        if nbFrame % 30 == 1:
             player.updateOxygen(1, surface)
             print("oxygen =", player.oxyAcc())
+
 
         if nbFrame % 5 == 1:
             player.Anim()
