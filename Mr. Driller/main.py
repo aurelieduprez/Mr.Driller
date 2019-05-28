@@ -20,6 +20,8 @@ def game(x, y):
     fpsClock = pygame.time.Clock()
     surface = pygame.display.set_mode((x, y))
     pygame.display.set_caption('Mr. Driller')
+    icon = pygame.image.load("Assets\Misc\icon.png")
+    pygame.display.set_icon(icon)
 
     # Initializing useful variables
     currentBotLine = 8
