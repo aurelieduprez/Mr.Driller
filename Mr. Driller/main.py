@@ -48,13 +48,18 @@ def game(x, y):
             element.updCoText(level)
 
     # Rendering level and displaying player
-    render(surface, level, currentOffset)
-    player.display(surface)
+    #render(surface, level, currentOffset)
+    #player.display(surface)
 
     # Main loop
     inProgress = True
     while inProgress:
+        render(surface, level, currentOffset)
+        player.Anim(surface)
+        player.display(surface)
         for event in pygame.event.get():
+            nbFrameAnim = 1
+
 
             if event.type == QUIT:      # Quitting the game
 
@@ -101,13 +106,15 @@ def game(x, y):
             player.updateOxygen(1)
             print("oxygen =", player.oxyAcc())
 
-        if nbFrame % 5 == 1:
-            player.Anim()
-            render(surface, level, currentOffset)
-            player.display(surface)
+        if player.IdlingAcc() == False:
+            nbFrameAnim = nbFrameAnim + 1
 
+            if nbFrameAnim % 25 == 1:
+                player.NeedToIdle(surface)
 
         nbFrame=nbFrame+1
+
+
 
         pygame.display.update()
         fpsClock.tick(FPS)
