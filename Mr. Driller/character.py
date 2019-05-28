@@ -32,7 +32,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__IsDrillingRight_off = False
         self.__IsDrillingLeft_off = False
         self.__IsDrillingDown = False
+        self.__IsReviving = False
         self.__IsIdling = True
+
 
         # Accessors
         self.__surface = surface
@@ -74,6 +76,12 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall_o2.png")
                 self.__IsFalling = False
                 self.__IsIdling = False
+
+        if self.__IsReviving:
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_dead_y.png")
+            self.__IsReviving = False
+            self.__IsIdling = False
+
 
         if self.__IsMovingLeft:
             if (self.__oxygen > 20):
@@ -318,7 +326,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         if self.__lives == 0:
             print("dead")   # End
         else:
-            print("being revived")
+            self.__IsReviving = True
             self.__oxygen = 100
             self.__lives -= 1
             for i in range(-2, 1):
