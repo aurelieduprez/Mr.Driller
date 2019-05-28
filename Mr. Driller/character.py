@@ -337,6 +337,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                         level[self.__posY+i][self.__posX - 1].hit(surface, level, self, 1, 1)
                 if level[self.__posY + i][self.__posX].hpAccess() != 0:
                     level[self.__posY + i][self.__posX].hit(surface, level, self, 1, 1)
+            self.__oxygen = 100
 
     def updateOxygen(self, type, surface):
         if type == 1:
