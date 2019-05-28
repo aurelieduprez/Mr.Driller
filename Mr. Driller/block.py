@@ -281,7 +281,7 @@ class Delayed(Block):
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 1, 0)
-        self.__texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", "b_s.png")
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", "0.png")
         self._blockType = "delayed"
         self.__timeout = 84    # number of image for fadeout
 
