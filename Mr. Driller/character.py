@@ -22,7 +22,6 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
-        #self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
 
         #Animation
         self.__IsMovingRight = False
@@ -35,13 +34,12 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__IsDrillingDown = False
         self.__IsIdling = True
 
-    # Accessors
+        # Accessors
         self.__surface = surface
+
     def NeedToIdle(self,surface):
         self.__IsIdling = True
         self.Anim(surface)
-       # self.backDownCleanup(surface)
-        print("idle")
 
     def IdlingAcc(self):
         return self.__IsIdling
