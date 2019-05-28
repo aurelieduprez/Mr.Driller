@@ -98,7 +98,7 @@ def game(x, y):
 
 
         if nbFrame % 30== 1:
-            player.updateOxygen(1)
+            player.updateOxygen(1, surface)
             print("oxygen =", player.oxyAcc())
 
         if nbFrame % 5 == 1:

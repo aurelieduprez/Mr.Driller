@@ -58,12 +58,12 @@ class Block:
             self._hp -= 1
 
         if self._blockType == "unbreakable" and self._hp == 0:
-            player.updateOxygen(2)
+            player.updateOxygen(2, surface)
             player.AddScore(10)
 
 
         elif self._blockType == "pill" and self._hp == 0:
-            player.updateOxygen(3)
+            player.updateOxygen(3, surface)
             player.AddScore(10)
 
         elif self._blockType == "end":
