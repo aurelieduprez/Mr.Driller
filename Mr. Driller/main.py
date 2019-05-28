@@ -60,7 +60,8 @@ def game(x, y):
 
                 inProgress = False
 
-            if event.type == KEYDOWN:       # Event handling
+            if event.type == KEYDOWN:
+                # Event handling
                 # Test key for revive :P
                 #if event.key == K_UP:
                     #player.Revive(surface)
@@ -95,12 +96,16 @@ def game(x, y):
                 for element in level[i]:
                     element.updOffset(currentOffset)
 
+
+        if nbFrame % 30== 1:
+            player.updateOxygen(1)
+            print("oxygen =", player.oxyAcc())
+
+        if nbFrame % 5 == 1:
+            player.Anim()
             render(surface, level, currentOffset)
             player.display(surface)
 
-        if nbFrame % 30 == 1:
-            player.updateOxygen(1)
-            print("oxygen =", player.oxyAcc())
 
         nbFrame=nbFrame+1
 

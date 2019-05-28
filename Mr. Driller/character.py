@@ -1,4 +1,5 @@
 import pygame
+import time
 from os import path
 from level import level
 from time import sleep
@@ -23,8 +24,22 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__bg = path.join("Assets", "Textures", "Background", "bg_2.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
 
+
         # Accessors
         self.__surface = surface
+
+         #Animation
+        self.__IsMovingRight = False
+        self.__IsMovingLeft = False
+        self.__IsFalling = False
+        self.__IsDrillingRight = False
+        self.__IsDrillingLeft = False
+        self.__IsDrillingRight_off = False
+        self.__IsDrillingLeft_off = False
+        self.__IsDrillingDown = False
+        self.__IsIdling = True
+
+
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
@@ -35,11 +50,59 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def oxyAcc(self):
         return self.__oxygen
 
+
+      #Animation
+    def Anim(self):
+        self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png") #idling
+
+        if (self.__IsFalling):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall.png")
+            self.__IsFalling = True
+
+
+        if (self.__IsMovingLeft):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_mov.png")
+            self.__IsMovingLeft = False
+
+
+        if (self.__IsMovingRight):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_mov.png")
+            self.__IsMovingRight = False
+
+
+        if (self.__IsDrillingRight_off):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_off.png")
+            self.__IsDrillingRight_off = False
+
+
+        if (self.__IsDrillingLeft_off):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_off.png")
+            self.__IsDrillingLeft_off = False
+
+
+        if (self.__IsDrillingRight):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_on.png")
+            self.__IsDrillingRight = False
+
+
+        if (self.__IsDrillingLeft):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_on.png")
+            self.__IsDrillingLeft = False
+
+
+        if (self.__IsDrillingDown):
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_on.png")
+            self.__IsDrillingDown = False
+
+
     # Logical Methods
 
     def move(self, surface, direction, level):
 
         # Right
+
+        if direction == 2:
+            self.__IsMovingRight = True
 
         if direction == 2 and self.__posX < len(level[0]) - 1\
                 and level[self.__posY][self.__posX + 1].hpAccess() == 0:
@@ -88,8 +151,10 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             level[self.__posY][self.__posX - 1].display(surface, self.__blocksFallen)
 
         # Left
+        if direction == 4:
+            self.__IsMovingLeft = True
 
-        elif direction == 4 and self.__posX > 0 \
+        if direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() == 0:
 
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
@@ -142,11 +207,14 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Right
 
-        if direction == 2 \
-                and self.__posX < len(level[0])-1 \
+        if direction == 2:
+            self.__IsDrillingRight_off = True
+
+            if self.__posX < len(level[0])-1 \
                 and level[self.__posY][self. __posX + 1].hpAccess() > 0\
                 and level[self.__posY][self.__posX + 1].typeAccess() != "pill":
-            level[self.__posY][self. __posX+1].hit(surface, level, self)
+                self.__IsDrillingRight = True
+                level[self.__posY][self. __posX+1].hit(surface, level, self)
 
         # Down
 
@@ -154,15 +222,18 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 and self.__posY < currentBotLine \
                 and level[self.__posY + 1][self.__posX].hpAccess() > 0 \
                 and level[self.__posY + 1][self.__posX].typeAccess() != "pill":
-            level[self.__posY+1][self. __posX].hit(surface, level, self)
+                self.__IsDrillingDown = True
+                level[self.__posY+1][self. __posX].hit(surface, level, self)
 
         # Left
 
-        elif direction == 4 \
-                and self.__posX > 0 \
+        elif direction == 4 :
+            self.__IsDrillingLeft_off = True
+            if self.__posX > 0 \
                 and level[self.__posY][self. __posX - 1].hpAccess() > 0 \
                 and level[self.__posY][self.__posX - 1].typeAccess() != "pill" :
-            level[self.__posY][self. __posX-1].hit(surface, level, self)
+                self.__IsDrillingLeft = True
+                level[self.__posY][self. __posX-1].hit(surface, level, self)
 
     def fall(self, surface, level):
 
@@ -175,6 +246,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
                 self.__blocksFallen += 1
                 self.__posY += 1
+                self.__IsFalling = True
 
             else:
                 if level[self.__posY + 1][self.__posX].typeAccess() == "pill":
