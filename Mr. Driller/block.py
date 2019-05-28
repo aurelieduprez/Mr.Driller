@@ -24,7 +24,7 @@ class Block:
 
         # Textures
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
-        self._bg = path.join("Assets", "Textures", "Background", "bg_2.png")
+        self._bg = path.join("Assets", "Textures", "Background", "bg.png")
 
     # Accessors
 
@@ -38,6 +38,12 @@ class Block:
         return self._blockType
 
     # Logical Method
+
+    def changeBG(self, bg):
+        if bg == 1:
+            self._bg = path.join("Assets", "Textures", "Background", "bg.png")
+        elif bg == 2:
+            self._bg = path.join("Assets", "Textures", "Background", "bg_2.png")
 
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
@@ -162,7 +168,6 @@ class Block:
                             if level[self._posY - 1][self._posX - 1].ColorAccess() == self._colors:
                                 topLeft = True
 
-
                     if not botLeft:
                         if level[self._posY + 1][self._posX - 1].typeAccess() == "classic":
                             if level[self._posY + 1][self._posX - 1].ColorAccess() == self._colors:
@@ -280,8 +285,16 @@ class Pill(Block):
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 1, 0)
-        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill_2.png")
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
         self._blockType = "pill"
+
+    def changeBG(self, bg):
+
+        if bg == 1:
+            self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
+        elif bg == 2:
+            self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill_2.png")
+
 
 class End(Block):
     """End block"""

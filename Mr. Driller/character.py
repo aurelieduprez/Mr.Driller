@@ -21,14 +21,10 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__lives = lives
 
         # Textures
-        self.__bg = path.join("Assets", "Textures", "Background", "bg_2.png")
+        self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
         self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
 
-
-        # Accessors
-        self.__surface = surface
-
-         #Animation
+        #Animation
         self.__IsMovingRight = False
         self.__IsMovingLeft = False
         self.__IsFalling = False
@@ -39,7 +35,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__IsDrillingDown = False
         self.__IsIdling = True
 
-
+    # Accessors
 
     def blocksFallenAcc(self):
         return self.__blocksFallen
@@ -50,52 +46,50 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def oxyAcc(self):
         return self.__oxygen
 
+    # Animation
 
-      #Animation
     def Anim(self):
         self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png") #idling
 
-        if (self.__IsFalling):
+        if self.__IsFalling:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall.png")
             self.__IsFalling = True
 
-
-        if (self.__IsMovingLeft):
+        if self.__IsMovingLeft:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_mov.png")
             self.__IsMovingLeft = False
 
-
-        if (self.__IsMovingRight):
+        if self.__IsMovingRight:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_mov.png")
             self.__IsMovingRight = False
 
-
-        if (self.__IsDrillingRight_off):
+        if self.__IsDrillingRight_off:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_off.png")
             self.__IsDrillingRight_off = False
 
-
-        if (self.__IsDrillingLeft_off):
+        if self.__IsDrillingLeft_off:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_off.png")
             self.__IsDrillingLeft_off = False
 
-
-        if (self.__IsDrillingRight):
+        if self.__IsDrillingRight:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_on.png")
             self.__IsDrillingRight = False
 
-
-        if (self.__IsDrillingLeft):
+        if self.__IsDrillingLeft:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_on.png")
             self.__IsDrillingLeft = False
 
-
-        if (self.__IsDrillingDown):
+        if self.__IsDrillingDown:
             self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_on.png")
             self.__IsDrillingDown = False
 
-
     # Logical Methods
+
+    def changeBG(self, bg):
+        if bg == 1:
+            self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
+        elif bg == 2:
+            self.__bg = path.join("Assets", "Textures", "Background", "bg_2.png")
 
     def move(self, surface, direction, level):
 
