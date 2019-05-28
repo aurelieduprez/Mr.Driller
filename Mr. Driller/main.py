@@ -3,6 +3,7 @@ from character import *
 from level import *
 from os import name
 from eventHandling import *
+from menu import *
 
 # Font and Sound verification
 
@@ -49,7 +50,6 @@ def game(x, y):
         for event in pygame.event.get():
 
             if event.type == QUIT:      # Quitting the game
-
                 inProgress = False
 
             if event.type == KEYDOWN:       # Event handling
