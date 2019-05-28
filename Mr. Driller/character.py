@@ -47,6 +47,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def oxyAcc(self):
         return self.__oxygen
 
+    def scoreAcc(self):
+        return self.__score
+
     # Animation
 
     def Anim(self):

@@ -34,6 +34,13 @@ def game(x, y):
     print(len(level))
     nbFrame = 1
 
+    #initialising Ui
+    FontUi1 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Front.otf", 28)
+    FontUi2 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Back.otf", 28)
+
+    Ui_bg = pygame.image.load("Assets\Misc\PserInterface.png")
+
+
     # Initializing controls
     if 'nt' in name:
         movKeys = [K_w, K_d, K_a]
@@ -63,8 +70,8 @@ def game(x, y):
             if event.type == KEYDOWN:
                 # Event handling
                 # Test key for revive :P
-                #if event.key == K_UP:
-                    #player.Revive(surface)
+                if event.key == K_UP:
+                    player.AddScore(1000)
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
@@ -108,6 +115,24 @@ def game(x, y):
 
 
         nbFrame=nbFrame+1
+
+
+        #UI
+        score_text = FontUi1.render(("Score :"), 1, (255, 255, 0));
+
+        if(player.scoreAcc()<1000):
+            score_display = FontUi2.render(str(player.scoreAcc()), 1, (255, 255, 0));
+        elif (player.scoreAcc() < 100000):
+            score_display = FontUi2.render(str((player.scoreAcc())/1000)+"k", 1, (255, 255, 0));
+        else:
+            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (255, 255, 0));
+
+        Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (255, 255, 0));
+
+        surface.blit(Ui_bg, (475, 0))
+        surface.blit(score_text, (500, 100))
+        surface.blit(score_display, (675, 100))
+        surface.blit(Oxygen_display, (570, 200))
 
         pygame.display.update()
         fpsClock.tick(FPS)
