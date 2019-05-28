@@ -106,7 +106,7 @@ def game(x, y):
             nbFrameAnim = nbFrameAnim + 1
 
             #if not x frame later it will play the "idle" animation
-            if nbFrameAnim % 25 == 1:
+            if nbFrameAnim % 15 == 1:
                 player.NeedToIdle(surface)
 
         nbFrame=nbFrame+1
