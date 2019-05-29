@@ -67,11 +67,10 @@ def game(x, y):
 
                 if event.key == K_ESCAPE:
                     if not isPaused:
-                        surface.blit(PauseMenu,(0,0))
-                        FPS = 0
                         isPaused = True
-                    else:
-                        isPaused = False
+                        surface.blit(PauseMenu,(0,0))
+
+
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
@@ -119,6 +118,36 @@ def game(x, y):
 
         pygame.display.update()
         fpsClock.tick(FPS)
+
+        while isPaused == True:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    isPaused = False
+                    inProgress = False
+
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        isPaused = False
+                        render(surface, level, currentOffset)
+                        player.display(surface)
+                    else:
+                        keydownHandle(event)
+
+                if pygame.mouse.get_pressed()[0]:
+                    x, y = pygame.mouse.get_pos()
+
+                    if 287 < x < 530 and 218 < y < 279: #coordonées Resume
+                        isPaused = False
+                        render(surface, level, currentOffset)
+                        player.display(surface)
+
+                    elif 306 < x < 516 and 306 < y < 360: #coordonnées Restart
+                        print("Restart")
+
+                    elif 341 < x < 475 and 395 < y < 450: #coordonnées Quit
+                        isPaused = False
+                        inProgress = False
+
 
     pygame.quit()
 
