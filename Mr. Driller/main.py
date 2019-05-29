@@ -118,21 +118,16 @@ def game(x, y):
 
         nbFrame=nbFrame+1
 
-
-        #UI
-        score_text = FontUi1.render(("Score :"), 1, (255, 255, 0));
-
         if(player.scoreAcc()<1000):
-            score_display = FontUi2.render(str(player.scoreAcc()), 1, (255, 255, 0));
+            score_display = FontUi2.render(str(player.scoreAcc()), 1, (220, 0, 255));
         elif (player.scoreAcc() < 100000):
-            score_display = FontUi2.render(str((player.scoreAcc())/1000)+"k", 1, (255, 255, 0));
+            score_display = FontUi2.render(str((player.scoreAcc())/1000)+"k", 1, (220, 0, 255));
         else:
-            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (255, 255, 0));
+            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + "k", 1, (220, 0, 255));
 
-        Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (255, 255, 0));
+        Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (220, 0, 255));
 
         surface.blit(Ui_bg, (0, 0))
-        surface.blit(score_text, (500, 100))
         surface.blit(score_display, (675, 100))
         surface.blit(Oxygen_display, (570, 200))
 
