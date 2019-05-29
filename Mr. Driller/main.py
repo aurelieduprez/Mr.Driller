@@ -47,15 +47,16 @@ def game(x, y):
     for line in level:
         for element in line:
             element.updCoText(level)
-
-    # Rendering level and displaying player
-    render(surface, level, currentOffset)
-    player.display(surface)
-
     # Main loop
     inProgress = True
     while inProgress:
+        # Rendering level and displaying player
+        render(surface, level, currentOffset)
+        player.Anim(surface)
+        player.display(surface)
         for event in pygame.event.get():
+            nbFrameAnim = 1 #reset FrameCount for anim
+
 
             if event.type == QUIT:      # Quitting the game
                 inProgress = False
@@ -98,14 +99,15 @@ def game(x, y):
 
 
         if nbFrame % 30== 1:
-            player.updateOxygen(1)
+            player.updateOxygen(1, surface)
             print("oxygen =", player.oxyAcc())
 
-        if nbFrame % 5 == 1:
-            player.Anim()
-            render(surface, level, currentOffset)
-            player.display(surface)
+        if player.IdlingAcc() == False: #check if player is already idling
+            nbFrameAnim = nbFrameAnim + 1
 
+            #if not x frame later it will play the "idle" animation
+            if nbFrameAnim % 15 == 1:
+                player.NeedToIdle(surface)
 
         nbFrame=nbFrame+1
 

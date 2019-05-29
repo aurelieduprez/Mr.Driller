@@ -23,7 +23,6 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
-        self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
 
         #Animation
         self.__IsMovingRight = False
@@ -34,10 +33,19 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__IsDrillingRight_off = False
         self.__IsDrillingLeft_off = False
         self.__IsDrillingDown = False
+        self.__IsReviving = False
         self.__IsIdling = True
 
-    # Accessors
 
+        # Accessors
+        self.__surface = surface
+
+    def NeedToIdle(self,surface):
+        self.__IsIdling = True
+        self.Anim(surface)
+
+    def IdlingAcc(self):
+        return self.__IsIdling
     def blocksFallenAcc(self):
         return self.__blocksFallen
 
@@ -52,41 +60,104 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     # Animation
 
-    def Anim(self):
-        self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png") #idling
+    def Anim(self,surface):
+
+        if self.__IsIdling:
+            if(self.__oxygen>20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off.png")
+                self.__IsIdling = True
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_off_o2.png")
+                self.__IsIdling = True
+
 
         if self.__IsFalling:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall.png")
-            self.__IsFalling = True
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall.png")
+                self.__IsFalling = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall_o2.png")
+                self.__IsFalling = False
+                self.__IsIdling = False
+
+        if self.__IsReviving:
+            self.__texturePath = path.join("Assets", "Textures", "Character", "play_dead_y.png")
+            self.__IsReviving = False
+            self.__IsIdling = False
+
 
         if self.__IsMovingLeft:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_mov.png")
-            self.__IsMovingLeft = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_mov.png")
+                self.__IsMovingLeft = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_mov_o2.png")
+                self.__IsMovingLeft = False
+                self.__IsIdling = False
 
         if self.__IsMovingRight:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_mov.png")
-            self.__IsMovingRight = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_mov.png")
+                self.__IsMovingRight = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_mov_o2.png")
+                self.__IsMovingRight = False
+                self.__IsIdling = False
 
         if self.__IsDrillingRight_off:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_off.png")
-            self.__IsDrillingRight_off = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_off.png")
+                self.__IsDrillingRight_off = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_off_o2.png")
+                self.__IsDrillingRight_off = False
+                self.__IsIdling = False
 
         if self.__IsDrillingLeft_off:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_off.png")
-            self.__IsDrillingLeft_off = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_off.png")
+                self.__IsDrillingLeft_off = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_off_o2.png")
+                self.__IsDrillingLeft_off = False
+                self.__IsIdling = False
 
         if self.__IsDrillingRight:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_on.png")
-            self.__IsDrillingRight = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_on.png")
+                self.__IsDrillingRight = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_r_on_o2.png")
+                self.__IsDrillingRight = False
+                self.__IsIdling = False
 
         if self.__IsDrillingLeft:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_on.png")
-            self.__IsDrillingLeft = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_on.png")
+                self.__IsDrillingLeft = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_l_on_o2.png")
+                self.__IsDrillingLeft = False
+                self.__IsIdling = False
 
         if self.__IsDrillingDown:
-            self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_on.png")
-            self.__IsDrillingDown = False
+            if (self.__oxygen > 20):
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_on.png")
+                self.__IsDrillingDown = False
+                self.__IsIdling = False
+            else:
+                self.__texturePath = path.join("Assets", "Textures", "Character", "play_d_on_o2.png")
+                self.__IsDrillingDown = False
+                self.__IsIdling = False
 
+        self.display(surface)
     # Logical Methods
 
     def AddScore(self, x):
@@ -258,7 +329,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         if self.__lives == 0:
             print("dead")   # End
         else:
-            print("being revived")
+            self.__IsReviving = True
             self.__oxygen = 100
             self.__lives -= 1
             for i in range(-2, 1):
@@ -270,8 +341,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                         level[self.__posY+i][self.__posX - 1].hit(surface, level, self, 1, 1)
                 if level[self.__posY + i][self.__posX].hpAccess() != 0:
                     level[self.__posY + i][self.__posX].hit(surface, level, self, 1, 1)
+            self.__oxygen = 100
 
-    def updateOxygen(self, type):    # 1 : -1 oxygen/sec, 2 : -20 oxygen (bloc unbreakable), 3 : + 30 oxygen (pill)
+    def updateOxygen(self, type, surface):
         if type == 1:
             self.__oxygen -= 1
         elif type == 2:
