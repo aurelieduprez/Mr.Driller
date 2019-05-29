@@ -1,7 +1,7 @@
 import pygame
 from character import *
 from level import *
-from os import name
+from os import name, path
 from eventHandling import *
 from menu import *
 
@@ -35,10 +35,12 @@ def game(x, y):
     nbFrame = 1
 
     #initialising Ui
-    FontUi1 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Front.otf", 28)
-    FontUi2 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Back.otf", 28)
+    #FontUi1 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Front.otf", 28)
+    #FontUi2 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Back.otf", 28)
+    FontUi1 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
+    FontUi2 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
 
-    Ui_bg = pygame.image.load("Assets\Misc\PserInterface.png")
+    Ui_bg = pygame.image.load(path.join("Assets", "Misc", "userinterface.png"))
 
 
     # Initializing controls
@@ -129,7 +131,7 @@ def game(x, y):
 
         Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (255, 255, 0));
 
-        surface.blit(Ui_bg, (475, 0))
+        surface.blit(Ui_bg, (0, 0))
         surface.blit(score_text, (500, 100))
         surface.blit(score_display, (675, 100))
         surface.blit(Oxygen_display, (570, 200))
