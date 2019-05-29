@@ -105,7 +105,7 @@ def game(x, y):
                 if level[item[0]][item[1]].hpAccess() > 0:
                     level[item[0]][item[1]].timeout()
                 elif level[item[0]][item[1]].hpAccess() == 0:
-                    del(item)
+                    del(blocksDisap[blocksDisap.index(item)])
 
         if nbFrame % 5 == 1:
             player.Anim()
@@ -114,11 +114,11 @@ def game(x, y):
             for i in range(0, len(level), 1):
                 for element in level[i]:
                     if element.typeAccess() == "delayed":
-                        if element.idAcc():
+                        if element.idAcc() and element.hpAccess() > 0:
                             posY, posX = element.posAcc()
                             bDis = [posY, posX]
-                            print(bDis)
-                            blocksDisap.append(bDis)
+                            if bDis not in blocksDisap:
+                                blocksDisap.append(bDis)
 
         nbFrame=nbFrame+1
 
