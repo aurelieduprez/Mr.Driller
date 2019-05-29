@@ -9,3 +9,11 @@ Oxy :
 	dimensions : 274 * 150
 	coin haut gauche : 500 182
 
+Depth:
+	dimensions : 274 * 100
+	coin : 500 342
+
+lives:
+	dimension : 274*136
+	coin: 500 452
+
