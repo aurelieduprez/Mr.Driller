@@ -6,7 +6,6 @@ import pygame
 class Block:
     """General block mother-class"""
 
-
     def __init__(self, posX, posY, forceHP, chain_reaction, colors=0):
 
         # Position
@@ -290,19 +289,18 @@ class Delayed(Block):
         self._blockType = "delayed"
         self.__seconds = 2    # number of image for fadeout
 
-    def idAcc():
+    def idAcc(self):
         return self._isDisappearing
 
     def posAcc(self):
         return self._posY, self._posX
 
-
-    def timeout(self, seconds):
+    def timeout(self):
 
         if self._isDisappearing:
-            seconds = seconds - 1
+            self.__seconds -= 1
 
-        if seconds == 0:
+        if self.__seconds == 0:
             self._hp = 0
 
 

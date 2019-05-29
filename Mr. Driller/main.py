@@ -33,6 +33,7 @@ def game(x, y):
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1
+    blocksDisap = []
 
 
     # Initializing controls
@@ -97,17 +98,27 @@ def game(x, y):
                 for element in level[i]:
                     element.updOffset(currentOffset)
 
-
         if nbFrame % 30 == 1:
             player.updateOxygen(1, surface)
             print("oxygen =", player.oxyAcc())
-
+            for item in blocksDisap:
+                if level[item[0]][item[1]].hpAccess() > 0:
+                    level[item[0]][item[1]].timeout()
+                elif level[item[0]][item[1]].hpAccess() == 0:
+                    del(item)
 
         if nbFrame % 5 == 1:
             player.Anim()
             render(surface, level, currentOffset)
             player.display(surface)
-
+            for i in range(0, len(level), 1):
+                for element in level[i]:
+                    if element.typeAccess() == "delayed":
+                        if element.idAcc():
+                            posY, posX = element.posAcc()
+                            bDis = [posY, posX]
+                            print(bDis)
+                            blocksDisap.append(bDis)
 
         nbFrame=nbFrame+1
 
