@@ -1,6 +1,8 @@
 from connectCorrect import *
 from os import path
 import pygame
+from menu import *
+
 
 
 class Block:
@@ -54,19 +56,20 @@ class Block:
             self._hp = 0
 
         else:
-            player.AddScore(10)
+            score = player.AddScore(10)
             self._hp -= 1
 
         if self._blockType == "unbreakable" and self._hp == 0:
             player.updateOxygen(2)
-            player.AddScore(10)
+            score = player.AddScore(1)
 
 
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3)
-            player.AddScore(10)
+            score = player.AddScore(20)
 
         elif self._blockType == "end":
+            refreshScore(player.scoreAcc())
             print("fin de level")
 
         # Chain reaction

@@ -47,6 +47,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def oxyAcc(self):
         return self.__oxygen
 
+    def scoreAcc(self):
+        return self.__score
+
     # Animation
 
     def Anim(self):
@@ -89,6 +92,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
     def AddScore(self, x):
         self.__score += x
         print("score", str(self.__score))
+        return (self.__score)
 
     def move(self, surface, direction, level):
 
@@ -279,7 +283,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__oxygen = 100
 
         if self.__oxygen <= 0 :
-            self.revive(self.__surface)
+            self.revive(surface)
 
     # Graphical Methods
 
