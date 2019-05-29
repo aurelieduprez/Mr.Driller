@@ -4,7 +4,8 @@ import block
 level = []
 
 
-def generateLvl(colors, lines, width,pillP=5,PillPL=5,PillMLE=5,SoloP=10,UnbreakableP=5,DelayedP=0):    # This returns a 2D array of blocks [Y][X]
+def generateLvl(colors, lines, width, pillP=5, PillPL=5, PillMLE=5, SoloP=10, UnbreakableP=5, DelayedP=0):
+
     #pillPL est le nombre de pill par level
     #pillMLE est le nombre minimum de lignes entre chaque pill
     LineRemainBeforePill = 0

@@ -63,7 +63,6 @@ class Block:
             player.updateOxygen(2, surface)
             player.AddScore(10)
 
-
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3, surface)
             player.AddScore(10)

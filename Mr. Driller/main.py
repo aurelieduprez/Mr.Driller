@@ -35,8 +35,6 @@ def game(x, y):
     nbFrame = 1
 
     #initialising Ui
-    #FontUi1 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Front.otf", 28)
-    #FontUi2 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Back.otf", 28)
     FontUi1 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
     FontUi2 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
 
@@ -64,10 +62,10 @@ def game(x, y):
         player.Anim(surface)
         player.display(surface)
         for event in pygame.event.get():
+
             nbFrameAnim = 1 #reset FrameCount for anim
 
-
-            if event.type == QUIT:      # Quitting the game
+            if event.type == QUIT:  # Quitting the game
                 inProgress = False
 
             if event.type == KEYDOWN:
@@ -111,23 +109,21 @@ def game(x, y):
 
             fileName = str(player.oxyAcc())
             fileName += ".png"
-            print(fileName)
 
             oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
 
             Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
         if nbFrame % 5 == 1:
-            player.Anim()
+            player.Anim(surface)
             render(surface, level, currentOffset)
             player.display(surface)
-        if player.IdlingAcc() == False: #check if player is already idling
-            nbFrameAnim = nbFrameAnim + 1
 
-        nbFrame += 1
-            #if not x frame later it will play the "idle" animation
-            if nbFrameAnim % 15 == 1:
-                player.NeedToIdle(surface)
+        if not player.IdlingAcc(): #check if player is already idling
+            nbFrameAnim += 1
+
+        if nbFrameAnim % 10 == 1:
+            player.NeedToIdle(surface)
 
         if player.scoreAcc() < 1000:
             score_display = FontUi2.render(str(player.scoreAcc()), 1, (220, 0, 255))
@@ -140,6 +136,8 @@ def game(x, y):
         surface.blit(score_display, (640, 107))
         surface.blit(Oxygen_display, (640, 200))
         surface.blit(oxyImage, (537, 252))
+
+        nbFrame += 1
 
         pygame.display.update()
         fpsClock.tick(FPS)
