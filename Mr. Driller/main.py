@@ -31,6 +31,8 @@ def game(x, y):
     backDown = False
     player = Character(4, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 100, 7)
+    PauseMenu = pygame.image.load("Assets\Menu\menupause.png")
+    isPaused = False
     print(len(level))
     nbFrame = 1
 
@@ -61,11 +63,15 @@ def game(x, y):
             if event.type == QUIT:      # Quitting the game
                 inProgress = False
 
-            if event.type == KEYDOWN:
-                # Event handling
-                # Test key for revive :P
-                #if event.key == K_UP:
-                    #player.Revive(surface)
+            if event.type == KEYDOWN:       # Event handling
+
+                if event.key == K_ESCAPE:
+                    if not isPaused:
+                        surface.blit(PauseMenu,(0,0))
+                        FPS = 0
+                        isPaused = True
+                    else:
+                        isPaused = False
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
