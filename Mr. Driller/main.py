@@ -1,7 +1,7 @@
 import pygame
 from character import *
 from level import *
-from os import name
+from os import name, path
 from eventHandling import *
 from menu import *
 
@@ -29,10 +29,19 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(4, 4, currentBotLine, surface, lives=2)    # Creates the player instance
+    player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1
+
+    #initialising Ui
+    #FontUi1 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Front.otf", 28)
+    #FontUi2 = pygame.font.Font("Assets\Misc\police\Cyberspace Raceway Back.otf", 28)
+    FontUi1 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
+    FontUi2 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
+
+    Ui_bg = pygame.image.load(path.join("Assets", "Misc", "userinterface.png"))
+
 
     # Initializing controls
     if 'nt' in name:
@@ -64,8 +73,8 @@ def game(x, y):
             if event.type == KEYDOWN:
                 # Event handling
                 # Test key for revive :P
-                #if event.key == K_UP:
-                    #player.Revive(surface)
+                if event.key == K_UP:
+                    player.AddScore(1000)
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
@@ -97,19 +106,40 @@ def game(x, y):
                 for element in level[i]:
                     element.updOffset(currentOffset)
 
-
-        if nbFrame % 30== 1:
+        if nbFrame % 30 == 1:
             player.updateOxygen(1, surface)
-            print("oxygen =", player.oxyAcc())
 
+            fileName = str(player.oxyAcc())
+            fileName += ".png"
+            print(fileName)
+
+            oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
+
+            Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (220, 0, 255))
+
+        if nbFrame % 5 == 1:
+            player.Anim()
+            render(surface, level, currentOffset)
+            player.display(surface)
         if player.IdlingAcc() == False: #check if player is already idling
             nbFrameAnim = nbFrameAnim + 1
 
+        nbFrame += 1
             #if not x frame later it will play the "idle" animation
             if nbFrameAnim % 15 == 1:
                 player.NeedToIdle(surface)
 
-        nbFrame=nbFrame+1
+        if player.scoreAcc() < 1000:
+            score_display = FontUi2.render(str(player.scoreAcc()), 1, (220, 0, 255))
+        elif player.scoreAcc() < 100000:
+            score_display = FontUi2.render(str((player.scoreAcc())/1000)+" k", 1, (220, 0, 255))
+        else:
+            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
+
+        surface.blit(Ui_bg, (0, 0))
+        surface.blit(score_display, (640, 107))
+        surface.blit(Oxygen_display, (640, 200))
+        surface.blit(oxyImage, (537, 252))
 
         pygame.display.update()
         fpsClock.tick(FPS)
