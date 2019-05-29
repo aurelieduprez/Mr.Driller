@@ -29,7 +29,7 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(4, 4, currentBotLine, surface, lives=2)    # Creates the player instance
+    player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 100, 7)
     print(len(level))
     nbFrame = 1
@@ -105,31 +105,35 @@ def game(x, y):
                 for element in level[i]:
                     element.updOffset(currentOffset)
 
+        if nbFrame % 30 == 1:
+            player.updateOxygen(1, surface)
 
-        if nbFrame % 30== 1:
-            player.updateOxygen(1)
-            print("oxygen =", player.oxyAcc())
+            fileName = str(player.oxyAcc())
+            fileName += ".png"
+            print(fileName)
+
+            oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
+
+            Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
         if nbFrame % 5 == 1:
             player.Anim()
             render(surface, level, currentOffset)
             player.display(surface)
 
+        nbFrame += 1
 
-        nbFrame=nbFrame+1
-
-        if(player.scoreAcc()<1000):
-            score_display = FontUi2.render(str(player.scoreAcc()), 1, (220, 0, 255));
-        elif (player.scoreAcc() < 100000):
-            score_display = FontUi2.render(str((player.scoreAcc())/1000)+"k", 1, (220, 0, 255));
+        if player.scoreAcc() < 1000:
+            score_display = FontUi2.render(str(player.scoreAcc()), 1, (220, 0, 255))
+        elif player.scoreAcc() < 100000:
+            score_display = FontUi2.render(str((player.scoreAcc())/1000)+" k", 1, (220, 0, 255))
         else:
-            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + "k", 1, (220, 0, 255));
-
-        Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (220, 0, 255));
+            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
 
         surface.blit(Ui_bg, (0, 0))
-        surface.blit(score_display, (675, 100))
-        surface.blit(Oxygen_display, (570, 200))
+        surface.blit(score_display, (640, 107))
+        surface.blit(Oxygen_display, (640, 200))
+        surface.blit(oxyImage, (537, 252))
 
         pygame.display.update()
         fpsClock.tick(FPS)

@@ -270,19 +270,21 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 if level[self.__posY + i][self.__posX].hpAccess() != 0:
                     level[self.__posY + i][self.__posX].hit(surface, level, self, 1, 1)
 
-    def updateOxygen(self, type):    # 1 : -1 oxygen/sec, 2 : -20 oxygen (bloc unbreakable), 3 : + 30 oxygen (pill)
+            self.__oxygen = 100
+
+    def updateOxygen(self, type, surface):
         if type == 1:
             self.__oxygen -= 1
         elif type == 2:
             self.__oxygen -= 20
         elif type == 3:
-            if self.__oxygen <= 70 :
+            if self.__oxygen <= 70:
                 self.__oxygen += 30
-            else :
+            else:
                 self.__oxygen = 100
 
-        if self.__oxygen <= 0 :
-            self.revive(self.__surface)
+        if self.__oxygen <= 0:
+            self.revive(surface)
 
     # Graphical Methods
 
