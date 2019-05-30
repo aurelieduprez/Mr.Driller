@@ -31,6 +31,8 @@ def game(x, y):
     backDown = False
     player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 100, 7)
+    PauseMenu = pygame.image.load("Assets\Menu\menupause.png")
+    isPaused = False
     print(len(level))
     nbFrame = 1
 
@@ -68,11 +70,14 @@ def game(x, y):
             if event.type == QUIT:  # Quitting the game
                 inProgress = False
 
-            if event.type == KEYDOWN:
-                # Event handling
+            if event.type == KEYDOWN:       # Event handling
                 # Test key for revive :P
                 if event.key == K_UP:
                     player.AddScore(1000)
+                if event.key == K_ESCAPE:
+                    if not isPaused:
+                        isPaused = True
+                        surface.blit(PauseMenu,(0,0))
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
@@ -141,6 +146,36 @@ def game(x, y):
 
         pygame.display.update()
         fpsClock.tick(FPS)
+
+        while isPaused == True:
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    isPaused = False
+                    inProgress = False
+
+                if event.type == KEYDOWN:
+                    if event.key == K_ESCAPE:
+                        isPaused = False
+                        render(surface, level, currentOffset)
+                        player.display(surface)
+                    else:
+                        keydownHandle(event)
+
+                if pygame.mouse.get_pressed()[0]:
+                    x, y = pygame.mouse.get_pos()
+
+                    if 287 < x < 530 and 218 < y < 279: #coordonées Resume
+                        isPaused = False
+                        render(surface, level, currentOffset)
+                        player.display(surface)
+
+                    elif 306 < x < 516 and 306 < y < 360: #coordonnées Restart
+                        print("Restart")
+
+                    elif 341 < x < 475 and 395 < y < 450: #coordonnées Quit
+                        isPaused = False
+                        inProgress = False
+
 
     pygame.quit()
 
