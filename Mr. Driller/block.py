@@ -54,19 +54,19 @@ class Block:
         if instakill:
             self._hp = 0
 
-        else:
-            score = player.AddScore(10)
-            self._hp -= 1
-
         if self._blockType == "unbreakable" and self._hp == 0:
             player.updateOxygen(2, surface)
             player.AddScore(10)
+            self._hp -= 1
 
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3, surface)
-            player.AddScore(10)
+            player.AddScore(20)
+            self._hp -= 1
 
         elif self._blockType == "delayed":
+            if not self.idAcc():
+                player.AddScore(10)
             self._isDisappearing = True
             self.updTexture()
             self.display(surface)
@@ -74,6 +74,10 @@ class Block:
         elif self._blockType == "end":
             refreshScore(player.scoreAcc())
             print("fin de level")
+
+        else:
+            player.AddScore(10)
+            self._hp -= 1
 
         # Chain reaction
 
