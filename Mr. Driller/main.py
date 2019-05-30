@@ -77,7 +77,7 @@ def game(x, y):
                 if event.key == K_ESCAPE:
                     if not isPaused:
                         isPaused = True
-                        surface.blit(PauseMenu,(0,0))
+                        surface.blit(PauseMenu, (0, 0))
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
                 elif event.key in arrowKeys:    # Block breaking
@@ -137,12 +137,13 @@ def game(x, y):
         else:
             score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
 
-        if isPaused == False :
+        if not isPaused:
             surface.blit(Ui_bg, (0, 0))
             surface.blit(score_display, (640, 107))
             surface.blit(Oxygen_display, (640, 200))
             surface.blit(oxyImage, (537, 252))
-        if isPaused == True :
+
+        if isPaused:
             surface.blit(PauseMenu, (0, 0))
 
 
