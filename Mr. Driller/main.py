@@ -32,7 +32,10 @@ def game(x, y):
     player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 150, 7)
     PauseMenu = pygame.image.load("Assets\Menu\menupause.png")
-    isPaused = False
+    inPause = False
+    inMenu = False
+    inProgress = True
+
     print(len(level))
     nbFrame = 1
 
@@ -57,7 +60,7 @@ def game(x, y):
         for element in line:
             element.updCoText(level)
     # Main loop
-    inProgress = True
+
     while inProgress:
         # Rendering level and displaying player
         render(surface, level, currentOffset)
@@ -75,8 +78,8 @@ def game(x, y):
                 if event.key == K_UP:
                     player.AddScore(1000)
                 if event.key == K_ESCAPE:
-                    if not isPaused:
-                        isPaused = True
+                    if not inPause:
+                        inPause = True
                         surface.blit(PauseMenu, (0, 0))
                 if event.key in movKeys:    # Movement
                     movementHandle(event, surface, player, level, movKeys)
@@ -139,7 +142,7 @@ def game(x, y):
 
         Depth_display = FontUi.render(str(currentOffset), 1, (220, 0, 255))
 
-        if not isPaused:
+        if not inPause:
 
             surface.blit(Ui_bg, (0, 0))
             surface.blit(score_display, (640, 107))
@@ -150,22 +153,22 @@ def game(x, y):
             #lives
             for i in range (0,player.livesAcc()):
                 surface.blit(icon, (700-i*70, 500))
-        if isPaused:
+        if inPause:
             surface.blit(PauseMenu, (0, 0))
         nbFrame += 1
         pygame.display.update()
         fpsClock.tick(FPS)
 
 
-        while isPaused == True:
+        while inPause == True:
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    isPaused = False
+                    inPause = False
                     inProgress = False
 
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:
-                        isPaused = False
+                        inPause = False
                         render(surface, level, currentOffset)
                         player.display(surface)
 
@@ -173,7 +176,7 @@ def game(x, y):
                         print ("Restart")
 
                     if event.key == movKeys[2]:
-                        isPaused = False
+                        inPause = False
                         inProgress = False
 
                     else:
@@ -183,7 +186,7 @@ def game(x, y):
                     x, y = pygame.mouse.get_pos()
 
                     if 287 < x < 530 and 218 < y < 279: #coordonées Resume
-                        isPaused = False
+                        inPause = False
                         render(surface, level, currentOffset)
                         player.display(surface)
 
@@ -191,7 +194,7 @@ def game(x, y):
                         print("Restart")
 
                     elif 341 < x < 475 and 395 < y < 450: #coordonnées Quit
-                        isPaused = False
+                        inPause = False
                         inProgress = False
 
 
