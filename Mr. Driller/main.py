@@ -4,7 +4,7 @@ from level import *
 from os import name, path
 from eventHandling import *
 from menu import *
-
+from block import *
 # Font and Sound verification
 
 if not pygame.font:
@@ -38,6 +38,7 @@ def game(x, y):
 
     print(len(level))
     nbFrame = 1
+    blocksDisap = []
 
     #initialising Ui
     FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
@@ -114,6 +115,12 @@ def game(x, y):
 
         if nbFrame % 30 == 1:
             player.updateOxygen(1, surface)
+            print("oxygen =", player.oxyAcc())
+            for item in blocksDisap:
+                if level[item[0]][item[1]].hpAccess() > 0:
+                    level[item[0]][item[1]].timeout(surface, currentOffset)
+                elif level[item[0]][item[1]].hpAccess() == 0:
+                    del(blocksDisap[blocksDisap.index(item)])
 
             fileName = str(player.oxyAcc())
             fileName += ".png"
@@ -126,6 +133,18 @@ def game(x, y):
             player.Anim(surface)
             render(surface, level, currentOffset)
             player.display(surface)
+            for i in range(0, len(level), 1):
+                for element in level[i]:
+                    if element.typeAccess() == "delayed":
+                        if element.idAcc() and element.hpAccess() > 0:
+                            if player.blocksFallenAcc() != currentOffset:
+                                currentOffset += 1
+                                currentBotLine += 1
+                            element.updOffset(currentOffset)
+                            posY, posX = element.posAcc()
+                            bDis = [posY, posX]
+                            if bDis not in blocksDisap:
+                                blocksDisap.append(bDis)
 
         if not player.IdlingAcc(): # check if player is already idling
             nbFrameAnim += 1

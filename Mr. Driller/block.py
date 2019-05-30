@@ -8,7 +8,6 @@ from menu import *
 class Block:
     """General block mother-class"""
 
-
     def __init__(self, posX, posY, forceHP, chain_reaction, colors=0):
 
         # Position
@@ -51,7 +50,7 @@ class Block:
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
 
-    def hit(self, surface, level, player, nochain=0, instakill=0):
+    def hit(self, surface, level, player, nochain=0, instakill=0, delayedTimeout=0):
         if instakill:
             self._hp = 0
 
@@ -66,6 +65,11 @@ class Block:
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3, surface)
             player.AddScore(10)
+
+        elif self._blockType == "delayed":
+            self._isDisappearing = True
+            self.updTexture()
+            self.display(surface)
 
         elif self._blockType == "end":
             refreshScore(player.scoreAcc())
@@ -282,10 +286,34 @@ class Delayed(Block):
     """Timeout block daughter-class"""
 
     def __init__(self, posX, posY):
-        Block.__init__(self, posX, posY, 1, 0)
-        self.__texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", "b_s.png")
+        Block.__init__(self, posX, posY, 5, 0)
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", "0.png")
+        self._isDisappearing = False
         self._blockType = "delayed"
-        self.__timeout = 84    # number of image for fadeout
+        self.__seconds = 2    # number of image for fadeout
+
+    def idAcc(self):
+        return self._isDisappearing
+
+    def posAcc(self):
+        return self._posY, self._posX
+
+    def updTexture(self):
+        if self._isDisappearing:
+            if self.hpAccess() > 0:
+                textName = str(self.__seconds)
+                textName += ".png"
+                self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", textName)
+
+    def timeout(self, surface, currentOffset):
+
+        if self._isDisappearing:
+            self.__seconds -= 1
+            self.updTexture()
+            self.display(surface)
+
+        if self.__seconds == 0:
+            self._hp = 0
 
 
 class Pill(Block):
