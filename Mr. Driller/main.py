@@ -30,15 +30,15 @@ def game(x, y):
     currentClimb = 0
     backDown = False
     player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
-    level = generateLvl(4, 100, 7)
+    level = generateLvl(4, 150, 7)
     PauseMenu = pygame.image.load("Assets\Menu\menupause.png")
     isPaused = False
     print(len(level))
     nbFrame = 1
 
     #initialising Ui
-    FontUi1 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
-    FontUi2 = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
+    FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
+
 
     Ui_bg = pygame.image.load(path.join("Assets", "Misc", "userinterface.png"))
 
@@ -117,7 +117,7 @@ def game(x, y):
 
             oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
 
-            Oxygen_display = FontUi2.render(str(player.oxyAcc()), 1, (220, 0, 255))
+            Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
         if nbFrame % 5 == 1:
             player.Anim(surface)
@@ -131,22 +131,27 @@ def game(x, y):
             player.NeedToIdle(surface)
 
         if player.scoreAcc() < 1000:
-            score_display = FontUi2.render(str(player.scoreAcc()), 1, (220, 0, 255))
+            score_display = FontUi.render(str(player.scoreAcc()), 1, (220, 0, 255))
         elif player.scoreAcc() < 100000:
-            score_display = FontUi2.render(str((player.scoreAcc())/1000)+" k", 1, (220, 0, 255))
+            score_display = FontUi.render(str((player.scoreAcc())/1000)+" k", 1, (220, 0, 255))
         else:
-            score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
+            score_display = FontUi.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
+
+        Depth_display = FontUi.render(str(currentOffset), 1, (220, 0, 255))
 
         if not isPaused:
+
             surface.blit(Ui_bg, (0, 0))
             surface.blit(score_display, (640, 107))
             surface.blit(Oxygen_display, (640, 200))
             surface.blit(oxyImage, (537, 252))
+            surface.blit(Depth_display, (640, 377))
 
+            #lives
+            for i in range (0,player.livesAcc()):
+                surface.blit(icon, (700-i*70, 500))
         if isPaused:
             surface.blit(PauseMenu, (0, 0))
-
-
         nbFrame += 1
         pygame.display.update()
         fpsClock.tick(FPS)

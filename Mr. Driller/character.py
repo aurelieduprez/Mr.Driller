@@ -23,7 +23,6 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Textures
         self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
-        self.__texturePath = path.join("Assets", "Textures", "Character", "play_fall.png")
 
         # Animation
 
@@ -52,6 +51,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def climbAcc(self):
         return self.__climb
+
+    def livesAcc(self):
+        return self.__lives
 
     def oxyAcc(self):
         return self.__oxygen
