@@ -137,15 +137,19 @@ def game(x, y):
         else:
             score_display = FontUi2.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
 
-        surface.blit(Ui_bg, (0, 0))
-        surface.blit(score_display, (640, 107))
-        surface.blit(Oxygen_display, (640, 200))
-        surface.blit(oxyImage, (537, 252))
+        if isPaused == False :
+            surface.blit(Ui_bg, (0, 0))
+            surface.blit(score_display, (640, 107))
+            surface.blit(Oxygen_display, (640, 200))
+            surface.blit(oxyImage, (537, 252))
+        if isPaused == True :
+            surface.blit(PauseMenu, (0, 0))
+
 
         nbFrame += 1
-
         pygame.display.update()
         fpsClock.tick(FPS)
+
 
         while isPaused == True:
             for event in pygame.event.get():
@@ -158,6 +162,14 @@ def game(x, y):
                         isPaused = False
                         render(surface, level, currentOffset)
                         player.display(surface)
+
+                    if event.key == K_r:
+                        print ("Restart")
+
+                    if event.key == movKeys[2]:
+                        isPaused = False
+                        inProgress = False
+
                     else:
                         keydownHandle(event)
 
@@ -175,6 +187,7 @@ def game(x, y):
                     elif 341 < x < 475 and 395 < y < 450: #coordonnées Quit
                         isPaused = False
                         inProgress = False
+
 
 
     pygame.quit()
