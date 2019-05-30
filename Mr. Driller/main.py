@@ -103,7 +103,7 @@ def game(x, y):
             print("oxygen =", player.oxyAcc())
             for item in blocksDisap:
                 if level[item[0]][item[1]].hpAccess() > 0:
-                    level[item[0]][item[1]].timeout()
+                    level[item[0]][item[1]].timeout(surface, currentOffset)
                 elif level[item[0]][item[1]].hpAccess() == 0:
                     del(blocksDisap[blocksDisap.index(item)])
 
@@ -115,6 +115,10 @@ def game(x, y):
                 for element in level[i]:
                     if element.typeAccess() == "delayed":
                         if element.idAcc() and element.hpAccess() > 0:
+                            if player.blocksFallenAcc() != currentOffset:
+                                currentOffset += 1
+                                currentBotLine += 1
+                            element.updOffset(currentOffset)
                             posY, posX = element.posAcc()
                             bDis = [posY, posX]
                             if bDis not in blocksDisap:

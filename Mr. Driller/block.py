@@ -60,14 +60,14 @@ class Block:
             player.updateOxygen(2, surface)
             player.AddScore(10)
 
-
         elif self._blockType == "pill" and self._hp == 0:
             player.updateOxygen(3, surface)
             player.AddScore(10)
 
         elif self._blockType == "delayed":
             self._isDisappearing = True
-
+            self.updTexture()
+            self.display(surface)
 
         elif self._blockType == "end":
             print("fin de level")
@@ -295,10 +295,19 @@ class Delayed(Block):
     def posAcc(self):
         return self._posY, self._posX
 
-    def timeout(self):
+    def updTexture(self):
+        if self._isDisappearing:
+            if self.hpAccess() > 0:
+                textName = str(self.__seconds)
+                textName += ".png"
+                self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", textName)
+
+    def timeout(self, surface, currentOffset):
 
         if self._isDisappearing:
             self.__seconds -= 1
+            self.updTexture()
+            self.display(surface)
 
         if self.__seconds == 0:
             self._hp = 0
