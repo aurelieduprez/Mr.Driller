@@ -124,7 +124,7 @@ def game(x, y):
             render(surface, level, currentOffset)
             player.display(surface)
 
-        if not player.IdlingAcc(): #check if player is already idling
+        if not player.IdlingAcc(): # check if player is already idling
             nbFrameAnim += 1
 
         if nbFrameAnim % 10 == 1:
