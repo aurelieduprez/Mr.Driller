@@ -26,7 +26,7 @@ class Block:
 
         # Textures
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
-        self._bg = path.join("Assets", "Textures", "Background", "bg.png")
+        self._bg = path.join("Assets", "Textures", "Background", "bg_1.png")
 
     # Accessors
 
@@ -42,10 +42,10 @@ class Block:
     # Logical Method
 
     def changeBG(self, bg):
-        if bg == 1:
-            self._bg = path.join("Assets", "Textures", "Background", "bg.png")
-        elif bg == 2:
-            self._bg = path.join("Assets", "Textures", "Background", "bg_2.png")
+        file = "bg_"
+        file += str(bg)
+        file += ".png"
+        self._bg = path.join("Assets", "Textures", "Background", file)
 
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
@@ -55,20 +55,17 @@ class Block:
             self._hp = 0
 
         if self._blockType == "unbreakable":
-            print("broke ub")
             self._hp -= 1
             if self.hpAccess() == 0:
                 player.updateOxygen(2, surface)
                 player.AddScore(10)
 
         elif self._blockType == "pill":
-            print("took pill")
             player.updateOxygen(3, surface)
             player.AddScore(20)
             self._hp -= 1
 
         elif self._blockType == "delayed":
-            print("broke delayed")
             if not self.idAcc():
                 player.AddScore(10)
             self._isDisappearing = True
@@ -76,12 +73,10 @@ class Block:
             self.display(surface)
 
         elif self._blockType == "end":
-            print("broke end")
             refreshScore(player.scoreAcc())
             print("fin de level")
 
         else:
-            print("broke classic")
             player.AddScore(10)
             self._hp -= 1
 
@@ -331,15 +326,18 @@ class Pill(Block):
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 1, 0)
-        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill_1.png")
         self._blockType = "pill"
 
     def changeBG(self, bg):
-
-        if bg == 1:
-            self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill.png")
-        elif bg == 2:
-            self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill_2.png")
+        text = "pill_"
+        text += str(bg)
+        text += ".png"
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", text)
+        file = "bg_"
+        file += str(bg)
+        file += ".png"
+        self._bg = path.join("Assets", "Textures", "Background", file)
 
 
 class End(Block):

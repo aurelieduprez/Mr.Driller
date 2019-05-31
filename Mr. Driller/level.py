@@ -4,7 +4,7 @@ import block
 level = []
 
 
-def generateLvl(colors, lines, width, pillP=5, PillPL=5, PillMLE=20, SoloP=10, UnbreakableP=5, DelayedP=10):
+def generateLvl(colors, lines, width, background, pillP=5, PillPL=5, PillMLE=20, SoloP=10, UnbreakableP=5, DelayedP=10):
     # pillPL : Minimal pill qty / level
     # pillMLE : Minimal number of lines between pills
     LineRemainBeforePill = 0
@@ -14,6 +14,7 @@ def generateLvl(colors, lines, width, pillP=5, PillPL=5, PillMLE=20, SoloP=10, U
         if i in range(5):   # Override for first 5 lines -> generates empty blocks
             for j in range(width):
                 newBlock = block.Classic(j, i, 1, 0)
+                newBlock.changeBG(background)
                 line.append(newBlock)
 
         elif i in range(lines):
@@ -28,27 +29,33 @@ def generateLvl(colors, lines, width, pillP=5, PillPL=5, PillMLE=20, SoloP=10, U
                 if PillRn < pillP and PillPL != 0 and LineRemainBeforePill < 0:
                     PillPL -= 1
                     newBlock = block.Pill(j, i)
+                    newBlock.changeBG(background)
                     line.append(newBlock)
                     LineRemainBeforePill = PillMLE
 
                 elif SoloRn < SoloP:
                     newBlock = block.Solo(j, i)
+                    newBlock.changeBG(background)
                     line.append(newBlock)
 
                 elif UnbreakableRn < UnbreakableP:
                     newBlock = block.Unbreakable(j, i)
+                    newBlock.changeBG(background)
                     line.append(newBlock)
 
                 elif DelayedRn < DelayedP:
                     newBlock = block.Delayed(j, i)
+                    newBlock.changeBG(background)
                     line.append(newBlock)
 
                 else:
                     newBlock = block.Classic(j, i, randint(1, colors), 1)
+                    newBlock.changeBG(background)
                     line.append(newBlock)
         else:
             for j in range(width):
                 newBlock = block.End(j, i)
+                newBlock.changeBG(background)
                 line.append(newBlock)
 
         level.append(line)

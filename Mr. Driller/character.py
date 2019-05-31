@@ -8,7 +8,7 @@ from time import sleep
 class Character:        # Important : directions list : Up = 1; Right = 2; Down = 3; Left = 4
     """Character class"""
 
-    def __init__(self, posX, posY, currentBotLine, surface, lives):
+    def __init__(self, posX, posY, bg, lives):
 
         # Position
         self.__posX = posX
@@ -22,7 +22,10 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         self.__score = 0
 
         # Textures
-        self.__bg = path.join("Assets", "Textures", "Background", "bg.png")
+        file = "bg_"
+        file += str(bg)
+        file += ".png"
+        self.__bg = path.join("Assets", "Textures", "Background", file)
 
         # Animation
 
@@ -190,7 +193,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             level[self.__posY][self.__posX - 1].display(surface, self.__blocksFallen)
 
         # Right Climb
-        elif direction == 2 and self.__posX < len(level[0]) - 1\
+        elif direction == 2 and self.__posX < len(level[0]) - 1 \
                 and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
                 and level[self.__posY - 1][self.__posX + 1].hpAccess() == 0 :
@@ -224,14 +227,14 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         if direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() == 0:
-
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
             self.__posX -= 1
             self.display(surface)
             level[self.__posY][self.__posX + 1].display(surface, self.__blocksFallen)
 
         # Left Pill
-        elif direction == 4 and self.__posX > 0 - 1 and level[self.__posY][self.__posX - 1].typeAccess() == "pill":
+        elif direction == 4 and self.__posX > 0 - 1 \
+                and level[self.__posY][self.__posX - 1].typeAccess() == "pill":
             level[self.__posY][self.__posX - 1].hit(surface, level, self)
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
             self.__posX -= 1
@@ -344,7 +347,6 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__oxygen -= 1
         elif funct == 2:
             self.__oxygen -= 20
-            print(self.__oxygen)
         elif funct == 3:
             if self.__oxygen <= 70:
                 self.__oxygen += 30

@@ -5,7 +5,6 @@ import pygame
 def keydownHandle(event):
 
     print(event.key)
-    pygame.key.name(event.key)
 
 
 def movementHandle(event, surface, player, level, movKeys):

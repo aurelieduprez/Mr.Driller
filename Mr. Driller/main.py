@@ -30,13 +30,12 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
-    level = generateLvl(4, 150, 7)
+    player = Character(3, 4, 5, lives=2)    # Creates the player instance
+    level = generateLvl(4, 150, 7, 5)
     inPause = False
     inMenu = True
     optionIM = 1
     inProgress = True
-
 
     # print(len(level))
     nbFrame = 1
@@ -251,7 +250,6 @@ def game(x, y):
 
         if nbFrame % 30 == 1 and not inPause and not inMenu:   # Once per second
             player.updateOxygen(1, surface)
-            print("oxygen =", player.oxyAcc())
             for item in blocksDisap:
                 if level[item[0]][item[1]].hpAccess() > 0:
                     level[item[0]][item[1]].timeout(surface, currentOffset)
