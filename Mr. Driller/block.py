@@ -75,6 +75,7 @@ class Block:
         elif self._blockType == "end":
             refreshScore(player.scoreAcc())
             print("fin de level")
+            self._hp -= 1
 
         else:
             player.AddScore(10)

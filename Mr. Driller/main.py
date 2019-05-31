@@ -30,21 +30,20 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
-    player = Character(3, 4, 5, lives=2)    # Creates the player instance
-    level = generateLvl(4, 150, 7, 5)
+    nbFrame = 1
+    blocksDisap = []
+    player = Character(3, 4, 5, 3)    # Creates the player instance(posX, posY, bckgrnd, lives)
+    level = generateLvl(4, 150, 7, 5)   # Generates Lvl (nmb colors, depth, width, bckgrns)
+
+    # State of the Game
     inPause = False
     inMenu = True
     optionIM = 1
     inProgress = True
 
-    # print(len(level))
-    nbFrame = 1
-    blocksDisap = []
-
-    # Initialising Ui
+    # Initializing Ui
     FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
     Ui_bg = pygame.image.load(path.join("Assets", "Misc", "userinterface.png"))
-
     fileName = str(player.oxyAcc())
     fileName += ".png"
     oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
@@ -58,18 +57,16 @@ def game(x, y):
 
     arrowKeys = [K_UP, K_DOWN, K_LEFT, K_RIGHT]
 
-    # Update Connected textures
-
+    # Updating Connected textures
     for line in level:
         for element in line:
             element.updCoText(level)
 
     # Main loop
-
     while inProgress:
         if not inPause and not inMenu:
-            # Rendering level and displaying player
 
+            # Rendering level and displaying player
             render(surface, level, currentOffset)
             player.Anim(surface)
             player.display(surface)
