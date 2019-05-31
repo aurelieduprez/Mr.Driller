@@ -69,10 +69,3 @@ def render(surface, level, currOffset):
         for i in range(currOffset, currOffset+9, 1):
             for element in level[i]:
                 element.display(surface, currOffset)
-
-
-
-
-
-
-

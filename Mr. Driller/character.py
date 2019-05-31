@@ -206,7 +206,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         elif direction == 2 and self.__posX < len(level[0]) - 1 \
                 and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
-                and level[self.__posY - 1][self.__posX + 1].typeAccess() == "pill" :
+                and level[self.__posY - 1][self.__posX + 1].typeAccess() == "pill":
 
             level[self.__posY - 1][self.__posX + 1].hit(surface, level, self)
 
@@ -231,7 +231,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             level[self.__posY][self.__posX + 1].display(surface, self.__blocksFallen)
 
         # Left Pill
-        elif direction == 4 and self.__posX > 0 - 1 and level[self.__posY][self.__posX - 1].typeAccess() == "pill" :
+        elif direction == 4 and self.__posX > 0 - 1 and level[self.__posY][self.__posX - 1].typeAccess() == "pill":
             level[self.__posY][self.__posX - 1].hit(surface, level, self)
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
             self.__posX -= 1
@@ -251,7 +251,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.display(surface)
             level[self.__posY][self.__posX + 1].display(surface, self.__blocksFallen)
 
-        #Left Climb Pill
+        # Left Climb Pill
         elif direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
@@ -273,8 +273,8 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__IsDrillingRight_off = True
 
             if self.__posX < len(level[0])-1 \
-                and level[self.__posY][self. __posX + 1].hpAccess() > 0\
-                and level[self.__posY][self.__posX + 1].typeAccess() != "pill":
+                    and level[self.__posY][self. __posX + 1].hpAccess() > 0\
+                    and level[self.__posY][self.__posX + 1].typeAccess() != "pill":
                 self.__IsDrillingRight = True
                 level[self.__posY][self. __posX+1].hit(surface, level, self)
 
@@ -283,15 +283,15 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 and self.__posY < currentBotLine \
                 and level[self.__posY + 1][self.__posX].hpAccess() > 0 \
                 and level[self.__posY + 1][self.__posX].typeAccess() != "pill":
-                self.__IsDrillingDown = True
-                level[self.__posY+1][self. __posX].hit(surface, level, self)
+            self.__IsDrillingDown = True
+            level[self.__posY+1][self. __posX].hit(surface, level, self)
 
         # Left
-        elif direction == 4 :
+        elif direction == 4:
             self.__IsDrillingLeft_off = True
             if self.__posX > 0 \
-                and level[self.__posY][self. __posX - 1].hpAccess() > 0 \
-                and level[self.__posY][self.__posX - 1].typeAccess() != "pill" :
+                    and level[self.__posY][self. __posX - 1].hpAccess() > 0 \
+                    and level[self.__posY][self.__posX - 1].typeAccess() != "pill":
                 self.__IsDrillingLeft = True
                 level[self.__posY][self. __posX-1].hit(surface, level, self)
 
@@ -344,6 +344,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
             self.__oxygen -= 1
         elif funct == 2:
             self.__oxygen -= 20
+            print(self.__oxygen)
         elif funct == 3:
             if self.__oxygen <= 70:
                 self.__oxygen += 30

@@ -33,10 +33,12 @@ def game(x, y):
     player = Character(3, 4, currentBotLine, surface, lives=2)    # Creates the player instance
     level = generateLvl(4, 150, 7)
     inPause = False
-    inMenu = False
+    inMenu = True
+    optionIM = 1
     inProgress = True
 
-    print(len(level))
+
+    # print(len(level))
     nbFrame = 1
     blocksDisap = []
 
@@ -44,6 +46,10 @@ def game(x, y):
     FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
     Ui_bg = pygame.image.load(path.join("Assets", "Misc", "userinterface.png"))
 
+    fileName = str(player.oxyAcc())
+    fileName += ".png"
+    oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
+    Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
     # Initializing controls
     if 'nt' in name:
@@ -58,17 +64,21 @@ def game(x, y):
     for line in level:
         for element in line:
             element.updCoText(level)
+
     # Main loop
 
     while inProgress:
-        if not inPause:
+        if not inPause and not inMenu:
             # Rendering level and displaying player
+
             render(surface, level, currentOffset)
             player.Anim(surface)
             player.display(surface)
 
-        for event in pygame.event.get():
+        if inMenu:
+            mainMenu(surface, optionIM)
 
+        for event in pygame.event.get():
             nbFrameAnim = 1     # reset FrameCount for anim
 
             if event.type == QUIT:  # Quitting the game
@@ -77,11 +87,11 @@ def game(x, y):
 
             if event.type == KEYDOWN:       # Event handling
                 # Test key for revive :P
-                if event.key == K_UP and not inPause:
+                if event.key == K_UP and not inPause and not inMenu:
                     player.AddScore(1000)
 
                 if event.key == K_ESCAPE:
-                    if not inPause:
+                    if not inPause and not inMenu:
                         inPause = True
                         option = 0
                         optionFile = str(option)
@@ -95,8 +105,7 @@ def game(x, y):
                         player.display(surface)
 
                 if event.key in movKeys:    # Movement
-
-                    if not inPause:
+                    if not inPause and not inMenu:
                         movementHandle(event, surface, player, level, movKeys)
 
                     elif inPause:
@@ -139,8 +148,7 @@ def game(x, y):
                             surface.blit(pauseImage, (0, 0))
 
                 elif event.key in arrowKeys:    # Block breaking
-
-                    if not inPause:
+                    if not inPause and not inMenu:
                         breaking(event, surface, player, level, currentBotLine)
 
                     elif inPause:
@@ -182,18 +190,35 @@ def game(x, y):
                             pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
-                elif event.key == K_RETURN and inPause:
-                    if option == 1:
-                        inPause = False
-                        render(surface, level, currentOffset)
-                        player.display(surface)
+                    elif inMenu:
+                        if event.key == K_UP and optionIM == 2:
+                            optionIM = 1
+                            mainMenu(surface, optionIM)
+                        elif event.key == K_DOWN and optionIM == 1:
+                            optionIM = 2
+                            mainMenu(surface, optionIM)
 
-                    elif option == 2:
-                        print("Restart")
+                elif event.key == K_RETURN:
+                    if inPause:
+                        if option == 1:
+                            inPause = False
+                            render(surface, level, currentOffset)
+                            player.display(surface)
 
-                    elif option == 3:
-                        inPause = False
-                        inProgress = False
+                        elif option == 2:
+                            inPause = False
+                            print("Restart")
+
+                        elif option == 3:
+                            inPause = False
+                            inMenu = True
+
+                    elif inMenu:
+                        if optionIM == 1:
+                            inMenu = False
+
+                        elif optionIM == 2:
+                            inProgress = False
 
                 else:
                     keydownHandle(event)
@@ -224,7 +249,7 @@ def game(x, y):
 
         # Timed actions
 
-        if nbFrame % 30 == 1 and not inPause:   # Once per second
+        if nbFrame % 30 == 1 and not inPause and not inMenu:   # Once per second
             player.updateOxygen(1, surface)
             print("oxygen =", player.oxyAcc())
             for item in blocksDisap:
@@ -233,14 +258,12 @@ def game(x, y):
                 elif level[item[0]][item[1]].hpAccess() == 0:
                     del(blocksDisap[blocksDisap.index(item)])
 
-            fileName = str(player.oxyAcc())
-            fileName += ".png"
+        fileName = str(player.oxyAcc())
+        fileName += ".png"
+        oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
+        Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
-            oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
-
-            Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
-
-        if nbFrame % 5 == 1 and not inPause:    # 6 times per second
+        if nbFrame % 5 == 1 and not inPause and not inMenu:    # 6 times per second
             player.Anim(surface)
             render(surface, level, currentOffset)
             player.display(surface)
@@ -257,10 +280,10 @@ def game(x, y):
                             if bDis not in blocksDisap:
                                 blocksDisap.append(bDis)
 
-        if not player.IdlingAcc() and not inPause:   # check if player is already idling
+        if not player.IdlingAcc() and not inPause and not inMenu:   # check if player is already idling
             nbFrameAnim += 1
 
-        if nbFrameAnim % 10 == 1 and not inPause:
+        if nbFrameAnim % 10 == 1 and not inPause and not inMenu:
             player.NeedToIdle(surface)
 
         if player.scoreAcc() < 1000:
@@ -272,7 +295,7 @@ def game(x, y):
 
         Depth_display = FontUi.render(str(currentOffset), 1, (220, 0, 255))
 
-        if not inPause:
+        if not inPause and not inMenu:
             surface.blit(Ui_bg, (0, 0))
             surface.blit(score_display, (640, 107))
             surface.blit(Oxygen_display, (640, 200))

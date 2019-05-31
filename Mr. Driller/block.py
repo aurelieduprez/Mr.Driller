@@ -54,17 +54,21 @@ class Block:
         if instakill:
             self._hp = 0
 
-        if self._blockType == "unbreakable" and self._hp == 0:
-            player.updateOxygen(2, surface)
-            player.AddScore(10)
+        if self._blockType == "unbreakable":
+            print("broke ub")
             self._hp -= 1
+            if self.hpAccess() == 0:
+                player.updateOxygen(2, surface)
+                player.AddScore(10)
 
-        elif self._blockType == "pill" and self._hp == 0:
+        elif self._blockType == "pill":
+            print("took pill")
             player.updateOxygen(3, surface)
             player.AddScore(20)
             self._hp -= 1
 
         elif self._blockType == "delayed":
+            print("broke delayed")
             if not self.idAcc():
                 player.AddScore(10)
             self._isDisappearing = True
@@ -72,10 +76,12 @@ class Block:
             self.display(surface)
 
         elif self._blockType == "end":
+            print("broke end")
             refreshScore(player.scoreAcc())
             print("fin de level")
 
         else:
+            print("broke classic")
             player.AddScore(10)
             self._hp -= 1
 

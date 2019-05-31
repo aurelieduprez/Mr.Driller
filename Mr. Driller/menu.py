@@ -1,5 +1,19 @@
-#! MAIN POUR LE MENU
+import pygame
 from os import path
+
+
+def mainMenu(surface, optionIM):
+    bg = pygame.image.load(path.join("Assets", "Menu", "menu.png"))
+    if optionIM == 1:
+        playImg = pygame.image.load(path.join("Assets", "Buttons", "play_s.png"))
+        quitImg = pygame.image.load(path.join("Assets", "Buttons", "quit_u.png"))
+    elif optionIM == 2:
+        playImg = pygame.image.load(path.join("Assets", "Buttons", "play_u.png"))
+        quitImg = pygame.image.load(path.join("Assets", "Buttons", "quit_s.png"))
+
+    surface.blit(bg, (0, 0))
+    surface.blit(playImg, (310, 300))
+    surface.blit(quitImg, (310, 400))
 
 
 def refreshScore(newScore):
