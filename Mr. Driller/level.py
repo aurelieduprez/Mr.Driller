@@ -73,6 +73,7 @@ def render(surface, level, currOffset):
 
     # scroll up
     else:
-        for i in range(currOffset, currOffset+9, 1):
-            for element in level[i]:
-                element.display(surface, currOffset)
+        if currOffset+9 < len(level):
+            for i in range(currOffset, currOffset+9, 1):
+                for element in level[i]:
+                    element.display(surface, currOffset)
