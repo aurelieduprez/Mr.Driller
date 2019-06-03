@@ -32,8 +32,9 @@ def game(x, y):
     backDown = False
     nbFrame = 1
     blocksDisap = []
-    player = Character(3, 4, 5, 3)    # Creates the player instance(posX, posY, bckgrnd, lives)
-    level = generateLvl(4, 150, 7, 5)   # Generates Lvl (nmb colors, depth, width, bckgrns)
+    levelID = 4
+    player = Character(3, 4, levelID, 2)    # Creates the player instance(posX, posY, bckgrnd, lives)
+    level = generateLvl(4, 150, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
 
     # State of the Game
     inPause = False
@@ -288,7 +289,7 @@ def game(x, y):
         else:
             score_display = FontUi.render(str(int((player.scoreAcc())/1000)) + " k", 1, (220, 0, 255))
 
-        Depth_display = FontUi.render(str(currentOffset), 1, (220, 0, 255))
+        Depth_display = FontUi.render(str(currentOffset-player.climbAcc()), 1, (220, 0, 255))
 
         if not inPause and not inMenu:
             surface.blit(Ui_bg, (0, 0))

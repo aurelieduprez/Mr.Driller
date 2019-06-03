@@ -70,7 +70,6 @@ class Block:
                 player.AddScore(10)
             self._isDisappearing = True
             self.updTexture()
-            self.display(surface)
 
         elif self._blockType == "end":
             refreshScore(player.scoreAcc())
