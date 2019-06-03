@@ -32,7 +32,7 @@ def game(x, y):
     backDown = False
     nbFrame = 1
     blocksDisap = []
-    levelID = 4
+    levelID = 5
     player = Character(3, 4, levelID, 2)    # Creates the player instance(posX, posY, bckgrnd, lives)
     level = generateLvl(4, 150, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
 

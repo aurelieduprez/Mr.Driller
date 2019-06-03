@@ -56,6 +56,7 @@ class Block:
 
         if self._blockType == "unbreakable":
             self._hp -= 1
+            self.updTexture()
             if self.hpAccess() == 0:
                 player.updateOxygen(2, surface)
                 player.AddScore(10)
@@ -274,8 +275,13 @@ class Unbreakable(Block):
 
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 5, 0)
-        self._texturePath = path.join("Assets", "Textures", "Blocks", "Unbreakable", "b_s.png")
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Unbreakable", "5.png")
         self._blockType = "unbreakable"
+
+    def updTexture(self):
+        name = str(self.hpAccess())
+        name += ".png"
+        self._texturePath = path.join("Assets", "Textures", "Blocks", "Unbreakable", name)
 
 
 class Solo(Block):
