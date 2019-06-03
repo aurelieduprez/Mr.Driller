@@ -28,6 +28,9 @@ class Block:
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg_1.png")
 
+        # Sound
+        #brkSound =
+
     # Accessors
 
     def hpAccess(self):

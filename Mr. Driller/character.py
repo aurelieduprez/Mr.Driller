@@ -322,8 +322,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def revive(self, surface):
 
-        if self.__lives == 0:
-            print("dead")   # End
+        if self.__lives <= 0:
+            self.__lives -= 1
+            self.__oxygen = 100
 
         else:
             self.__IsReviving = True

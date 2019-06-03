@@ -33,7 +33,7 @@ def game(x, y):
     nbFrame = 1
     blocksDisap = []
     levelID = 5
-    player = Character(3, 4, levelID, 2)    # Creates the player instance(posX, posY, bckgrnd, lives)
+    player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
     level = generateLvl(4, 150, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
 
     # State of the Game
@@ -41,6 +41,8 @@ def game(x, y):
     inMenu = True
     optionIM = 1
     inProgress = True
+    isDead = False
+    hasToInit = True
 
     # Initializing Ui
     FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
@@ -65,7 +67,12 @@ def game(x, y):
 
     # Main loop
     while inProgress:
-        if not inPause and not inMenu:
+        if player.livesAcc() < 0 and not isDead and not inMenu and not inPause and not hasToInit:
+            isDead = True
+            deathScreen = pygame.image.load(path.join("Assets", "Splash", "death.png"))
+            surface.blit(deathScreen, (0, 0))
+
+        if not inPause and not inMenu and not isDead:
 
             # Rendering level and displaying player
             render(surface, level, currentOffset)
@@ -100,6 +107,9 @@ def game(x, y):
                         inPause = False
                         render(surface, level, currentOffset)
                         player.display(surface)
+
+                    elif isDead:
+                        inMenu = True
 
                 if event.key in movKeys:    # Movement
                     if not inPause and not inMenu:
@@ -213,6 +223,7 @@ def game(x, y):
                     elif inMenu:
                         if optionIM == 1:
                             inMenu = False
+                            hasToInit = False
 
                         elif optionIM == 2:
                             inProgress = False
@@ -246,7 +257,7 @@ def game(x, y):
 
         # Timed actions
 
-        if nbFrame % 30 == 1 and not inPause and not inMenu:   # Once per second
+        if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead:   # Once per second
             player.updateOxygen(1, surface)
             for item in blocksDisap:
                 if level[item[0]][item[1]].hpAccess() > 0:
@@ -254,12 +265,13 @@ def game(x, y):
                 elif level[item[0]][item[1]].hpAccess() == 0:
                     del(blocksDisap[blocksDisap.index(item)])
 
+
         fileName = str(player.oxyAcc())
         fileName += ".png"
         oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
         Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
-        if nbFrame % 5 == 1 and not inPause and not inMenu:    # 6 times per second
+        if nbFrame % 5 == 1 and not inPause and not inMenu and not isDead:    # 6 times per second
             player.Anim(surface)
             render(surface, level, currentOffset)
             player.display(surface)
@@ -276,10 +288,10 @@ def game(x, y):
                             if bDis not in blocksDisap:
                                 blocksDisap.append(bDis)
 
-        if not player.IdlingAcc() and not inPause and not inMenu:   # check if player is already idling
+        if not player.IdlingAcc() and not inPause and not inMenu and not isDead:   # check if player is already idling
             nbFrameAnim += 1
 
-        if nbFrameAnim % 10 == 1 and not inPause and not inMenu:
+        if nbFrameAnim % 10 == 1 and not inPause and not inMenu and not isDead:
             player.NeedToIdle(surface)
 
         if player.scoreAcc() < 1000:
@@ -291,7 +303,7 @@ def game(x, y):
 
         Depth_display = FontUi.render(str(currentOffset-player.climbAcc()), 1, (220, 0, 255))
 
-        if not inPause and not inMenu:
+        if not inPause and not inMenu and not isDead:
             surface.blit(Ui_bg, (0, 0))
             surface.blit(score_display, (640, 107))
             surface.blit(Oxygen_display, (640, 200))
