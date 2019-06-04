@@ -12,6 +12,7 @@ if not pygame.font:
     print('Warning : font off')
 if not pygame.mixer:
     print('Warning : sound off')
+pygame.mixer.init(44100, 16, 2, 128)
 
 
 def game(x, y):

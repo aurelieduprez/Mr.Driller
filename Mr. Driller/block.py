@@ -28,9 +28,6 @@ class Block:
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg_1.png")
 
-        # Sound
-        #brkSound =
-
     # Accessors
 
     def hpAccess(self):
@@ -61,8 +58,11 @@ class Block:
             self._hp -= 1
             self.updTexture()
             if self.hpAccess() == 0:
+                self._brkSound.play()
                 player.updateOxygen(2, surface)
                 player.AddScore(10)
+            else:
+                self._hitSound.play()
 
         elif self._blockType == "pill":
             player.updateOxygen(3, surface)
@@ -280,6 +280,8 @@ class Unbreakable(Block):
         Block.__init__(self, posX, posY, 5, 0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Unbreakable", "5.png")
         self._blockType = "unbreakable"
+        self._brkSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "unbreakable.wav"))
+        self._hitSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "tac.wav"))
 
     def updTexture(self):
         name = str(self.hpAccess())

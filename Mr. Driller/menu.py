@@ -35,6 +35,8 @@ def refreshScore(newScore):
 
     scoreFile.close()
 
+#def restart()
+
 
 
 
