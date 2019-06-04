@@ -32,7 +32,7 @@ def game(x, y):
     backDown = False
     nbFrame = 1
     blocksDisap = []
-    levelID = 5
+    levelID = 1
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
     level = generateLvl(4, 150, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
 
@@ -42,6 +42,7 @@ def game(x, y):
     optionIM = 1
     inProgress = True
     isDead = False
+    optionID = 0
     hasToInit = True
 
     # Initializing Ui
@@ -67,10 +68,11 @@ def game(x, y):
 
     # Main loop
     while inProgress:
-        if player.livesAcc() < 0 and not isDead and not inMenu and not inPause and not hasToInit:
+        if player.livesAcc() < 0 and not isDead and not inMenu and not inPause and not hasToInit and optionID == 0:
             isDead = True
-            deathScreen = pygame.image.load(path.join("Assets", "Splash", "death.png"))
+            deathScreen = pygame.image.load(path.join("Assets", "Splash", "death1.png"))
             surface.blit(deathScreen, (0, 0))
+            optionID = 1
 
         if not inPause and not inMenu and not isDead:
 
@@ -91,11 +93,11 @@ def game(x, y):
 
             if event.type == KEYDOWN:       # Event handling
                 # Test key for revive :P
-                if event.key == K_UP and not inPause and not inMenu:
+                if event.key == K_UP and not inPause and not inMenu and not isDead:
                     player.AddScore(1000)
 
                 if event.key == K_ESCAPE:
-                    if not inPause and not inMenu:
+                    if not inPause and not inMenu and not isDead:
                         inPause = True
                         option = 0
                         optionFile = str(option)
@@ -112,7 +114,7 @@ def game(x, y):
                         inMenu = True
 
                 if event.key in movKeys:    # Movement
-                    if not inPause and not inMenu:
+                    if not inPause and not inMenu and not isDead:
                         movementHandle(event, surface, player, level, movKeys)
 
                     elif inPause:
@@ -154,8 +156,38 @@ def game(x, y):
                             pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
+                    elif isDead:
+                        if event.key == movKeys[3] and optionID == 1:
+                            render(surface, level, currentOffset)
+                            surface.blit(Ui_bg, (0, 0))
+                            surface.blit(score_display, (640, 107))
+                            for i in range(0, player.livesAcc()):
+                                surface.blit(icon, (700 - i * 70, 500))
+
+                            optionID += 1
+                            optionFile = "death"
+                            optionFile += str(optionID)
+                            optionFile += ".png"
+                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            surface.blit(pauseImage, (0, 0))
+
+                        elif event.key == movKeys[0] and optionID == 2:
+                            render(surface, level, currentOffset)
+
+                            surface.blit(Ui_bg, (0, 0))
+                            surface.blit(score_display, (640, 107))
+                            for i in range(0, player.livesAcc()):
+                                surface.blit(icon, (700 - i * 70, 500))
+
+                            optionID -= 1
+                            optionFile = "death"
+                            optionFile += str(optionID)
+                            optionFile += ".png"
+                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            surface.blit(pauseImage, (0, 0))
+
                 elif event.key in arrowKeys:    # Block breaking
-                    if not inPause and not inMenu:
+                    if not inPause and not inMenu and not isDead:
                         breaking(event, surface, player, level, currentBotLine)
 
                     elif inPause:
@@ -205,6 +237,37 @@ def game(x, y):
                             optionIM = 2
                             mainMenu(surface, optionIM)
 
+                    elif isDead:
+                        if event.key == K_DOWN and optionID == 1:
+                            render(surface, level, currentOffset)
+
+                            surface.blit(Ui_bg, (0, 0))
+                            surface.blit(score_display, (640, 107))
+                            for i in range(0, player.livesAcc()):
+                                surface.blit(icon, (700 - i * 70, 500))
+
+                            optionID += 1
+                            optionFile = "death"
+                            optionFile += str(optionID)
+                            optionFile += ".png"
+                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            surface.blit(pauseImage, (0, 0))
+
+                        elif event.key == K_UP and optionID == 2:
+                            render(surface, level, currentOffset)
+
+                            surface.blit(Ui_bg, (0, 0))
+                            surface.blit(score_display, (640, 107))
+                            for i in range(0, player.livesAcc()):
+                                surface.blit(icon, (700 - i * 70, 500))
+
+                            optionID -= 1
+                            optionFile = "death"
+                            optionFile += str(optionID)
+                            optionFile += ".png"
+                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            surface.blit(pauseImage, (0, 0))
+
                 elif event.key == K_RETURN:
                     if inPause:
                         if option == 1:
@@ -228,6 +291,14 @@ def game(x, y):
                         elif optionIM == 2:
                             inProgress = False
 
+                    elif isDead:
+                        if optionID == 1:
+                            print("restart")
+
+                        elif optionID == 2:
+                            inMenu = True
+                            isDead = False
+
                 else:
                     keydownHandle(event)
 
@@ -244,10 +315,10 @@ def game(x, y):
             backDown = True
 
         # Updating blocks when falling
+        if not isDead and not inPause and not inMenu:
+            player.fall(surface, level)
 
-        player.fall(surface, level)
-
-        if player.blocksFallenAcc() != currentOffset:
+        if player.blocksFallenAcc() != currentOffset and not inMenu and not inPause and not isDead:
             currentOffset += 1
             currentBotLine += 1
 
@@ -264,7 +335,6 @@ def game(x, y):
                     level[item[0]][item[1]].timeout(surface, currentOffset)
                 elif level[item[0]][item[1]].hpAccess() == 0:
                     del(blocksDisap[blocksDisap.index(item)])
-
 
         fileName = str(player.oxyAcc())
         fileName += ".png"
@@ -310,7 +380,7 @@ def game(x, y):
             surface.blit(oxyImage, (537, 252))
             surface.blit(Depth_display, (640, 377))
 
-            #lives
+            # Lives display
             for i in range(0, player.livesAcc()):
                 surface.blit(icon, (700-i*70, 500))
 
