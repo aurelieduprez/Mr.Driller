@@ -367,6 +367,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
     def resetScore(self):
         self.__score = 0
+        self.__lives = 2
 
     def updateOxygen(self, funct, surface, level):
         if funct == 1:

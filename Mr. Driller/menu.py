@@ -57,6 +57,10 @@ def changeLvl(currentLvl, player):
     else:
         lvl = level.generateLvl(colors, 15, 7, currentLvl)
 
+    for row in lvl:
+        for block in row:
+            block.updCoText(lvl)
+
     return lvl, currentLvl
 
 

@@ -79,7 +79,7 @@ def game(x, y):
     while inProgress:
         if player.livesAcc() < 0 and not isDead and not inMenu and not inPause and not hasToInit and optionID == 0:
             isDead = True
-            deathScreen = pygame.image.load(path.join("Assets", "Splash", "death1.png"))
+            deathScreen = pygame.image.load(path.join("Assets", "Menu", "death1.png"))
             surface.blit(deathScreen, (0, 0))
             optionID = 1
 
@@ -195,7 +195,7 @@ def game(x, y):
                             optionFile = "death"
                             optionFile += str(optionID)
                             optionFile += ".png"
-                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
                         elif event.key == movKeys[0] and optionID == 2:
@@ -210,7 +210,7 @@ def game(x, y):
                             optionFile = "death"
                             optionFile += str(optionID)
                             optionFile += ".png"
-                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
                 elif event.key in arrowKeys:    # Block breaking
@@ -277,7 +277,7 @@ def game(x, y):
                             optionFile = "death"
                             optionFile += str(optionID)
                             optionFile += ".png"
-                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
                         elif event.key == K_UP and optionID == 2:
@@ -292,7 +292,7 @@ def game(x, y):
                             optionFile = "death"
                             optionFile += str(optionID)
                             optionFile += ".png"
-                            pauseImage = pygame.image.load(path.join("Assets", "Splash", optionFile))
+                            pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
                 elif event.key == K_RETURN:
@@ -333,7 +333,17 @@ def game(x, y):
 
                     elif isDead:
                         if optionID == 1:
-                            print("restart")
+                            isDead = False
+                            level, levelID = restart(player)
+                            currentBotLine = 8
+                            currentOffset = 0
+                            currentClimb = 0
+                            blocksDisap = []
+                            backDown = False
+                            splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
+                            surface.blit(splashLvl1, (0, 0))
+                            pygame.display.update()
+                            pygame.time.wait(3000)
 
                         elif optionID == 2:
                             inMenu = True
@@ -424,7 +434,6 @@ def game(x, y):
             for i in range(0, player.livesAcc()):
                 surface.blit(icon, (700-i*70, 500))
 
-        currentDepth = currentOffset - player.climbAcc()
         nbFrame += 1
         pygame.display.update()
         fpsClock.tick(FPS)
