@@ -12,7 +12,7 @@ if not pygame.font:
     print('Warning : font off')
 if not pygame.mixer:
     print('Warning : sound off')
-pygame.mixer.init(44100, 16, 2, 128)
+pygame.mixer.init(44100, 16, 2, 1024)
 
 
 def game(x, y):
@@ -31,11 +31,17 @@ def game(x, y):
     currentOffset = 0
     currentClimb = 0
     backDown = False
+
     nbFrame = 1
+
     blocksDisap = []
     levelID = 1
+    levelDepth = 25
+
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
-    level = generateLvl(4, 150, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
+    level = generateLvl(4, levelDepth, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
+
+    evChgLvl = pygame.event.Event(pygame.USEREVENT, attr1="evChgLvl")
 
     # State of the Game
     inPause = False
@@ -53,6 +59,8 @@ def game(x, y):
     fileName += ".png"
     oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
     Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
+    music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
+    pygame.mixer.music.play(-1, 0)
 
     # Initializing controls
     if 'nt' in name:
@@ -92,6 +100,23 @@ def game(x, y):
                 inPause = False
                 inProgress = False
 
+            if event == evChgLvl:
+                print("henlo")
+                splashName = "level"
+                splashName += str(levelID+1)
+                splashName += ".png"
+                splashImg = pygame.image.load(path.join("Assets", "Splash", splashName))
+                surface.blit(splashImg, (0, 0))
+                pygame.display.update()
+                pygame.time.wait(2500)
+                level, levelID = changeLvl(levelID, player)
+                currentBotLine = 8
+                currentOffset = 0
+                currentClimb = 0
+                blocksDisap = []
+                backDown = False
+                pygame.time.wait(2500)
+
             if event.type == KEYDOWN:       # Event handling
                 # Test key for revive :P
                 if event.key == K_UP and not inPause and not inMenu and not isDead:
@@ -100,7 +125,7 @@ def game(x, y):
                 if event.key == K_ESCAPE:
                     if not inPause and not inMenu and not isDead:
                         inPause = True
-                        option = 0
+                        option = 1
                         optionFile = str(option)
                         optionFile += ".png"
                         pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
@@ -330,7 +355,7 @@ def game(x, y):
         # Timed actions
 
         if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead:   # Once per second
-            player.updateOxygen(1, surface)
+            player.updateOxygen(1, surface, level)
             for item in blocksDisap:
                 if level[item[0]][item[1]].hpAccess() > 0:
                     level[item[0]][item[1]].timeout(surface, currentOffset)
@@ -385,6 +410,7 @@ def game(x, y):
             for i in range(0, player.livesAcc()):
                 surface.blit(icon, (700-i*70, 500))
 
+        currentDepth = currentOffset - player.climbAcc()
         nbFrame += 1
         pygame.display.update()
         fpsClock.tick(FPS)

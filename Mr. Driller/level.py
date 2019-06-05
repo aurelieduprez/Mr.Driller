@@ -1,12 +1,11 @@
 from random import randint
 import block
 
-level = []
 
-
-def generateLvl(colors, lines, width, background, pillP=5, PillPL=5, PillMLE=20, SoloP=10, UnbreakableP=5, DelayedP=10):
+def generateLvl(colors, lines, width, background, pillP=5, PillPL=7, PillMLE=20, SoloP=10, UnbreakableP=5, DelayedP=10):
     # pillPL : Minimal pill qty / level
     # pillMLE : Minimal number of lines between pills
+    level = []
     LineRemainBeforePill = 0
     for i in range(lines+5):
         line = []

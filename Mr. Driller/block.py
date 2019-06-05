@@ -4,7 +4,6 @@ import pygame
 from menu import *
 
 
-
 class Block:
     """General block mother-class"""
 
@@ -59,13 +58,13 @@ class Block:
             self.updTexture()
             if self.hpAccess() == 0:
                 self._brkSound.play()
-                player.updateOxygen(2, surface)
+                player.updateOxygen(2, surface, level)
                 player.AddScore(10)
             else:
                 self._hitSound.play()
 
         elif self._blockType == "pill":
-            player.updateOxygen(3, surface)
+            player.updateOxygen(3, surface, level)
             player.AddScore(20)
             self._hp -= 1
 
@@ -77,7 +76,7 @@ class Block:
 
         elif self._blockType == "end":
             refreshScore(player.scoreAcc())
-            print("fin de level")
+            self.changeLvl()
             self._hp -= 1
 
         else:
@@ -358,4 +357,14 @@ class End(Block):
         Block.__init__(self, posX, posY, 1, 0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "End", "b_s.png")
         self._blockType = "end"
+        self._nextLvl = False
+
+    def nextLvlAcc(self):
+        return self._nextLvl
+
+    def changeLvl(self):
+        evChgLvl = pygame.event.Event(pygame.USEREVENT, attr1="evChgLvl")
+        pygame.event.post(evChgLvl)
+
+
 

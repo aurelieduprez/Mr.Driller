@@ -1,7 +1,6 @@
 import pygame
 import time
 from os import path
-from level import level
 from time import sleep
 
 
@@ -162,6 +161,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__IsIdling = False
 
         self.display(surface)
+
     # Logical Methods
 
     def AddScore(self, x):
@@ -325,7 +325,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
             return self.__blocksFallen
 
-    def revive(self, surface):
+    def revive(self, surface, level):
 
         if self.__lives <= 0:
             self.__lives -= 1
@@ -348,19 +348,36 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
             self.__oxygen = 100
 
-    def updateOxygen(self, funct, surface):
+    def resetCoord(self, bg):
+
+        # Position
+        self.__posX = 3
+        self.__posY = 4
+        self.__blocksFallen = 0
+        self.__climb = 0
+
+        # Stats
+        self.__oxygen = 100
+
+        # Textures
+        file = "bg_"
+        file += str(bg)
+        file += ".png"
+        self.__bg = path.join("Assets", "Textures", "Background", file)
+
+    def updateOxygen(self, funct, surface, level):
         if funct == 1:
             self.__oxygen -= 1
         elif funct == 2:
             self.__oxygen -= 20
         elif funct == 3:
             if self.__oxygen <= 70:
-                self.__oxygen += 30
+                self.__oxygen += 20
             else:
                 self.__oxygen = 100
 
         if self.__oxygen <= 0:
-            self.revive(surface)
+            self.revive(surface, level)
 
     # Graphical Methods
 
