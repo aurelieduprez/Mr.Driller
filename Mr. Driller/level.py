@@ -62,6 +62,12 @@ def generateLvl(colors, lines, width, background, pillP=5, PillPL=7, PillMLE=20,
     return level
 
 
+def resetLevel(level):
+    for row in level:
+        for cell in row:
+            cell.reset
+
+
 def render(surface, level, currOffset):
 
     # init

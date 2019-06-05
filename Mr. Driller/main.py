@@ -101,21 +101,22 @@ def game(x, y):
                 inProgress = False
 
             if event == evChgLvl:
-                print("henlo")
+                # Displays splash for 3 secs
                 splashName = "level"
                 splashName += str(levelID+1)
                 splashName += ".png"
                 splashImg = pygame.image.load(path.join("Assets", "Splash", splashName))
                 surface.blit(splashImg, (0, 0))
                 pygame.display.update()
-                pygame.time.wait(2500)
+                pygame.time.wait(3000)
+
+                # Actually changes Lvl
                 level, levelID = changeLvl(levelID, player)
                 currentBotLine = 8
                 currentOffset = 0
                 currentClimb = 0
                 blocksDisap = []
                 backDown = False
-                pygame.time.wait(2500)
 
             if event.type == KEYDOWN:       # Event handling
                 # Test key for revive :P
@@ -303,7 +304,16 @@ def game(x, y):
 
                         elif option == 2:
                             inPause = False
-                            print("Restart")
+                            level, levelID = restart(player)
+                            currentBotLine = 8
+                            currentOffset = 0
+                            currentClimb = 0
+                            blocksDisap = []
+                            backDown = False
+                            splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
+                            surface.blit(splashLvl1, (0, 0))
+                            pygame.display.update()
+                            pygame.time.wait(3000)
 
                         elif option == 3:
                             inPause = False
@@ -311,6 +321,10 @@ def game(x, y):
 
                     elif inMenu:
                         if optionIM == 1:
+                            splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
+                            surface.blit(splashLvl1, (0, 0))
+                            pygame.display.update()
+                            pygame.time.wait(3000)
                             inMenu = False
                             hasToInit = False
 

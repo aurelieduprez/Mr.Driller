@@ -365,6 +365,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         file += ".png"
         self.__bg = path.join("Assets", "Textures", "Background", file)
 
+    def resetScore(self):
+        self.__score = 0
+
     def updateOxygen(self, funct, surface, level):
         if funct == 1:
             self.__oxygen -= 1

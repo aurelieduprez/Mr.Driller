@@ -39,8 +39,8 @@ def refreshScore(newScore):
 
 
 def changeLvl(currentLvl, player):
-    player.resetCoord(currentLvl)
     currentLvl += 1
+    player.resetCoord(currentLvl)
     if currentLvl in [2, 7]:
         colors = 2
     else:
@@ -59,15 +59,11 @@ def changeLvl(currentLvl, player):
 
     return lvl, currentLvl
 
-def restart(surface):
-    inPause = True
-    inMenu = False
-    optionIM = 1
-    inProgress = True
-    isDead = False
-    optionID = 0
-    hasToInit = True
-    currentLevel = 1
+
+def restart(player):
+    lvl, currentlvl = changeLvl(0, player)
+    player.resetScore()
+    return lvl, currentlvl
 
 
 
