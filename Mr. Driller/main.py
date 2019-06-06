@@ -32,21 +32,33 @@ def game(x, y):
     currentClimb = 0
     backDown = False
 
-    nbFrame = 1
-
     blocksDisap = []
     levelID = 1
 
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
     level = []
 
-    evChgLvl = pygame.event.Event(pygame.USEREVENT, attr1="evChgLvl")
+    # Custom Events
+    EVCHGLVL = pygame.USEREVENT
+    evChgLvl = pygame.event.Event(EVCHGLVL)
+    EVTICSEC = pygame.USEREVENT + 1
+    evTicSec = pygame.event.Event(EVTICSEC)
+    EVTICOX2 = pygame.USEREVENT + 2
+    evTicOx2 = pygame.event.Event(EVTICOX2)
+    EVTICSIX = pygame.USEREVENT + 3
+    evTicSix = pygame.event.Event(EVTICSIX)
+
+    pygame.time.set_timer(EVTICSEC, 1050)
+    pygame.time.set_timer(EVTICOX2, 750)
+    pygame.time.set_timer(EVTICSIX, 175)
 
     # State of the Game
+    inProgress = True
     inPause = False
     inMenu = True
+    inGame = False
+
     optionIM = 1
-    inProgress = True
     isDead = False
     optionID = 0
     hasToInit = True
@@ -117,10 +129,10 @@ def game(x, y):
             nbFrameAnim = 1     # reset FrameCount for anim
 
             if event.type == QUIT:  # Quitting the game
-                inPause = False
                 inProgress = False
 
-            if event == evChgLvl:
+            if event.type == EVCHGLVL:
+                inGame = False
                 if levelID < 10:
                     # Displays splash for 3 secs
                     splashName = "level"
@@ -134,7 +146,7 @@ def game(x, y):
                     pygame.mixer.music.play(-1, 0)
                     surface.blit(splashImg, (0, 0))
                     pygame.display.update()
-                    pygame.time.wait(500)
+                    pygame.time.wait(3000)
 
                     # Actually changes Lvl
                     level, levelID, won = changeLvl(levelID, player)
@@ -148,11 +160,46 @@ def game(x, y):
                     won = True
                     storeScore(player.scoreAcc())
 
+            if event.type == EVTICSEC:
+                if inGame:
+                    if levelID <= 4:
+                        player.updateOxygen(1, surface, level)
+                    for item in blocksDisap:
+                        if level[item[0]][item[1]].hpAccess() > 0:
+                            level[item[0]][item[1]].timeout()
+                        elif level[item[0]][item[1]].hpAccess() == 0:
+                            del(blocksDisap[blocksDisap.index(item)])
+
+            if event.type == EVTICOX2:
+                if levelID > 4 and inGame:
+                    player.updateOxygen(1, surface, level)
+
+            if event.type == EVTICSIX:
+                if inGame:
+                    player.Anim(surface)
+                    render(surface, level, currentOffset)
+                    player.display(surface)
+                    for i in range(0, len(level), 1):
+                        for element in level[i]:
+                            if element.typeAccess() == "delayed":
+                                if element.idAcc() and element.hpAccess() > 0:
+                                    if player.blocksFallenAcc() != currentOffset:
+                                        currentOffset += 1
+                                        currentBotLine += 1
+                                    element.updOffset(currentOffset)
+                                    posY, posX = element.posAcc()
+                                    bDis = [posY, posX]
+                                    if bDis not in blocksDisap:
+                                        blocksDisap.append(bDis)
+
             if event.type == KEYDOWN:       # Event handling
 
                 if event.key == K_ESCAPE:
-                    if not inPause and not inMenu and not isDead and not won:
+                    if inGame:
+                        # Changing context
+                        inGame = False
                         inPause = True
+
                         option = 1
                         optionFile = str(option)
                         optionFile += ".png"
@@ -160,21 +207,26 @@ def game(x, y):
                         surface.blit(pauseImage, (0, 0))
 
                     elif inPause:
+                        # Changing context
                         inPause = False
                         render(surface, level, currentOffset)
                         player.display(surface)
 
                     elif isDead:
+                        # Changing context
+                        isDead = False
                         inMenu = True
 
                     elif won:
-                        inMenu = True
+                        # Changing context
                         won = False
+                        inMenu = True
                         music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
                         pygame.mixer.music.play(-1, 0)
 
                 if event.key in movKeys:    # Movement
                     if not inPause and not inMenu and not isDead and not won:
+                        inGame = True
                         movementHandle(event, surface, player, level, movKeys)
 
                     elif inPause:
@@ -197,7 +249,7 @@ def game(x, y):
                             pauseImage = pygame.image.load(path.join("Assets", "Menu", optionFile))
                             surface.blit(pauseImage, (0, 0))
 
-                        if event.key == movKeys[0] and option > 1:
+                        elif event.key == movKeys[0] and option > 1:
                             render(surface, level, currentOffset)
                             player.Anim(surface)
                             player.display(surface)
@@ -248,6 +300,7 @@ def game(x, y):
 
                 elif event.key in arrowKeys:    # Block breaking
                     if not inPause and not inMenu and not isDead and not won:
+                        inGame = True
                         breaking(event, surface, player, level, currentBotLine)
 
                     elif inPause:
@@ -351,14 +404,19 @@ def game(x, y):
                             pygame.time.wait(3000)
 
                         elif option == 3:
+                            # Changing context
+                            inPause = False
+                            inMenu = True
                             mainMenu(surface, optionIM)
                             music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
                             pygame.mixer.music.play(-1, 0)
-                            inPause = False
-                            inMenu = True
 
                     elif inMenu:
                         if optionIM == 1:
+                            # Changing context
+                            inMenu = False
+                            hasToInit = False
+
                             level, levelID, won = restart(player)
                             currentBotLine = 8
                             currentOffset = 0
@@ -371,8 +429,6 @@ def game(x, y):
                             pygame.mixer.music.play(-1, 0)
                             pygame.display.update()
                             pygame.time.wait(3000)
-                            inMenu = False
-                            hasToInit = False
 
                         elif optionIM == 2:
                             inProgress = False
@@ -408,70 +464,36 @@ def game(x, y):
                     keydownHandle(event)
 
         # Cleanup after a climb
-
         if backDown and player.climbAcc() < currentClimb:
             if currentClimb == 0:
                 backDown = False
             player.backDownCleanup(surface)
-
         currentClimb = player.climbAcc()
-
         if player.climbAcc() > 0:
             backDown = True
 
         # Updating blocks when falling
-        if not isDead and not inPause and not inMenu and not isDead and not won:
+        if inGame:
             player.fall(surface, level)
-
-        if player.blocksFallenAcc() != currentOffset and not inMenu and not inPause and not isDead and not won:
+        if player.blocksFallenAcc() != currentOffset and inGame:
             currentOffset += 1
             currentBotLine += 1
-
             for i in range(0, len(level), 1):
                 for element in level[i]:
                     element.updOffset(currentOffset)
 
-        # Timed actions
-
-        if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
-            if levelID <= 4:
-                player.updateOxygen(1, surface, level)
-            for item in blocksDisap:
-                if level[item[0]][item[1]].hpAccess() > 0:
-                    level[item[0]][item[1]].timeout(surface)
-                elif level[item[0]][item[1]].hpAccess() == 0:
-                    del(blocksDisap[blocksDisap.index(item)])
-
-        if nbFrame % 20 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
-            if levelID <= 4:
-                player.updateOxygen(1, surface, level)
-                
+        # Keeping oxygen display U2D
         fileName = str(player.oxyAcc())
         fileName += ".png"
         oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
         Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
-        if nbFrame % 5 == 1 and not inPause and not inMenu and not isDead and not won:    # 6 times per second
-            player.Anim(surface)
-            render(surface, level, currentOffset)
-            player.display(surface)
-            for i in range(0, len(level), 1):
-                for element in level[i]:
-                    if element.typeAccess() == "delayed":
-                        if element.idAcc() and element.hpAccess() > 0:
-                            if player.blocksFallenAcc() != currentOffset:
-                                currentOffset += 1
-                                currentBotLine += 1
-                            element.updOffset(currentOffset)
-                            posY, posX = element.posAcc()
-                            bDis = [posY, posX]
-                            if bDis not in blocksDisap:
-                                blocksDisap.append(bDis)
+        # Timed actions
 
-        if not player.IdlingAcc() and not inPause and not inMenu and not isDead and not won:   # check if player is already idling
+        if not player.IdlingAcc() and inGame:   # check if player is already idling
             nbFrameAnim += 1
 
-        if nbFrameAnim % 10 == 1 and not inPause and not inMenu and not isDead and not won:
+        if nbFrameAnim % 10 == 1 and inGame:
             player.NeedToIdle(surface)
 
         if player.scoreAcc() < 1000:
@@ -494,7 +516,6 @@ def game(x, y):
             for i in range(0, player.livesAcc()):
                 surface.blit(icon, (700-i*70, 500))
 
-        nbFrame += 1
         pygame.display.update()
         fpsClock.tick(FPS)
 
@@ -502,5 +523,3 @@ def game(x, y):
 
 
 game(800, 600)
-
-
