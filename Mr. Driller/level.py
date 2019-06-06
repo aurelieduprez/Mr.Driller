@@ -51,6 +51,7 @@ def generateLvl(colors, lines, width, background, pillP=5, PillPL=7, PillMLE=20,
                     newBlock = block.Classic(j, i, randint(1, colors), 1)
                     newBlock.changeBG(background)
                     line.append(newBlock)
+
         else:
             for j in range(width):
                 newBlock = block.End(j, i)

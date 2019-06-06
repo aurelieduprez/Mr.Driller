@@ -33,7 +33,6 @@ def game(x, y):
     backDown = False
 
     blocksDisap = []
-    blocksFall = []
     levelID = 1
 
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
@@ -48,8 +47,11 @@ def game(x, y):
     evTicOx2 = pygame.event.Event(EVTICOX2)
     EVTICSIX = pygame.USEREVENT + 3
     evTicSix = pygame.event.Event(EVTICSIX)
+    EVTICPLY = pygame.USEREVENT + 4
+    evTicPly = pygame.event.Event(EVTICPLY)
 
     pygame.time.set_timer(EVTICSEC, 1050)
+    pygame.time.set_timer(EVTICPLY, 850)
     pygame.time.set_timer(EVTICOX2, 750)
     pygame.time.set_timer(EVTICSIX, 175)
 
@@ -171,20 +173,14 @@ def game(x, y):
                             level[item[0]][item[1]].timeout()
                         elif level[item[0]][item[1]].hpAccess() == 0:
                             del(blocksDisap[blocksDisap.index(item)])
-                    # Blocks Fall
-                    for item in blocksFall:
-                        if level[item[0]][item[1]].holdAccess() > 0:
-                            level[item[0]][item[1]].fallTick()
-                        elif level[item[0]][item[1]].holdAccess() == 0:
-                            level[item[0]+1].insert(item[0], level[item[0]].pop(item[1]))
-                            level[item[0]][item[1]].fall(surface, level, currentOffset)
-
-                            if not level[item[0]][item[1]].fallAccess():
-                                del(blocksFall[blocksFall.index(item)])
 
             if event.type == EVTICOX2:
                 if levelID > 4 and inGame:
                     player.updateOxygen(1, surface, level)
+
+            if event.type == EVTICPLY:
+                if inGame:
+                    player.NeedToIdle(surface)
 
             if event.type == EVTICSIX:
                 if inGame:
@@ -204,15 +200,6 @@ def game(x, y):
                                     bDis = [posY, posX]
                                     if bDis not in blocksDisap:
                                         blocksDisap.append(bDis)
-                            # Block Fall
-                            if element.typeAccess() != "end":
-                                element.checkFall(level)
-                                if element.fallAccess():
-                                    posY, posX = element.posAcc()
-                                    bFall = [posY, posX]
-                                    if bFall not in blocksFall:
-                                        blocksFall.append(bFall)
-                                        print(blocksFall)
 
             if event.type == KEYDOWN:       # Event handling
 
@@ -250,6 +237,7 @@ def game(x, y):
 
                     if not inPause and not inMenu and not isDead and not won:
                         inGame = True
+                        player.NeedToIdle(surface)
                         movementHandle(event, surface, player, level, movKeys)
 
                     elif inPause:
@@ -324,6 +312,7 @@ def game(x, y):
                 elif event.key in arrowKeys:    # Block breaking
                     if not inPause and not inMenu and not isDead and not won:
                         inGame = True
+                        player.NeedToIdle(surface)
                         breaking(event, surface, player, level, currentBotLine)
 
                     elif inPause:
@@ -483,9 +472,6 @@ def game(x, y):
                             music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
                             pygame.mixer.music.play(-1, 0)
 
-                else:
-                    keydownHandle(event)
-
         # Cleanup after a climb
         if backDown and player.climbAcc() < currentClimb:
             if currentClimb == 0:
@@ -512,12 +498,11 @@ def game(x, y):
         Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
         # Timed actions
-
-        if not player.IdlingAcc() and inGame:   # check if player is already idling
+        """if not player.IdlingAcc() and inGame:   # check if player is already idling
             nbFrameAnim += 1
 
         if nbFrameAnim % 10 == 1 and inGame:
-            player.NeedToIdle(surface)
+            player.NeedToIdle(surface)"""
 
         if player.scoreAcc() < 1000:
             score_display = FontUi.render(str(player.scoreAcc()), 1, (220, 0, 255))
