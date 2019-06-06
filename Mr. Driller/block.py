@@ -13,6 +13,7 @@ class Block:
         self._posX = posX
         self._posY = posY
         self._currOffset = 0
+        self._canFall = False
 
         # Stats
         self._hp = forceHP
@@ -39,6 +40,12 @@ class Block:
     def ColorAccess(self):
         return self._colors
 
+    def fallAccess(self):
+        return self._canFall
+
+    def posAcc(self):
+        return self._posY, self._posX
+
     def typeAccess(self):
         return self._blockType
 
@@ -49,6 +56,18 @@ class Block:
         file += str(bg)
         file += ".png"
         self._bg = path.join("Assets", "Textures", "Background", file)
+
+    def checkFall(self, level):
+
+        #canFall = False
+
+        if self._blockType != "end":    # End blocks aren't affected by gravity
+            if level[self._posY+1][self._posX].hpAccess() == 0 and self._hp > 0:    # Block underneath must be empty
+                if self._blockType != "classic":    # Colored block have their own behavior.
+                    self._canFall = True
+
+        """if canFall:
+            print(self._blockType, "block at", str(self._posX) + ",", self._posY, "can fall.")"""
 
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset
@@ -317,9 +336,6 @@ class Delayed(Block):
 
     def idAcc(self):
         return self._isDisappearing
-
-    def posAcc(self):
-        return self._posY, self._posX
 
     def updTexture(self):
         if self._isDisappearing:

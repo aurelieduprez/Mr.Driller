@@ -35,6 +35,7 @@ def game(x, y):
     nbFrame = 1
 
     blocksDisap = []
+    blocksFall = []
     levelID = 1
 
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
@@ -408,7 +409,6 @@ def game(x, y):
                     keydownHandle(event)
 
         # Cleanup after a climb
-
         if backDown and player.climbAcc() < currentClimb:
             if currentClimb == 0:
                 backDown = False
@@ -432,18 +432,19 @@ def game(x, y):
                     element.updOffset(currentOffset)
 
         # Timed actions
-
         if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
-            if levelID <= 4:
+            if levelID <= 4:                # Updates oxygen
                 player.updateOxygen(1, surface, level)
-            for item in blocksDisap:
+            for item in blocksDisap:        # Updates block that are be disappearing
                 if level[item[0]][item[1]].hpAccess() > 0:
                     level[item[0]][item[1]].timeout(surface)
                 elif level[item[0]][item[1]].hpAccess() == 0:
                     del(blocksDisap[blocksDisap.index(item)])
 
-        if nbFrame % 20 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
-            if levelID <= 4:
+            print(blocksFall)
+
+        if nbFrame % 25 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
+            if levelID > 4:
                 player.updateOxygen(1, surface, level)
                 
         fileName = str(player.oxyAcc())
@@ -452,11 +453,15 @@ def game(x, y):
         Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
         if nbFrame % 5 == 1 and not inPause and not inMenu and not isDead and not won:    # 6 times per second
+            # Player Animations
             player.Anim(surface)
             render(surface, level, currentOffset)
             player.display(surface)
+
+            # Checking Level
             for i in range(0, len(level), 1):
                 for element in level[i]:
+                    # Making delayed blocks disappear
                     if element.typeAccess() == "delayed":
                         if element.idAcc() and element.hpAccess() > 0:
                             if player.blocksFallenAcc() != currentOffset:
@@ -467,6 +472,13 @@ def game(x, y):
                             bDis = [posY, posX]
                             if bDis not in blocksDisap:
                                 blocksDisap.append(bDis)
+                    if 4 < i < len(level)-5:
+                        element.checkFall(level)
+                        if element.fallAccess():
+                            posY, posX = element.posAcc()
+                            bFa = [posY, posX]
+                            if bFa not in blocksFall:
+                                blocksFall.append(bFa)
 
         if not player.IdlingAcc() and not inPause and not inMenu and not isDead and not won:   # check if player is already idling
             nbFrameAnim += 1
