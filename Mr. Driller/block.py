@@ -14,6 +14,7 @@ class Block:
         self._posY = posY
         self._currOffset = 0
         self._canFall = False
+        self._hold = 2
 
         # Stats
         self._hp = forceHP
@@ -36,6 +37,9 @@ class Block:
 
     def hpAccess(self):
         return self._hp
+
+    def holdAccess(self):
+        return self._hold
 
     def ColorAccess(self):
         return self._colors
@@ -68,6 +72,16 @@ class Block:
 
         """if canFall:
             print(self._blockType, "block at", str(self._posX) + ",", self._posY, "can fall.")"""
+
+    def fallTick(self):
+        self._hold -= 1
+
+    def fall(self, surface, level):
+        self._posY += 1
+        self.display(surface)
+        if level[self._posY+1][self._posX].hpAccess() > 0:
+            self._hold = 2
+            self._canFall = False
 
     def updOffset(self, currentOffset):
         self._currOffset = currentOffset

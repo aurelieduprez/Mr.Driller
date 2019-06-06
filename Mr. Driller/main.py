@@ -41,11 +41,20 @@ def game(x, y):
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
     level = []
 
-    evChgLvl = pygame.event.Event(pygame.USEREVENT, attr1="evChgLvl")
+    # Custom Events
+    EVCHGLVL = USEREVENT
+    EVSECOND = USEREVENT+1
+
+    evChgLvl = pygame.event.Event(EVCHGLVL)
+    evSecond = pygame.event.Event(EVSECOND)
+
+    # Timers
+    pygame.time.set_timer(USEREVENT+1, 1100)
 
     # State of the Game
     inPause = False
     inMenu = True
+    inGame = False
     optionIM = 1
     inProgress = True
     isDead = False
@@ -121,7 +130,7 @@ def game(x, y):
                 inPause = False
                 inProgress = False
 
-            if event == evChgLvl:
+            if event.type == USEREVENT:
                 if levelID < 10:
                     # Displays splash for 3 secs
                     splashName = "level"
@@ -135,7 +144,7 @@ def game(x, y):
                     pygame.mixer.music.play(-1, 0)
                     surface.blit(splashImg, (0, 0))
                     pygame.display.update()
-                    pygame.time.wait(500)
+                    pygame.time.wait(3000)
 
                     # Actually changes Lvl
                     level, levelID, won = changeLvl(levelID, player)
@@ -148,6 +157,27 @@ def game(x, y):
                 else:
                     won = True
                     storeScore(player.scoreAcc())
+
+            if event.type == EVSECOND and inGame:  # Once per second
+                if levelID <= 4:  # Updates oxygen
+                    player.updateOxygen(1, surface, level)
+                for item in blocksDisap:  # Updates block that are be disappearing
+                    if level[item[0]][item[1]].hpAccess() > 0:
+                        level[item[0]][item[1]].timeout(surface)
+                    elif level[item[0]][item[1]].hpAccess() == 0:
+                        del (blocksDisap[blocksDisap.index(item)])
+                for item in blocksFall:
+                    if level[item[0]][item[1]].holdAccess() > 0:
+                        level[item[0]][item[1]].fallTick()
+                    elif level[item[0]][item[1]].holdAccess() == 0:
+                        level[item[0]+1][item[1]] = level[item[0]][item[1]]
+                        level[item[0]][item[1]].fall(surface, level)
+                        level[item[0]][item[1]] = block.Classic(item[0], item[1], 1, 0)
+                        level[item[0]][item[1]].changeBG(levelID)
+                        level[item[0]][item[1]].display(surface)
+                        #del (blocksDisap[blocksFall.index(item)])
+
+                print(blocksFall)
 
             if event.type == KEYDOWN:       # Event handling
 
@@ -175,7 +205,9 @@ def game(x, y):
                         pygame.mixer.music.play(-1, 0)
 
                 if event.key in movKeys:    # Movement
+
                     if not inPause and not inMenu and not isDead and not won:
+                        inGame = True
                         movementHandle(event, surface, player, level, movKeys)
 
                     elif inPause:
@@ -249,6 +281,7 @@ def game(x, y):
 
                 elif event.key in arrowKeys:    # Block breaking
                     if not inPause and not inMenu and not isDead and not won:
+                        inGame = True
                         breaking(event, surface, player, level, currentBotLine)
 
                     elif inPause:
@@ -432,16 +465,6 @@ def game(x, y):
                     element.updOffset(currentOffset)
 
         # Timed actions
-        if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
-            if levelID <= 4:                # Updates oxygen
-                player.updateOxygen(1, surface, level)
-            for item in blocksDisap:        # Updates block that are be disappearing
-                if level[item[0]][item[1]].hpAccess() > 0:
-                    level[item[0]][item[1]].timeout(surface)
-                elif level[item[0]][item[1]].hpAccess() == 0:
-                    del(blocksDisap[blocksDisap.index(item)])
-
-            print(blocksFall)
 
         if nbFrame % 25 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
             if levelID > 4:
