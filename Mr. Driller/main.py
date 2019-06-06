@@ -36,10 +36,9 @@ def game(x, y):
 
     blocksDisap = []
     levelID = 1
-    levelDepth = 25
 
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
-    level = generateLvl(4, levelDepth, 7, levelID)   # Generates Lvl (nmb colors, depth, width, bckgrns)
+    level = []
 
     evChgLvl = pygame.event.Event(pygame.USEREVENT, attr1="evChgLvl")
 
@@ -51,6 +50,8 @@ def game(x, y):
     isDead = False
     optionID = 0
     hasToInit = True
+    won = False
+    ws = 0
 
     # Initializing Ui
     FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
@@ -60,7 +61,9 @@ def game(x, y):
     oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
     Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
     music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
+    pygame.mixer.music.set_volume(0.50)
     pygame.mixer.music.play(-1, 0)
+
 
     # Initializing controls
     if 'nt' in name:
@@ -83,7 +86,24 @@ def game(x, y):
             surface.blit(deathScreen, (0, 0))
             optionID = 1
 
-        if not inPause and not inMenu and not isDead:
+        if won:
+            if ws == 0:
+                ws = 1
+                surface.fill((0, 0, 0))
+                music = pygame.mixer.music.load(path.join("Assets", "Music", "win.wav"))
+                pygame.mixer.music.play(-1, 0)
+                winScreen1 = pygame.image.load(path.join("Assets", "Splash", "win1.png"))
+                surface.blit(winScreen1, (0, 0))
+                pygame.display.update()
+
+            elif ws == 2:
+                ws = 3
+                surface.fill((0, 0, 0))
+                winScreen1 = pygame.image.load(path.join("Assets", "Splash", "win2.png"))
+                surface.blit(winScreen1, (0, 0))
+                pygame.display.update()
+
+        if not inPause and not inMenu and not isDead and not won:
 
             # Rendering level and displaying player
             render(surface, level, currentOffset)
@@ -101,30 +121,37 @@ def game(x, y):
                 inProgress = False
 
             if event == evChgLvl:
-                # Displays splash for 3 secs
-                splashName = "level"
-                splashName += str(levelID+1)
-                splashName += ".png"
-                splashImg = pygame.image.load(path.join("Assets", "Splash", splashName))
-                surface.blit(splashImg, (0, 0))
-                pygame.display.update()
-                pygame.time.wait(3000)
+                if levelID < 10:
+                    # Displays splash for 3 secs
+                    splashName = "level"
+                    splashName += str(levelID+1)
+                    splashName += ".png"
+                    musicName = "Level"
+                    musicName += str(levelID + 1)
+                    musicName += ".wav"
+                    splashImg = pygame.image.load(path.join("Assets", "Splash", splashName))
+                    music = pygame.mixer.music.load(path.join("Assets", "Music", musicName))
+                    pygame.mixer.music.play(-1, 0)
+                    surface.blit(splashImg, (0, 0))
+                    pygame.display.update()
+                    pygame.time.wait(500)
 
-                # Actually changes Lvl
-                level, levelID = changeLvl(levelID, player)
-                currentBotLine = 8
-                currentOffset = 0
-                currentClimb = 0
-                blocksDisap = []
-                backDown = False
+                    # Actually changes Lvl
+                    level, levelID, won = changeLvl(levelID, player)
+                    currentBotLine = 8
+                    currentOffset = 0
+                    currentClimb = 0
+                    blocksDisap = []
+                    backDown = False
+
+                else:
+                    won = True
+                    storeScore(player.scoreAcc())
 
             if event.type == KEYDOWN:       # Event handling
-                # Test key for revive :P
-                if event.key == K_UP and not inPause and not inMenu and not isDead:
-                    player.AddScore(1000)
 
                 if event.key == K_ESCAPE:
-                    if not inPause and not inMenu and not isDead:
+                    if not inPause and not inMenu and not isDead and not won:
                         inPause = True
                         option = 1
                         optionFile = str(option)
@@ -140,8 +167,14 @@ def game(x, y):
                     elif isDead:
                         inMenu = True
 
+                    elif won:
+                        inMenu = True
+                        won = False
+                        music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
+                        pygame.mixer.music.play(-1, 0)
+
                 if event.key in movKeys:    # Movement
-                    if not inPause and not inMenu and not isDead:
+                    if not inPause and not inMenu and not isDead and not won:
                         movementHandle(event, surface, player, level, movKeys)
 
                     elif inPause:
@@ -214,7 +247,7 @@ def game(x, y):
                             surface.blit(pauseImage, (0, 0))
 
                 elif event.key in arrowKeys:    # Block breaking
-                    if not inPause and not inMenu and not isDead:
+                    if not inPause and not inMenu and not isDead and not won:
                         breaking(event, surface, player, level, currentBotLine)
 
                     elif inPause:
@@ -304,7 +337,29 @@ def game(x, y):
 
                         elif option == 2:
                             inPause = False
-                            level, levelID = restart(player)
+                            level, levelID, won = restart(player)
+                            currentBotLine = 8
+                            currentOffset = 0
+                            currentClimb = 0
+                            blocksDisap = []
+                            backDown = False
+                            splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
+                            music = pygame.mixer.music.load(path.join("Assets", "Music", "Level1.wav"))
+                            pygame.mixer.music.play(-1, 0)
+                            surface.blit(splashLvl1, (0, 0))
+                            pygame.display.update()
+                            pygame.time.wait(3000)
+
+                        elif option == 3:
+                            mainMenu(surface, optionIM)
+                            music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
+                            pygame.mixer.music.play(-1, 0)
+                            inPause = False
+                            inMenu = True
+
+                    elif inMenu:
+                        if optionIM == 1:
+                            level, levelID, won = restart(player)
                             currentBotLine = 8
                             currentOffset = 0
                             currentClimb = 0
@@ -312,17 +367,8 @@ def game(x, y):
                             backDown = False
                             splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
                             surface.blit(splashLvl1, (0, 0))
-                            pygame.display.update()
-                            pygame.time.wait(3000)
-
-                        elif option == 3:
-                            inPause = False
-                            inMenu = True
-
-                    elif inMenu:
-                        if optionIM == 1:
-                            splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
-                            surface.blit(splashLvl1, (0, 0))
+                            music = pygame.mixer.music.load(path.join("Assets", "Music", "Level1.wav"))
+                            pygame.mixer.music.play(-1, 0)
                             pygame.display.update()
                             pygame.time.wait(3000)
                             inMenu = False
@@ -334,7 +380,7 @@ def game(x, y):
                     elif isDead:
                         if optionID == 1:
                             isDead = False
-                            level, levelID = restart(player)
+                            level, levelID, won = restart(player)
                             currentBotLine = 8
                             currentOffset = 0
                             currentClimb = 0
@@ -348,6 +394,15 @@ def game(x, y):
                         elif optionID == 2:
                             inMenu = True
                             isDead = False
+
+                    elif won:
+                        if ws == 1:
+                            ws = 2
+                        elif ws == 3:
+                            inMenu = True
+                            won = False
+                            music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
+                            pygame.mixer.music.play(-1, 0)
 
                 else:
                     keydownHandle(event)
@@ -365,10 +420,10 @@ def game(x, y):
             backDown = True
 
         # Updating blocks when falling
-        if not isDead and not inPause and not inMenu:
+        if not isDead and not inPause and not inMenu and not isDead and not won:
             player.fall(surface, level)
 
-        if player.blocksFallenAcc() != currentOffset and not inMenu and not inPause and not isDead:
+        if player.blocksFallenAcc() != currentOffset and not inMenu and not inPause and not isDead and not won:
             currentOffset += 1
             currentBotLine += 1
 
@@ -378,20 +433,25 @@ def game(x, y):
 
         # Timed actions
 
-        if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead:   # Once per second
-            player.updateOxygen(1, surface, level)
+        if nbFrame % 30 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
+            if levelID <= 4:
+                player.updateOxygen(1, surface, level)
             for item in blocksDisap:
                 if level[item[0]][item[1]].hpAccess() > 0:
-                    level[item[0]][item[1]].timeout(surface, currentOffset)
+                    level[item[0]][item[1]].timeout(surface)
                 elif level[item[0]][item[1]].hpAccess() == 0:
                     del(blocksDisap[blocksDisap.index(item)])
 
+        if nbFrame % 20 == 1 and not inPause and not inMenu and not isDead and not won:   # Once per second
+            if levelID <= 4:
+                player.updateOxygen(1, surface, level)
+                
         fileName = str(player.oxyAcc())
         fileName += ".png"
         oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
         Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
 
-        if nbFrame % 5 == 1 and not inPause and not inMenu and not isDead:    # 6 times per second
+        if nbFrame % 5 == 1 and not inPause and not inMenu and not isDead and not won:    # 6 times per second
             player.Anim(surface)
             render(surface, level, currentOffset)
             player.display(surface)
@@ -408,10 +468,10 @@ def game(x, y):
                             if bDis not in blocksDisap:
                                 blocksDisap.append(bDis)
 
-        if not player.IdlingAcc() and not inPause and not inMenu and not isDead:   # check if player is already idling
+        if not player.IdlingAcc() and not inPause and not inMenu and not isDead and not won:   # check if player is already idling
             nbFrameAnim += 1
 
-        if nbFrameAnim % 10 == 1 and not inPause and not inMenu and not isDead:
+        if nbFrameAnim % 10 == 1 and not inPause and not inMenu and not isDead and not won:
             player.NeedToIdle(surface)
 
         if player.scoreAcc() < 1000:
@@ -423,7 +483,7 @@ def game(x, y):
 
         Depth_display = FontUi.render(str(currentOffset-player.climbAcc()), 1, (220, 0, 255))
 
-        if not inPause and not inMenu and not isDead:
+        if not inPause and not inMenu and not isDead and not won:
             surface.blit(Ui_bg, (0, 0))
             surface.blit(score_display, (640, 107))
             surface.blit(Oxygen_display, (640, 200))

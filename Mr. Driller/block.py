@@ -27,6 +27,10 @@ class Block:
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Neutral", "b_s.png")
         self._bg = path.join("Assets", "Textures", "Background", "bg_1.png")
 
+        # Sound
+        self._brkSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "pop.wav"))
+        self._brkSound.set_volume(0.3)
+
     # Accessors
 
     def hpAccess(self):
@@ -66,6 +70,7 @@ class Block:
         elif self._blockType == "pill":
             player.updateOxygen(3, surface, level)
             player.AddScore(20)
+            self._brkSound.play()
             self._hp -= 1
 
         elif self._blockType == "delayed":
@@ -76,11 +81,11 @@ class Block:
 
         elif self._blockType == "end":
             self.changeLvl()
-            refreshScore(player)
             self._hp -= 1
 
         else:
             player.AddScore(10)
+            self._brkSound.play()
             self._hp -= 1
 
         # Chain reaction
@@ -281,6 +286,7 @@ class Unbreakable(Block):
         self._blockType = "unbreakable"
         self._brkSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "unbreakable.wav"))
         self._hitSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "tac.wav"))
+        self._hitSound.set_volume(0.4)
 
     def updTexture(self):
         name = str(self.hpAccess())
@@ -304,6 +310,8 @@ class Delayed(Block):
         Block.__init__(self, posX, posY, 5, 0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", "0.png")
         self._isDisappearing = False
+        self._brkSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "crystal.wav"))
+        self._brkSound.set_volume(0.35)
         self._blockType = "delayed"
         self.__seconds = 2    # number of image for fadeout
 
@@ -320,7 +328,7 @@ class Delayed(Block):
                 textName += ".png"
                 self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", textName)
 
-    def timeout(self, surface, currentOffset):
+    def timeout(self, surface):
 
         if self._isDisappearing:
             self.__seconds -= 1
@@ -329,6 +337,7 @@ class Delayed(Block):
 
         if self.__seconds == 0:
             self._hp = 0
+            self._brkSound.play()
 
 
 class Pill(Block):
@@ -337,6 +346,8 @@ class Pill(Block):
     def __init__(self, posX, posY):
         Block.__init__(self, posX, posY, 1, 0)
         self._texturePath = path.join("Assets", "Textures", "Blocks", "Pill", "pill_1.png")
+        self._brkSound = pygame.mixer.Sound(path.join("Assets", "Sounds", "pill.wav"))
+        self._brkSound.set_volume(0.15)
         self._blockType = "pill"
 
     def changeBG(self, bg):
@@ -365,6 +376,3 @@ class End(Block):
     def changeLvl(self):
         evChgLvl = pygame.event.Event(pygame.USEREVENT, attr1="evChgLvl")
         pygame.event.post(evChgLvl)
-
-
-
