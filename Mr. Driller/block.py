@@ -76,7 +76,7 @@ class Block:
             self.updTexture()
 
         elif self._blockType == "end":
-            refreshScore(player.scoreAcc())
+            refreshScore(player)
             print("fin de level")
             self._hp -= 1
 
