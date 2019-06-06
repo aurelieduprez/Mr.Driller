@@ -1,7 +1,6 @@
 import pygame
 import time
 from os import path
-from level import level
 from time import sleep
 
 
@@ -162,6 +161,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__IsIdling = False
 
         self.display(surface)
+
     # Logical Methods
 
     def AddScore(self, x):
@@ -185,7 +185,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Right Pill
         elif direction == 2 and self.__posX < len(level[0]) - 1 \
-                and level[self.__posY][self.__posX + 1].typeAccess() == "pill":
+                and level[self.__posY][self.__posX + 1].typeAccess() == "pill" \
+                and level[self.__posY][self.__posX + 1].hpAccess() != 0 :
+
             level[self.__posY][self.__posX + 1].hit(surface, level, self)
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
             self.__posX += 1
@@ -209,7 +211,8 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         elif direction == 2 and self.__posX < len(level[0]) - 1 \
                 and level[self.__posY][self.__posX + 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
-                and level[self.__posY - 1][self.__posX + 1].typeAccess() == "pill":
+                and level[self.__posY - 1][self.__posX + 1].typeAccess() == "pill" \
+                and level[self.__posY - 1][self.__posX + 1].hpAccess() != 0 :
 
             level[self.__posY - 1][self.__posX + 1].hit(surface, level, self)
 
@@ -234,7 +237,8 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
         # Left Pill
         elif direction == 4 and self.__posX > 0 - 1 \
-                and level[self.__posY][self.__posX - 1].typeAccess() == "pill":
+                and level[self.__posY][self.__posX - 1].typeAccess() == "pill" \
+                and level[self.__posY][self.__posX - 1].hpAccess() != 0:
             level[self.__posY][self.__posX - 1].hit(surface, level, self)
             level[self.__posY][self.__posX].display(surface, self.__blocksFallen)
             self.__posX -= 1
@@ -258,7 +262,8 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
         elif direction == 4 and self.__posX > 0 \
                 and level[self.__posY][self.__posX - 1].hpAccess() != 0 \
                 and level[self.__posY - 1][self.__posX].hpAccess() == 0 \
-                and level[self.__posY - 1][self.__posX - 1].typeAccess() == "pill" :
+                and level[self.__posY - 1][self.__posX - 1].typeAccess() == "pill" \
+                and level[self.__posY - 1][self.__posX - 1].hpAccess() != 0:
 
             level[self.__posY - 1][self.__posX - 1].hit(surface, level, self)
 
@@ -320,7 +325,7 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
             return self.__blocksFallen
 
-    def revive(self, surface):
+    def revive(self, surface, level):
 
         if self.__lives <= 0:
             self.__lives -= 1
@@ -343,19 +348,40 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
 
             self.__oxygen = 100
 
-    def updateOxygen(self, funct, surface):
+    def resetCoord(self, bg):
+
+        # Position
+        self.__posX = 3
+        self.__posY = 4
+        self.__blocksFallen = 0
+        self.__climb = 0
+
+        # Stats
+        self.__oxygen = 100
+
+        # Textures
+        file = "bg_"
+        file += str(bg)
+        file += ".png"
+        self.__bg = path.join("Assets", "Textures", "Background", file)
+
+    def resetScore(self):
+        self.__score = 0
+        self.__lives = 2
+
+    def updateOxygen(self, funct, surface, level):
         if funct == 1:
             self.__oxygen -= 1
         elif funct == 2:
             self.__oxygen -= 20
         elif funct == 3:
             if self.__oxygen <= 70:
-                self.__oxygen += 30
+                self.__oxygen += 20
             else:
                 self.__oxygen = 100
 
         if self.__oxygen <= 0:
-            self.revive(surface)
+            self.revive(surface, level)
 
     # Graphical Methods
 

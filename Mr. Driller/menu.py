@@ -1,6 +1,8 @@
 import pygame
 from os import path
 from character import *
+from time import sleep
+import level
 
 
 def refreshScore(player):
@@ -58,6 +60,41 @@ def mainMenu(surface, optionIM):
     surface.blit(quitImg, (310, 400))
 
 
+
+
+
+
+
+def changeLvl(currentLvl, player):
+    currentLvl += 1
+    player.resetCoord(currentLvl)
+    if currentLvl in [2, 7]:
+        colors = 2
+    else:
+        colors = 4
+
+    if currentLvl > 5:
+        pillP = 2
+        pillPL = 5
+        pillMLE = 40
+        soloP = 10
+        unbreakableP = 10
+        delayedP = 12
+        lvl = level.generateLvl(colors, 15, 7, currentLvl, pillP, pillPL, pillMLE, soloP, unbreakableP, delayedP)
+    else:
+        lvl = level.generateLvl(colors, 15, 7, currentLvl)
+
+    for row in lvl:
+        for block in row:
+            block.updCoText(lvl)
+
+    return lvl, currentLvl
+
+
+def restart(player):
+    lvl, currentlvl = changeLvl(0, player)
+    player.resetScore()
+    return lvl, currentlvl
 
 
 
