@@ -358,12 +358,11 @@ class Delayed(Block):
                 textName += ".png"
                 self._texturePath = path.join("Assets", "Textures", "Blocks", "Delayed", textName)
 
-    def timeout(self, surface):
+    def timeout(self):
 
         if self._isDisappearing:
             self.__seconds -= 1
             self.updTexture()
-            self.display(surface)
 
         if self.__seconds == 0:
             self._hp = 0
