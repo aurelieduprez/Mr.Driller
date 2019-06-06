@@ -72,7 +72,12 @@ def readScore(surface):
 
     # Get scores from file
     lines = scoreFile.readlines()
-    for i in range(len(lines)):
+    lines.sort(reverse=True)
+    if len(lines) >= 3:
+        dispQyt = 3
+    else:
+        dispQyt = len(lines)
+    for i in range(dispQyt):
         lines[i] = lines[i].strip()
         ttd = str(i + 1)
         ttd += " : "
