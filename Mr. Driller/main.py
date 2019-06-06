@@ -165,11 +165,22 @@ def game(x, y):
                 if inGame:
                     if levelID <= 4:
                         player.updateOxygen(1, surface, level)
+                    # Delayed Blocks
                     for item in blocksDisap:
                         if level[item[0]][item[1]].hpAccess() > 0:
                             level[item[0]][item[1]].timeout()
                         elif level[item[0]][item[1]].hpAccess() == 0:
                             del(blocksDisap[blocksDisap.index(item)])
+                    # Blocks Fall
+                    for item in blocksFall:
+                        if level[item[0]][item[1]].holdAccess() > 0:
+                            level[item[0]][item[1]].fallTick()
+                        elif level[item[0]][item[1]].holdAccess() == 0:
+                            level[item[0]+1].insert(item[0], level[item[0]].pop(item[1]))
+                            level[item[0]][item[1]].fall(surface, level, currentOffset)
+
+                            if not level[item[0]][item[1]].fallAccess():
+                                del(blocksFall[blocksFall.index(item)])
 
             if event.type == EVTICOX2:
                 if levelID > 4 and inGame:
@@ -182,6 +193,7 @@ def game(x, y):
                     player.display(surface)
                     for i in range(0, len(level), 1):
                         for element in level[i]:
+                            # Delayed Blocks
                             if element.typeAccess() == "delayed":
                                 if element.idAcc() and element.hpAccess() > 0:
                                     if player.blocksFallenAcc() != currentOffset:
@@ -192,6 +204,15 @@ def game(x, y):
                                     bDis = [posY, posX]
                                     if bDis not in blocksDisap:
                                         blocksDisap.append(bDis)
+                            # Block Fall
+                            if element.typeAccess() != "end":
+                                element.checkFall(level)
+                                if element.fallAccess():
+                                    posY, posX = element.posAcc()
+                                    bFall = [posY, posX]
+                                    if bFall not in blocksFall:
+                                        blocksFall.append(bFall)
+                                        print(blocksFall)
 
             if event.type == KEYDOWN:       # Event handling
 

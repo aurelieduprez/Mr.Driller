@@ -76,7 +76,7 @@ class Block:
     def fallTick(self):
         self._hold -= 1
 
-    def fall(self, surface, level):
+    def fall(self, surface, level, currentOffset):
         self._posY += 1
         self.display(surface)
         if level[self._posY+1][self._posX].hpAccess() > 0:
