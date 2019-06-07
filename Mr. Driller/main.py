@@ -33,10 +33,10 @@ def game(x, y):
     backDown = False
 
     blocksDisap = []
+    level = []
     levelID = 1
 
     player = Character(3, 4, levelID, 0)    # Creates the player instance(posX, posY, bckgrnd, lives)
-    level = []
 
     # Custom Events
     EVCHGLVL = pygame.USEREVENT
@@ -60,9 +60,9 @@ def game(x, y):
     inPause = False
     inMenu = True
     inGame = False
+    isDead = False
 
     optionIM = 1
-    isDead = False
     optionID = 0
     hasToInit = True
     won = False
@@ -78,7 +78,6 @@ def game(x, y):
     music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
     pygame.mixer.music.set_volume(0.50)
     pygame.mixer.music.play(-1, 0)
-
 
     # Initializing controls
     if 'nt' in name:
@@ -97,6 +96,11 @@ def game(x, y):
     while inProgress:
         if player.livesAcc() < 0 and not isDead and not inMenu and not inPause and not hasToInit and optionID == 0:
             isDead = True
+            inGame = False
+            pygame.mixer.music.stop()
+            laugh = pygame.mixer.Sound(path.join("Assets", "Sounds", "laugh.wav"))
+            laugh.set_volume(0.70)
+            laugh.play(0)
             deathScreen = pygame.image.load(path.join("Assets", "Menu", "death1.png"))
             surface.blit(deathScreen, (0, 0))
             optionID = 1
@@ -204,7 +208,7 @@ def game(x, y):
             if event.type == KEYDOWN:       # Event handling
 
                 if event.key == K_ESCAPE:
-                    if inGame:
+                    if not inPause and not inMenu and not isDead and not won or inGame:
                         # Changing context
                         inGame = False
                         inPause = True
@@ -455,6 +459,8 @@ def game(x, y):
                             blocksDisap = []
                             backDown = False
                             splashLvl1 = pygame.image.load(path.join("Assets", "Splash", "level1.png"))
+                            music = pygame.mixer.music.load(path.join("Assets", "Music", "Level1.wav"))
+                            pygame.mixer.music.play(-1, 0)
                             surface.blit(splashLvl1, (0, 0))
                             pygame.display.update()
                             pygame.time.wait(3000)
@@ -462,6 +468,8 @@ def game(x, y):
                         elif optionID == 2:
                             inMenu = True
                             isDead = False
+                            music = pygame.mixer.music.load(path.join("Assets", "Music", "menu.wav"))
+                            pygame.mixer.music.play(-1, 0)
 
                     elif won:
                         if ws == 1:
@@ -491,18 +499,11 @@ def game(x, y):
                 for element in level[i]:
                     element.updOffset(currentOffset)
 
-        # Keeping oxygen display U2D
+        # Keeping oxygen, score and depth display U2D
         fileName = str(player.oxyAcc())
         fileName += ".png"
         oxyImage = pygame.image.load(path.join("Assets", "Misc", "oxyAnim", fileName))
         Oxygen_display = FontUi.render(str(player.oxyAcc()), 1, (220, 0, 255))
-
-        # Timed actions
-        """if not player.IdlingAcc() and inGame:   # check if player is already idling
-            nbFrameAnim += 1
-
-        if nbFrameAnim % 10 == 1 and inGame:
-            player.NeedToIdle(surface)"""
 
         if player.scoreAcc() < 1000:
             score_display = FontUi.render(str(player.scoreAcc()), 1, (220, 0, 255))

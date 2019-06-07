@@ -381,6 +381,9 @@ class Character:        # Important : directions list : Up = 1; Right = 2; Down 
                 self.__oxygen = 100
 
         if self.__oxygen <= 0:
+            ugh = pygame.mixer.Sound(path.join("Assets", "Sounds", "ugh.wav"))
+            ugh.set_volume(0.70)
+            ugh.play(0)
             self.revive(surface, level)
 
     # Graphical Methods

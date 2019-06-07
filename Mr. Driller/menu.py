@@ -1,7 +1,6 @@
 import pygame
 from os import path
 #from character import *
-from time import sleep
 import level
 
 
@@ -84,7 +83,7 @@ def readScore(surface):
         ttd += lines[i]
         ttd.strip()
         scoreDisp = FontUi.render(ttd, 1, (220, 0, 255))
-        surface.blit(scoreDisp, (i*240+20, 535))
+        surface.blit(scoreDisp, (i*240+30, 535))
 
     # Closes file
     scoreFile.close()
@@ -126,7 +125,7 @@ def changeLvl(currentLvl, player):
             delayedP = 12
             lvl = level.generateLvl(colors, 155, 7, currentLvl, pillP, pillPL, pillMLE, soloP, unbreakableP, delayedP)
         else:
-            lvl = level.generateLvl(colors, 105, 7, currentLvl)
+            lvl = level.generateLvl(colors, 80, 7, currentLvl)
 
         for row in lvl:
             for block in row:
