@@ -23,7 +23,7 @@ def game(x, y):
     fpsClock = pygame.time.Clock()
     surface = pygame.display.set_mode((x, y))
     pygame.display.set_caption('Mr. Driller')
-    icon = pygame.image.load("Assets\Misc\icon.png")
+    icon = pygame.image.load(path.join("Assets", "Misc", "icon.png"))
     pygame.display.set_icon(icon)
 
     # Initializing useful variables
@@ -69,7 +69,7 @@ def game(x, y):
     ws = 0
 
     # Initializing Ui
-    FontUi = pygame.font.Font("Assets\Misc\police\Act_Of_Rejection.ttf", 36)
+    FontUi = pygame.font.Font(path.join("Assets", "Misc", "police", "Act_Of_Rejection.ttf"), 36)
     Ui_bg = pygame.image.load(path.join("Assets", "Misc", "userinterface.png"))
     fileName = str(player.oxyAcc())
     fileName += ".png"
