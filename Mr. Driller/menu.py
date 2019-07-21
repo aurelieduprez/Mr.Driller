@@ -67,7 +67,7 @@ def storeScore(playerScore):
 def readScore(surface):
     # Opens file and defines font
     scoreFile = open(path.join("Assets", "Score", "score.txt"), "r")
-    FontUi = pygame.font.Font(path.join("Assets", "Misc", "police", "AOR_Improved.ttf"), 48)
+    FontUi = pygame.font.Font("Assets\Misc\police\AOR_Improved.ttf", 48)
 
     # Get scores from file
     lines = scoreFile.readlines()
